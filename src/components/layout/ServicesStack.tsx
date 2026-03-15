@@ -100,25 +100,23 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              <h3 
-                data-speed="0.3"
-                className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-4 md:mb-0"
-              >
-                {service.title.split('\n').map((line, i) => (
-                  <span 
-                    key={i} 
-                    className={`block ${i === 1 ? 'pl-8 md:pl-24' : ''}`}
-                  >
-                    {line}
-                  </span>
-                ))}
-              </h3>
-              <p 
-                data-speed="0.1"
-                className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80"
-              >
-                {service.desc}
-              </p>
+              <VerticalParallax offset={50}>
+                <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-4 md:mb-0">
+                  {service.title.split('\n').map((line, i) => (
+                    <span 
+                      key={i} 
+                      className={`block ${i === 1 ? 'pl-8 md:pl-24' : ''}`}
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </h3>
+              </VerticalParallax>
+              <VerticalParallax offset={20}>
+                <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
+                  {service.desc}
+                </p>
+              </VerticalParallax>
             </div>
             
             {/* Removed redundant local noise for performance */}
