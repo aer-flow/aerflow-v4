@@ -106,14 +106,17 @@ export default function FinalMonolith() {
       
       {/* 1. Ambient Spotlight (Absolute Positioning relative to section) */}
       <motion.div 
-        className="absolute top-0 left-0 rounded-full pointer-events-none mix-blend-screen will-change-transform"
+        className="absolute top-0 left-0 rounded-full pointer-events-none will-change-transform"
         style={{
-          width: '50vw',
-          height: '50vw',
-          background: 'radial-gradient(circle, rgba(215,255,107,0.1) 0%, rgba(0,0,0,0) 70%)',
+          width: '60vw',
+          height: '60vw',
+          background: 'radial-gradient(circle, rgba(215,255,107,0.08) 0%, rgba(0,0,0,0) 70%)',
           x: smoothX,
           y: smoothY,
-          transform: 'translate3d(-50%, -50%, 0)',
+          left: 0,
+          top: 0,
+          translateX: '-50%',
+          translateY: '-50%',
           zIndex: 0
         }}
       />
