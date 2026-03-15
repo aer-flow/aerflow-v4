@@ -135,11 +135,11 @@ export default function FinalMonolith() {
       </div>
 
       {/* 4. Grid Details */}
-      <div className="absolute top-28 left-8 md:top-10 md:left-10 z-10 font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
+      <div className="absolute top-24 left-8 md:top-10 md:left-10 z-10 font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
         [ BUCUREȘTI, RO ]<br/>
         44.4268° N, 26.1025° E
       </div>
-      <div className="absolute top-28 right-8 md:top-10 md:right-10 z-10 font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-right flex items-center justify-end gap-3 pointer-events-none">
+      <div className="absolute top-36 left-8 md:top-10 md:right-10 md:left-auto z-10 font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left md:text-right flex items-center justify-start md:justify-end gap-3 pointer-events-none">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
           [ DISPONIBIL PENTRU PROIECTE ]
@@ -147,7 +147,7 @@ export default function FinalMonolith() {
       </div>
 
       {/* 5. Main Content Area */}
-      <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-40 md:mt-20">
+      <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-56 md:mt-20">
         
         {/* AERFLOW Monumental Text */}
         <h2 
