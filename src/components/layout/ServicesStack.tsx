@@ -95,8 +95,10 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              <h3 className="text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-[1.15] tracking-tighter whitespace-pre-line mb-4 md:mb-0">
-                {service.title}
+              <h3 className="flex flex-col gap-1 md:gap-3 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-tight mb-4 md:mb-0">
+                {service.title.split('\n').map((line, i) => (
+                  <span key={i} className="block">{line}</span>
+                ))}
               </h3>
               <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
                 {service.desc}
