@@ -76,15 +76,15 @@ export default function Home() {
         <section className="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
           <HeroCanvas />
           
-          <div className="relative z-10 flex flex-col items-center pointer-events-none text-center mix-blend-difference">
-            <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black">
+          <div className="relative z-10 flex flex-col items-center pointer-events-none text-center text-aerflow-light">
+            <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl">
               <span className="block">Navigăm</span>
               <span className="block font-serif italic font-normal text-aerflow-accent">Viitorul</span>
               <span className="block">Digital.</span>
             </h1>
           </div>
 
-          <div className="absolute bottom-10 right-10 z-10 font-mono text-sm tracking-widest mix-blend-difference text-aerflow-light">
+          <div className="absolute bottom-10 right-10 z-10 font-mono text-sm tracking-widest text-aerflow-light opacity-60">
             [ SCROLL ]
           </div>
         </section>

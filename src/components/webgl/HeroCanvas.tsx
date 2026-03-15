@@ -36,7 +36,7 @@ export default function HeroCanvas() {
       <Canvas camera={{ position: [0, 0, 1] }}>
         <FluidPlane />
       </Canvas>
-      <div className="absolute inset-0 bg-aerflow-dark/40 mix-blend-multiply" />
+      <div className="absolute inset-0 bg-aerflow-dark/20" />
     </div>
   );
 }

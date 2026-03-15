@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-[900] mix-blend-difference text-aerflow-light">
+      <nav className="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-[900] bg-aerflow-dark/20 backdrop-blur-md border-b border-white/5 text-aerflow-light">
         <Link to="/" className="text-xl font-mono font-bold tracking-widest z-[1000]">
           [ <GlitchText text="AERFLOW" /> ]
         </Link>
