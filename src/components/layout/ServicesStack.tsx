@@ -101,23 +101,41 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              <VerticalParallax offset={50}>
-                <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-4 md:mb-0">
-                  {service.title.split('\n').map((line, i) => (
-                    <span 
-                      key={i} 
+              <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-12 md:mb-0">
+                {service.title.split('\n').map((line, i) => (
+                  <div key={i} className="overflow-hidden">
+                    <motion.span 
+                      initial={{ y: "100%" }}
+                      whileInView={{ y: 0 }}
+                      viewport={{ once: false, margin: "-10%" }}
+                      transition={{ 
+                        duration: 1.2, 
+                        delay: i * 0.1,
+                        ease: [0.22, 1, 0.36, 1] 
+                      }}
                       className={`block ${i === 1 ? 'pl-8 md:pl-24' : ''}`}
                     >
                       {line}
-                    </span>
-                  ))}
-                </h3>
-              </VerticalParallax>
-              <VerticalParallax offset={20}>
-                <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
+                    </motion.span>
+                  </div>
+                ))}
+              </h3>
+              
+              <div className="max-w-sm md:max-w-md">
+                <motion.p 
+                  initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                  whileInView={{ opacity: 0.8, y: 0, filter: "blur(0px)" }}
+                  viewport={{ once: false, margin: "-5%" }}
+                  transition={{ 
+                    duration: 1.5, 
+                    delay: 0.4,
+                    ease: [0.22, 1, 0.36, 1] 
+                  }}
+                  className="font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium"
+                >
                   {service.desc}
-                </p>
-              </VerticalParallax>
+                </motion.p>
+              </div>
             </div>
             
             {/* Removed redundant local noise for performance */}
