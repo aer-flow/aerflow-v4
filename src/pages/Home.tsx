@@ -80,7 +80,7 @@ export default function Home() {
             <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl">
               <span className="block">Navigăm</span>
               <span className="block font-serif italic font-normal text-aerflow-accent">Viitorul</span>
-              <span className="block">Digital</span>
+              <span className="block">Digital.</span>
             </h1>
           </div>
 
