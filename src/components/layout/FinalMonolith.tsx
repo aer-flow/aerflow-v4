@@ -135,11 +135,11 @@ export default function FinalMonolith() {
       </div>
 
       {/* 4. Grid Details */}
-      <div className="absolute top-10 left-10 z-10 font-mono text-[10px] tracking-[0.3em] text-aerflow-gray/60 uppercase">
+      <div className="absolute top-10 left-10 z-10 font-mono text-[10px] tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
         [ BUCUREȘTI, RO ]<br/>
         44.4268° N, 26.1025° E
       </div>
-      <div className="absolute top-10 right-10 z-10 font-mono text-[10px] tracking-[0.3em] text-aerflow-accent/80 uppercase text-right flex items-center gap-3">
+      <div className="absolute top-10 right-10 z-10 font-mono text-[10px] tracking-[0.3em] text-aerflow-accent/80 uppercase text-right flex items-center gap-3 pointer-events-none">
         <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />[ DISPONIBIL PENTRU PROIECTE ]
       </div>
 
@@ -173,7 +173,7 @@ export default function FinalMonolith() {
           <MagneticButton>
             <Link 
               to="/contact" 
-              className="px-8 py-4 rounded-full bg-aerflow-accent text-aerflow-dark font-sans font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors duration-500"
+              className="px-8 py-4 rounded-full bg-aerflow-accent text-aerflow-dark font-sans font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors duration-500 block"
               onMouseEnter={() => setCursorVariant('project', 'CLICK')}
               onMouseLeave={() => setCursorVariant('default')}
             >

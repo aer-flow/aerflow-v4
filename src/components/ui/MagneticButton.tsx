@@ -56,15 +56,7 @@ export default function MagneticButton({ children, className }: { children: Reac
       onMouseLeave={reset}
       className={className}
     >
-      <motion.div
-        style={{
-          x: useSpring(x, { ...springConfig, stiffness: 100 }), // Slightly delayed inner element
-          y: useSpring(y, { ...springConfig, stiffness: 100 }),
-          willChange: 'transform'
-        }}
-      >
-        {children}
-      </motion.div>
+      {children}
     </motion.div>
   );
 }
