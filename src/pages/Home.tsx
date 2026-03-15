@@ -103,9 +103,9 @@ export default function Home() {
 
         {/* HORIZONTAL WORK SHOWCASE */}
         <section ref={scrollWrapperRef} className="relative w-full h-screen bg-aerflow-dark overflow-hidden">
-          <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[10vw] gap-20">
+          <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[5vw] md:px-[10vw] gap-10 md:gap-20">
             {projects.map((proj, i) => (
-              <div key={i} className="relative w-[60vw] h-[70vh] flex-shrink-0 overflow-hidden group">
+              <div key={i} className="relative w-[85vw] md:w-[60vw] h-[60vh] md:h-[70vh] flex-shrink-0 overflow-hidden group">
                 <img 
                   src={proj.img} 
                   alt="Proiect Aerflow" 

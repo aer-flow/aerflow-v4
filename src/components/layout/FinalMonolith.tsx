@@ -135,11 +135,11 @@ export default function FinalMonolith() {
       </div>
 
       {/* 4. Grid Details */}
-      <div className="absolute top-10 left-10 z-10 font-mono text-[10px] tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
+      <div className="absolute top-24 left-8 md:top-10 md:left-10 z-10 font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
         [ BUCUREȘTI, RO ]<br/>
         44.4268° N, 26.1025° E
       </div>
-      <div className="absolute top-10 right-10 z-10 font-mono text-[10px] tracking-[0.3em] text-aerflow-accent/80 uppercase text-right flex items-center gap-3 pointer-events-none">
+      <div className="absolute bottom-10 left-8 md:top-10 md:right-10 md:left-auto md:bottom-auto z-10 font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left md:text-right flex items-center gap-3 pointer-events-none">
         <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />[ DISPONIBIL PENTRU PROIECTE ]
       </div>
 

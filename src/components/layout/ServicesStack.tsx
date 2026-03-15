@@ -76,10 +76,10 @@ export default function ServicesStack() {
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`sticky top-0 h-screen w-full flex flex-col justify-between p-8 md:p-16 ${service.color} ${service.textColor} overflow-hidden`}
+            className={`sticky top-0 h-screen w-full flex flex-col justify-center md:justify-between p-6 md:p-16 ${service.color} ${service.textColor} overflow-hidden`}
           >
-            <div className="flex justify-between items-start w-full">
-              <span className="font-mono text-xl md:text-2xl font-bold tracking-tighter">
+            <div className="absolute top-6 left-6 md:static flex justify-between items-start w-[calc(100%-3rem)] md:w-full">
+              <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
                 [{service.id}]
               </span>
               <motion.div 
@@ -87,14 +87,14 @@ export default function ServicesStack() {
                 whileInView={{ opacity: 1, rotate: 0 }}
                 viewport={{ once: false, margin: "-10%" }}
                 transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                className="w-12 h-12 md:w-20 md:h-20 flex items-center justify-center border border-current rounded-full"
+                className="w-10 h-10 md:w-20 md:h-20 flex items-center justify-center border border-current rounded-full"
               >
                 ↓
               </motion.div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-end w-full gap-10">
-              <h3 className="text-[clamp(4rem,10vw,12rem)] font-black uppercase leading-[0.85] tracking-tighter whitespace-pre-line">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-6 md:gap-10 mt-12 md:mt-0">
+              <h3 className="text-[clamp(2.5rem,10vw,12rem)] font-black uppercase leading-[0.9] tracking-tighter whitespace-pre-line">
                 {service.title}
               </h3>
               <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
