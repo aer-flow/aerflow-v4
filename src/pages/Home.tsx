@@ -80,7 +80,7 @@ export default function Home() {
             <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl">
               <span className="block">Navigăm</span>
               <span className="block font-serif italic font-normal text-aerflow-accent">Viitorul</span>
-              <span className="block">Digital.</span>
+              <span className="block">Digital</span>
             </h1>
           </div>
 
@@ -103,9 +103,9 @@ export default function Home() {
 
         {/* HORIZONTAL WORK SHOWCASE */}
         <section ref={scrollWrapperRef} className="relative w-full h-screen bg-aerflow-dark overflow-hidden">
-          <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[5vw] md:px-[10vw] gap-10 md:gap-20">
+          <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20">
             {projects.map((proj, i) => (
-              <div key={i} className="relative w-[85vw] md:w-[60vw] h-[60vh] md:h-[70vh] flex-shrink-0 overflow-hidden group">
+              <div key={i} className="relative w-[80vw] md:w-[60vw] h-[55vh] md:h-[70vh] flex-shrink-0 overflow-hidden group rounded-lg md:rounded-none">
                 <img 
                   src={proj.img} 
                   alt="Proiect Aerflow" 
