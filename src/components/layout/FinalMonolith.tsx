@@ -54,17 +54,15 @@ export default function FinalMonolith() {
       tl.fromTo(letters,
         { 
           opacity: 0, 
-          filter: "blur(12px)", 
-          x: (i) => (i - 3) * 100,
-          scale: 1.2
+          scale: 0.8,
+          y: 50
         },
         {
           opacity: 1,
-          filter: "blur(0px)",
-          x: 0,
           scale: 1,
-          stagger: 0.15, // Significantly increased for a slower feel
-          duration: 2.5, // Significantly increased for a slower feel
+          y: 0,
+          stagger: 0.1,
+          duration: 1.5,
           ease: "expo.out",
         }
       )
@@ -115,21 +113,19 @@ export default function FinalMonolith() {
           background: 'radial-gradient(circle, rgba(215,255,107,0.1) 0%, rgba(0,0,0,0) 70%)',
           x: smoothX,
           y: smoothY,
-          translateX: '-50%',
-          translateY: '-50%',
+          transform: 'translate3d(-50%, -50%, 0)',
           zIndex: 0
         }}
       />
 
-      {/* 2. Global Noise */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
+      {/* 2. Removed Local Noise - handled by global overlay */}
 
       {/* 3. The Background Echo Marquee */}
       <div className="absolute inset-0 z-0 flex flex-col justify-center overflow-hidden pointer-events-none opacity-[0.015]">
         <motion.div 
           animate={{ x: [0, -2000] }} 
           transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-          className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white"
+          className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white will-change-transform"
         >
           INNOVATION • DISRUPTION • CREATIVITY • INNOVATION • DISRUPTION • CREATIVITY •
         </motion.div>
@@ -153,7 +149,7 @@ export default function FinalMonolith() {
           className="text-[clamp(4rem,18vw,22rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex"
         >
           {aerflowText.map((letter, i) => (
-            <span key={i} className="inline-block will-change-[transform,opacity,filter]">
+            <span key={i} className="inline-block will-change-transform">
               {letter}
             </span>
           ))}
