@@ -95,7 +95,7 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              <h3 className="text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-[0.95] tracking-tighter whitespace-pre-line">
+              <h3 className="text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-[1.15] tracking-tighter whitespace-pre-line mb-4 md:mb-0">
                 {service.title}
               </h3>
               <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
