@@ -44,6 +44,7 @@ export default function ServicesStack() {
           opacity: 0.3,
           transformOrigin: "top center",
           ease: "none",
+          force3D: true,
           scrollTrigger: {
             trigger: cardsRef.current[index + 1],
             start: "top bottom",

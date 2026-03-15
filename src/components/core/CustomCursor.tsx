@@ -41,21 +41,19 @@ export default function CustomCursor() {
       width: 16,
       height: 16,
       backgroundColor: '#F2F2F2',
-      mixBlendMode: 'difference' as any,
+      boxShadow: '0 0 10px rgba(255,255,255,0.3)',
       opacity: 1,
     },
     project: {
       width: 150,
       height: 150,
       backgroundColor: '#D7FF6B',
-      mixBlendMode: 'normal' as any,
       opacity: 1,
     },
     menu: {
       width: 60,
       height: 60,
       backgroundColor: '#F2F2F2',
-      mixBlendMode: 'difference' as any,
       opacity: 1,
     },
     hidden: {
@@ -75,6 +73,7 @@ export default function CustomCursor() {
         top: smoothY,
         translateX: "-50%",
         translateY: "-50%",
+        willChange: "transform",
       }}
       initial="hidden"
       animate={isVisible ? variant : "hidden"}

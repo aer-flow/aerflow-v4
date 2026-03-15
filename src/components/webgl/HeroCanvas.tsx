@@ -23,7 +23,7 @@ function FluidPlane() {
 
   return (
     <mesh scale={[viewport.width, viewport.height, 1]}>
-      <planeGeometry args={[1, 1, 64, 64]} />
+      <planeGeometry args={[1, 1, 32, 32]} />
       {/* @ts-ignore - extended in FluidDistortionMaterial.tsx */}
       <fluidDistortionMaterial ref={materialRef} uColorBase={new THREE.Color('#070707')} uColorHighlight={new THREE.Color('#1a1a1a')} />
     </mesh>
