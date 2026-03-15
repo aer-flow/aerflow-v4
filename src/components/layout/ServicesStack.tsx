@@ -76,10 +76,10 @@ export default function ServicesStack() {
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`sticky top-0 h-screen w-full flex flex-col justify-end md:justify-between p-8 md:p-16 ${service.color} ${service.textColor} overflow-hidden`}
+            className={`sticky top-0 h-screen w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-hidden`}
           >
             {/* Mobile Header - Repositioned to be visible below Navbar */}
-            <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full">
+            <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
               <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
                 [{service.id}]
               </span>
@@ -94,8 +94,8 @@ export default function ServicesStack() {
               </motion.div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10 mb-12 md:mb-0">
-              <h3 className="text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-[0.85] tracking-tighter whitespace-pre-line">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
+              <h3 className="text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-[0.95] tracking-tighter whitespace-pre-line">
                 {service.title}
               </h3>
               <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
