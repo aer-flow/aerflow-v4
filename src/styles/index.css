@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-aerflow-dark: #070707;
+  --color-aerflow-light: #F2F2F2;
+  --color-aerflow-accent: #D7FF6B;
+  --color-aerflow-gray: #808080;
+  --color-aerflow-dim: #1A1A1A;
+  
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --ease-awwwards: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@layer base {
+  :root {
+    --text-hero: clamp(3rem, 10vw, 12rem);
+    --text-h1: clamp(2.5rem, 8vw, 8rem);
+    --text-h2: clamp(2rem, 5vw, 5rem);
+    --text-h3: clamp(1.5rem, 3vw, 3rem);
+    --text-body: clamp(1rem, 1.2vw, 1.25rem);
+  }
+
+  body {
+    background-color: var(--color-aerflow-dark);
+    color: var(--color-aerflow-light);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  ::selection {
+    background-color: var(--color-aerflow-accent);
+    color: var(--color-aerflow-dark);
+  }
+}
+
+@layer utilities {
+  .text-stroke {
+    -webkit-text-stroke: 1px #808080;
+    color: transparent;
+  }
+  
+  .text-stroke-accent:hover {
+    -webkit-text-stroke: 1px transparent;
+    color: #D7FF6B;
+  }
+
+  .clip-reveal {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
