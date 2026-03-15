@@ -19,16 +19,24 @@ export default function ParallaxImage({ src, alt, className = "", speed = 1.2 }:
     if (!imageRef.current || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.to(imageRef.current, {
-        yPercent: (speed - 1) * 20, // Adjust movement based on speed
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
+      // Create a coordinated parallax + zoom effect
+      gsap.fromTo(imageRef.current, 
+        { 
+          yPercent: -10,
+          scale: 1.1 
         },
-      });
+        {
+          yPercent: 10,
+          scale: 1.25,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
     }, containerRef);
 
     return () => ctx.revert();
@@ -40,7 +48,7 @@ export default function ParallaxImage({ src, alt, className = "", speed = 1.2 }:
         ref={imageRef}
         src={src}
         alt={alt}
-        className="w-full h-[120%] object-cover absolute -top-[10%]"
+        className="w-full h-full object-cover will-change-transform"
       />
     </div>
   );

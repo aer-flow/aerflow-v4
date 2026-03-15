@@ -153,13 +153,6 @@ export default function Home() {
 
         {/* HORIZONTAL WORK SHOWCASE */}
         <section ref={scrollWrapperRef} className="relative w-full h-screen bg-aerflow-dark overflow-hidden z-20">
-          <div className="absolute top-10 left-10 z-30 pointer-events-none">
-            <VerticalParallax offset={40}>
-              <ParallaxText baseVelocity={-100} className=" opacity-20 italic">
-                <span className="text-4xl font-serif">Selected Works • Case Studies • Evolution • </span>
-              </ParallaxText>
-            </VerticalParallax>
-          </div>
           
           <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20">
             {projects.map((proj, i) => (
