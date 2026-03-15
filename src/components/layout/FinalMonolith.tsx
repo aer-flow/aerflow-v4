@@ -25,10 +25,13 @@ export default function FinalMonolith() {
   const smoothY = useSpring(mouseY, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    // We use client coordinates to ensure the spotlight is world-aligned to the cursor
-    // This fixes offsets in pinned or transformed containers
-    mouseX.set(e.clientX);
-    mouseY.set(e.clientY);
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    
+    // Calculate coordinates relative to the section container
+    // This handles the transform-gpu containing block issue
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
   };
 
   useEffect(() => {
@@ -103,9 +106,9 @@ export default function FinalMonolith() {
       className="relative w-full h-screen bg-[#020202] flex flex-col justify-center items-center overflow-hidden border-t border-white/10 z-50 transform-gpu"
     >
       
-      {/* 1. Ambient Spotlight (Fixed Positioning) */}
+      {/* 1. Ambient Spotlight (Absolute Positioning relative to section) */}
       <motion.div 
-        className="fixed rounded-full pointer-events-none mix-blend-screen will-change-transform"
+        className="absolute top-0 left-0 rounded-full pointer-events-none mix-blend-screen will-change-transform"
         style={{
           width: '50vw',
           height: '50vw',
