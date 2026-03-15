@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PageTransition from '@/components/core/PageTransition';
 import GlitchText from '@/components/ui/GlitchText';
+import VerticalParallax from '@/components/ui/VerticalParallax';
 
 export default function Contact() {
   const [isHovered, setIsHovered] = useState(false);
@@ -18,22 +19,19 @@ export default function Contact() {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <div 
-              data-speed="0.1"
-              className="text-xs font-mono text-aerflow-gray tracking-widest mb-8 uppercase"
-            >
-              [ Ai un proiect curajos? ]
-            </div>
+            <VerticalParallax offset={30}>
+              <div className="text-xs font-mono text-aerflow-gray tracking-widest mb-8 uppercase">
+                [ Ai un proiect curajos? ]
+              </div>
+            </VerticalParallax>
             
-            <a 
-              href="mailto:hello@aerflow.ro" 
-              data-speed="0.4"
-              className="inline-block relative"
-            >
-              <h1 className="text-[clamp(3rem,8vw,10rem)] font-black uppercase tracking-tighter text-aerflow-light hover:text-aerflow-accent transition-colors duration-500">
-                {isHovered ? <GlitchText text="HELLO@AERFLOW.RO" /> : "SĂ ÎNCEPEM."}
-              </h1>
-            </a>
+            <VerticalParallax offset={60}>
+              <a href="mailto:hello@aerflow.ro" className="inline-block relative">
+                <h1 className="text-[clamp(3rem,8vw,10rem)] font-black uppercase tracking-tighter text-aerflow-light hover:text-aerflow-accent transition-colors duration-500">
+                  {isHovered ? <GlitchText text="HELLO@AERFLOW.RO" /> : "SĂ ÎNCEPEM."}
+                </h1>
+              </a>
+            </VerticalParallax>
           </div>
 
         </div>

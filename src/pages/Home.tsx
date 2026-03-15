@@ -9,6 +9,7 @@ import FinalMonolith from '@/components/layout/FinalMonolith';
 import ParallaxImage from '@/components/ui/ParallaxImage';
 import FloatingElements from '@/components/ui/FloatingElements';
 import ParallaxText from '@/components/ui/ParallaxText';
+import VerticalParallax from '@/components/ui/VerticalParallax';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -84,35 +85,34 @@ export default function Home() {
           <HeroCanvas />
           
           <div className="relative z-10 flex flex-col items-center pointer-events-none text-center text-aerflow-light">
-            <h1 
-              data-speed="0.2"
-              className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl"
-            >
-              <motion.span 
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                className="block"
-              >
-                Navigăm
-              </motion.span>
-              <motion.span 
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="block font-serif italic font-normal text-aerflow-accent"
-              >
-                Viitorul
-              </motion.span>
-              <motion.span 
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className="block"
-              >
-                Digital.
-              </motion.span>
-            </h1>
+            <VerticalParallax offset={40}>
+              <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl">
+                <motion.span 
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                  className="block"
+                >
+                  Navigăm
+                </motion.span>
+                <motion.span 
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="block font-serif italic font-normal text-aerflow-accent"
+                >
+                  Viitorul
+                </motion.span>
+                <motion.span 
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="block"
+                >
+                  Digital.
+                </motion.span>
+              </h1>
+            </VerticalParallax>
           </div>
 
           <div className="absolute bottom-10 right-10 z-10 font-mono text-sm tracking-widest text-aerflow-light opacity-60">
@@ -122,21 +122,22 @@ export default function Home() {
 
         {/* MANIFESTO */}
         <section ref={manifestoRef} className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 py-32 bg-aerflow-dark z-10 shadow-[0_-50px_100px_rgba(0,0,0,0.5)]">
-          <div data-speed="-0.1" className="w-full">
+          <VerticalParallax offset={-30} className="w-full">
             <ParallaxText baseVelocity={-250} className="mb-20 opacity-10">
               <span className="text-[15vw] font-black uppercase leading-none tracking-tight">Aerflow • Creative • Technology • </span>
             </ParallaxText>
-          </div>
+          </VerticalParallax>
           
-          <h2 
-            ref={textRef} 
-            data-speed="0.3"
-            className="text-[clamp(2rem,6vw,6rem)] leading-tight font-sans font-bold max-w-6xl text-center text-aerflow-light"
-          >
-            {"Design care sfidează convențiile. Tehnologie care accelerează progresul.".split(" ").map((word, i) => (
-              <span key={i} className="inline-block mr-4">{word}</span>
-            ))}
-          </h2>
+          <VerticalParallax offset={60}>
+            <h2 
+              ref={textRef} 
+              className="text-[clamp(2rem,6vw,6rem)] leading-tight font-sans font-bold max-w-6xl text-center text-aerflow-light"
+            >
+              {"Design care sfidează convențiile. Tehnologie care accelerează progresul.".split(" ").map((word, i) => (
+                <span key={i} className="inline-block mr-4">{word}</span>
+              ))}
+            </h2>
+          </VerticalParallax>
 
           <div data-speed="0.1" className="w-full">
             <ParallaxText baseVelocity={250} className="mt-20 opacity-10">
@@ -152,13 +153,12 @@ export default function Home() {
 
         {/* HORIZONTAL WORK SHOWCASE */}
         <section ref={scrollWrapperRef} className="relative w-full h-screen bg-aerflow-dark overflow-hidden z-20">
-          <div 
-            data-speed="0.2"
-            className="absolute top-10 left-10 z-30 pointer-events-none"
-          >
-            <ParallaxText baseVelocity={-100} className=" opacity-20 italic">
-              <span className="text-4xl font-serif">Selected Works • Case Studies • Evolution • </span>
-            </ParallaxText>
+          <div className="absolute top-10 left-10 z-30 pointer-events-none">
+            <VerticalParallax offset={40}>
+              <ParallaxText baseVelocity={-100} className=" opacity-20 italic">
+                <span className="text-4xl font-serif">Selected Works • Case Studies • Evolution • </span>
+              </ParallaxText>
+            </VerticalParallax>
           </div>
           
           <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20">

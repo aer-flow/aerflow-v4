@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import VerticalParallax from '@/components/ui/VerticalParallax';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,19 +62,17 @@ export default function ServicesStack() {
     <section ref={containerRef} className="relative w-full pb-[10vh] bg-aerflow-dark" id="servicii">
       {/* Header Secțiune */}
       <div className="w-full px-8 py-20">
-        <p 
-          data-speed="0.1"
-          className="font-mono text-sm tracking-widest text-aerflow-gray uppercase mb-4"
-        >
-          [ Expertiza Noastră ]
-        </p>
-        <h2 
-          data-speed="0.2"
-          className="text-[clamp(2rem,5vw,5rem)] font-sans font-black leading-none text-aerflow-light uppercase tracking-tighter"
-        >
-          Nu livrăm opțiuni.<br />
-          <span className="text-aerflow-accent font-serif italic font-normal">Livrăm soluții.</span>
-        </h2>
+        <VerticalParallax offset={40}>
+          <p className="font-mono text-sm tracking-widest text-aerflow-gray uppercase mb-4">
+            [ Expertiza Noastră ]
+          </p>
+        </VerticalParallax>
+        <VerticalParallax offset={80}>
+          <h2 className="text-[clamp(2rem,5vw,5rem)] font-sans font-black leading-none text-aerflow-light uppercase tracking-tighter">
+            Nu livrăm opțiuni.<br />
+            <span className="text-aerflow-accent font-serif italic font-normal">Livrăm soluții.</span>
+          </h2>
+        </VerticalParallax>
       </div>
 
       {/* Stacking Cards */}

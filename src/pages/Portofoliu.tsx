@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import PageTransition from '@/components/core/PageTransition';
+import VerticalParallax from '@/components/ui/VerticalParallax';
 import { useCursorStore } from '@/store/useCursorStore';
 
 const works = [
@@ -39,12 +40,9 @@ export default function Portofoliu() {
         </AnimatePresence>
 
         <div className="relative z-10 max-w-screen-2xl mx-auto">
-          <h1 
-            data-speed="0.1"
-            className="text-sm font-mono tracking-widest mb-20 text-aerflow-gray"
-          >
-            [ ARCHIVA NOASTRĂ ]
-          </h1>
+          <VerticalParallax offset={20}>
+            <h1 className="text-sm font-mono tracking-widest mb-20 text-aerflow-gray">[ ARCHIVA NOASTRĂ ]</h1>
+          </VerticalParallax>
 
           <div className="w-full border-t border-white/20">
             {works.map((work, i) => (
@@ -60,20 +58,16 @@ export default function Portofoliu() {
                 }}
                 className={`w-full group py-12 border-b border-white/20 flex flex-col md:flex-row items-start md:items-center justify-between cursor-none transition-opacity duration-500 ${hoveredIndex !== null && hoveredIndex !== i ? 'opacity-20' : 'opacity-100'}`}
               >
-                <div 
-                  data-speed="0.3"
-                  className="text-[clamp(3rem,6vw,8rem)] font-sans font-black leading-none uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-awwwards"
-                >
-                  {work.title}
-                </div>
+                <VerticalParallax offset={50}>
+                  <div className="text-[clamp(3rem,6vw,8rem)] font-sans font-black leading-none uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-awwwards">
+                    {work.title}
+                  </div>
+                </VerticalParallax>
                 
-                <div 
-                  data-speed="0.1"
-                  className="flex gap-12 mt-4 md:mt-0 font-mono text-sm tracking-widest text-aerflow-gray"
-                >
+                <VerticalParallax offset={20} className="flex gap-12 mt-4 md:mt-0 font-mono text-sm tracking-widest text-aerflow-gray">
                   <span>{work.client}</span>
                   <span>{work.year}</span>
-                </div>
+                </VerticalParallax>
 
                 <div className="hidden md:block opacity-0 group-hover:opacity-100 -translate-x-10 group-hover:translate-x-0 transition-all duration-500 ease-awwwards">
                   <ArrowUpRight size={48} className="text-aerflow-accent" />

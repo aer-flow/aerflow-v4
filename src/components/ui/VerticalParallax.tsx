@@ -1,50 +1,29 @@
-import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 interface VerticalParallaxProps {
   children: React.ReactNode;
-  offset?: number; 
+  offset?: number; // How much it moves (positive or negative)
   className?: string;
 }
 
 export default function VerticalParallax({ 
   children, 
-  offset = 100, // Default to a more visible value
+  offset = 80, // Slightly more visible default
   className = "" 
 }: VerticalParallaxProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const elementRef = useRef<HTMLDivElement>(null);
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
 
-  useEffect(() => {
-    if (!elementRef.current || !containerRef.current) return;
-
-    // console.log("Parallax initialized for:", containerRef.current);
-
-    const ctx = gsap.context(() => {
-      gsap.to(elementRef.current, {
-        y: -offset,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-          // markers: true, // Uncomment this to debug visually
-        },
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [offset]);
+  const yValue = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
+  const y = useSpring(yValue, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (
-    <div ref={containerRef} className={`relative block ${className}`}>
-      <div ref={elementRef} className="will-change-transform">
-        {children}
-      </div>
-    </div>
+    <motion.div ref={ref} style={{ y }} className={className}>
+      {children}
+    </motion.div>
   );
 }
