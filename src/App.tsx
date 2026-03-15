@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CustomCursor from './components/core/CustomCursor';
 import LenisProvider from './components/core/LenisProvider';
 import NoiseOverlay from './components/ui/NoiseOverlay';
@@ -13,6 +16,39 @@ import Contact from './pages/Contact';
 
 function App() {
   const location = useLocation();
+
+  useEffect(() => {
+    // Global Parallax Engine
+    const parallaxElements = document.querySelectorAll('[data-speed]');
+    
+    const ctx = gsap.context(() => {
+      parallaxElements.forEach((el) => {
+        const speed = parseFloat((el as HTMLElement).getAttribute('data-speed') || '0');
+        if (speed === 0) return;
+
+        gsap.to(el, {
+          y: () => {
+            const range = 200 * speed;
+            return -range;
+          },
+          ease: "none",
+          scrollTrigger: {
+            trigger: el,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        });
+      });
+    });
+
+    // Refresh ScrollTrigger on route change
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 500);
+
+    return () => ctx.revert();
+  }, [location.pathname]);
 
   return (
     <LenisProvider>

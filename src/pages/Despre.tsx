@@ -16,7 +16,10 @@ export default function Despre() {
       <div className="w-full bg-aerflow-light text-aerflow-dark min-h-screen pt-40" ref={containerRef}>
         <div className="max-w-screen-2xl mx-auto px-8">
           
-          <h1 className="text-[clamp(4rem,8vw,10rem)] font-black uppercase leading-[0.9] tracking-tighter mb-40">
+          <h1 
+            data-speed="0.4"
+            className="text-[clamp(4rem,8vw,10rem)] font-black uppercase leading-[0.9] tracking-tighter mb-40"
+          >
             Arhitecții<br/>
             <span className="font-serif italic font-normal text-aerflow-gray">Noului Val</span>
           </h1>
@@ -24,10 +27,16 @@ export default function Despre() {
           <div className="flex flex-col md:flex-row gap-20 relative items-start pb-40">
             {/* STICKY LEFT */}
             <div className="md:w-1/3 sticky top-40">
-              <h2 className="text-2xl font-bold uppercase tracking-tight mb-4">
+              <h2 
+                data-speed="0.1"
+                className="text-2xl font-bold uppercase tracking-tight mb-4"
+              >
                 Metodologia Solve & Evolve™
               </h2>
-              <p className="text-aerflow-gray font-mono text-sm leading-relaxed">
+              <p 
+                data-speed="0.05"
+                className="text-aerflow-gray font-mono text-sm leading-relaxed"
+              >
                 Refuzăm compromisul. Fiecare proiect este o demonstrație de forță tehnologică și rafinament vizual. Așa transformăm viziunile în monopoluri digitale.
               </p>
             </div>
@@ -36,11 +45,22 @@ export default function Despre() {
             <div className="md:w-2/3 flex flex-col gap-32">
               {methodBlocks.map((block, i) => (
                 <div key={i} className="flex flex-col border-t border-aerflow-dark/20 pt-8">
-                  <span className="text-sm font-mono font-bold text-aerflow-gray mb-8">[{block.id}]</span>
-                  <h3 className="text-[clamp(2rem,4vw,4rem)] font-black uppercase tracking-tight leading-none mb-6">
+                  <span 
+                    data-speed="0.1"
+                    className="text-sm font-mono font-bold text-aerflow-gray mb-8 block"
+                  >
+                    [{block.id}]
+                  </span>
+                  <h3 
+                    data-speed="0.2"
+                    className="text-[clamp(2rem,4vw,4rem)] font-black uppercase tracking-tight leading-none mb-6"
+                  >
                     {block.title}
                   </h3>
-                  <p className="text-xl md:text-2xl font-sans text-aerflow-dark/80 max-w-2xl leading-relaxed">
+                  <p 
+                    data-speed="0.1"
+                    className="text-xl md:text-2xl font-sans text-aerflow-dark/80 max-w-2xl leading-relaxed"
+                  >
                     {block.desc}
                   </p>
                 </div>

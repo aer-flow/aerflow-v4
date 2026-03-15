@@ -39,7 +39,12 @@ export default function Portofoliu() {
         </AnimatePresence>
 
         <div className="relative z-10 max-w-screen-2xl mx-auto">
-          <h1 className="text-sm font-mono tracking-widest mb-20 text-aerflow-gray">[ ARCHIVA NOASTRĂ ]</h1>
+          <h1 
+            data-speed="0.1"
+            className="text-sm font-mono tracking-widest mb-20 text-aerflow-gray"
+          >
+            [ ARCHIVA NOASTRĂ ]
+          </h1>
 
           <div className="w-full border-t border-white/20">
             {works.map((work, i) => (
@@ -55,11 +60,17 @@ export default function Portofoliu() {
                 }}
                 className={`w-full group py-12 border-b border-white/20 flex flex-col md:flex-row items-start md:items-center justify-between cursor-none transition-opacity duration-500 ${hoveredIndex !== null && hoveredIndex !== i ? 'opacity-20' : 'opacity-100'}`}
               >
-                <div className="text-[clamp(3rem,6vw,8rem)] font-sans font-black leading-none uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-awwwards">
+                <div 
+                  data-speed="0.3"
+                  className="text-[clamp(3rem,6vw,8rem)] font-sans font-black leading-none uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-awwwards"
+                >
                   {work.title}
                 </div>
                 
-                <div className="flex gap-12 mt-4 md:mt-0 font-mono text-sm tracking-widest text-aerflow-gray">
+                <div 
+                  data-speed="0.1"
+                  className="flex gap-12 mt-4 md:mt-0 font-mono text-sm tracking-widest text-aerflow-gray"
+                >
                   <span>{work.client}</span>
                   <span>{work.year}</span>
                 </div>

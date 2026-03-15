@@ -1,10 +1,14 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { motion } from 'framer-motion';
 import HeroCanvas from '@/components/webgl/HeroCanvas';
 import PageTransition from '@/components/core/PageTransition';
 import ServicesStack from '@/components/layout/ServicesStack';
 import FinalMonolith from '@/components/layout/FinalMonolith';
+import ParallaxImage from '@/components/ui/ParallaxImage';
+import FloatingElements from '@/components/ui/FloatingElements';
+import ParallaxText from '@/components/ui/ParallaxText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,22 +69,49 @@ export default function Home() {
     }, 100);
 
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      // Use clean context disposal
     };
   }, []);
 
   return (
     <PageTransition>
       <div className="w-full bg-aerflow-dark">
+        {/* FLOATING DECOR */}
+        <FloatingElements />
+
         {/* HERO */}
         <section className="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
           <HeroCanvas />
           
           <div className="relative z-10 flex flex-col items-center pointer-events-none text-center text-aerflow-light">
-            <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl">
-              <span className="block">Navigăm</span>
-              <span className="block font-serif italic font-normal text-aerflow-accent">Viitorul</span>
-              <span className="block">Digital.</span>
+            <h1 
+              data-speed="0.2"
+              className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl"
+            >
+              <motion.span 
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                className="block"
+              >
+                Navigăm
+              </motion.span>
+              <motion.span 
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="block font-serif italic font-normal text-aerflow-accent"
+              >
+                Viitorul
+              </motion.span>
+              <motion.span 
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className="block"
+              >
+                Digital.
+              </motion.span>
             </h1>
           </div>
 
@@ -90,28 +121,56 @@ export default function Home() {
         </section>
 
         {/* MANIFESTO */}
-        <section ref={manifestoRef} className="w-full min-h-screen flex items-center justify-center px-8 py-32 bg-aerflow-dark">
-          <h2 ref={textRef} className="text-[clamp(2rem,6vw,6rem)] leading-tight font-sans font-bold max-w-6xl">
+        <section ref={manifestoRef} className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 py-32 bg-aerflow-dark z-10 shadow-[0_-50px_100px_rgba(0,0,0,0.5)]">
+          <div data-speed="-0.1" className="w-full">
+            <ParallaxText baseVelocity={-250} className="mb-20 opacity-10">
+              <span className="text-[15vw] font-black uppercase leading-none tracking-tight">Aerflow • Creative • Technology • </span>
+            </ParallaxText>
+          </div>
+          
+          <h2 
+            ref={textRef} 
+            data-speed="0.3"
+            className="text-[clamp(2rem,6vw,6rem)] leading-tight font-sans font-bold max-w-6xl text-center text-aerflow-light"
+          >
             {"Design care sfidează convențiile. Tehnologie care accelerează progresul.".split(" ").map((word, i) => (
               <span key={i} className="inline-block mr-4">{word}</span>
             ))}
           </h2>
+
+          <div data-speed="0.1" className="w-full">
+            <ParallaxText baseVelocity={250} className="mt-20 opacity-10">
+              <span className="text-[15vw] font-black uppercase leading-none tracking-tight">Vision • Innovation • Digital • </span>
+            </ParallaxText>
+          </div>
         </section>
 
         {/* SERVICES STACK */}
-        <ServicesStack />
+        <div className="relative z-10">
+          <ServicesStack />
+        </div>
 
         {/* HORIZONTAL WORK SHOWCASE */}
-        <section ref={scrollWrapperRef} className="relative w-full h-screen bg-aerflow-dark overflow-hidden">
+        <section ref={scrollWrapperRef} className="relative w-full h-screen bg-aerflow-dark overflow-hidden z-20">
+          <div 
+            data-speed="0.2"
+            className="absolute top-10 left-10 z-30 pointer-events-none"
+          >
+            <ParallaxText baseVelocity={-100} className=" opacity-20 italic">
+              <span className="text-4xl font-serif">Selected Works • Case Studies • Evolution • </span>
+            </ParallaxText>
+          </div>
+          
           <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20">
             {projects.map((proj, i) => (
               <div key={i} className="relative w-[80vw] md:w-[60vw] h-[55vh] md:h-[70vh] flex-shrink-0 overflow-hidden group rounded-lg md:rounded-none">
-                <img 
+                <ParallaxImage 
                   src={proj.img} 
                   alt="Proiect Aerflow" 
-                  className="w-full h-full object-cover transition-transform duration-[1.5s] ease-awwwards group-hover:scale-110"
+                  className="w-full h-full"
+                  speed={1.4}
                 />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
               </div>
             ))}
           </div>

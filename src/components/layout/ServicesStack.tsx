@@ -61,10 +61,16 @@ export default function ServicesStack() {
     <section ref={containerRef} className="relative w-full pb-[10vh] bg-aerflow-dark" id="servicii">
       {/* Header Secțiune */}
       <div className="w-full px-8 py-20">
-        <p className="font-mono text-sm tracking-widest text-aerflow-gray uppercase mb-4">
+        <p 
+          data-speed="0.1"
+          className="font-mono text-sm tracking-widest text-aerflow-gray uppercase mb-4"
+        >
           [ Expertiza Noastră ]
         </p>
-        <h2 className="text-[clamp(2rem,5vw,5rem)] font-sans font-black leading-none text-aerflow-light uppercase tracking-tighter">
+        <h2 
+          data-speed="0.2"
+          className="text-[clamp(2rem,5vw,5rem)] font-sans font-black leading-none text-aerflow-light uppercase tracking-tighter"
+        >
           Nu livrăm opțiuni.<br />
           <span className="text-aerflow-accent font-serif italic font-normal">Livrăm soluții.</span>
         </h2>
@@ -95,7 +101,10 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-4 md:mb-0">
+              <h3 
+                data-speed="0.3"
+                className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-4 md:mb-0"
+              >
                 {service.title.split('\n').map((line, i) => (
                   <span 
                     key={i} 
@@ -105,7 +114,10 @@ export default function ServicesStack() {
                   </span>
                 ))}
               </h3>
-              <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
+              <p 
+                data-speed="0.1"
+                className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80"
+              >
                 {service.desc}
               </p>
             </div>
