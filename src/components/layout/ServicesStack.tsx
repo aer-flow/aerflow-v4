@@ -8,22 +8,22 @@ gsap.registerPlugin(ScrollTrigger);
 const services = [
   {
     id: "01",
-    title: "BRANDING\nDISRUPTIV",
-    desc: "Identități vizuale care sfidează convențiile. Design care nu doar arată bine, ci dictează piața. Ne concentrăm pe esența de 1% care transformă un brand întro emoție.",
+    title: "PREZENȚĂ\nDIGITALĂ",
+    desc: "Ai deja o afacere excelentă. Ne asigurăm că și internetul știe asta. Construim identități vizuale care sfidează convențiile, concentrându-ne pe acea esență care transformă un brand într-o emoție și o primă impresie imposibil de ignorat.",
     color: "bg-aerflow-dark",
     textColor: "text-aerflow-light"
   },
   {
     id: "02",
-    title: "EXPERIENȚE\nWEBGL",
-    desc: "Ecosisteme digitale imersive. Transformăm interacțiunile în mișcări fluide și artă generativă. Nu facem doar site-uri, construim destinații.",
+    title: "NARAȚIUNE\nVIZUALĂ",
+    desc: "Oamenii nu citesc, scanează. Folosim un design intenționat—tipografie curată, mișcare subtilă și structură clară—pentru a ghida atenția natural. Fără artificii. Doar o poveste spusă exact cum trebuie.",
     color: "bg-[#0f0f0f]",
     textColor: "text-aerflow-accent"
   },
   {
     id: "03",
-    title: "E-COMMERCE\nARHITECTURĂ",
-    desc: "Performanță și conversie la nivel absolut. Scalabilitate fără compromis estetic. Optimizăm fiecare milisecundă pentru un parcurs perfect al utilizatorului.",
+    title: "SISTEME &\nCONVERSIE",
+    desc: "Un site bun arată bine, un site excelent muncește pentru tine. Fie că ai nevoie de un magazin online fluid sau de fluxuri care automatizează procesul de vânzare, construim o fundație care îți eliberează timpul.",
     color: "bg-aerflow-light",
     textColor: "text-aerflow-dark"
   }
