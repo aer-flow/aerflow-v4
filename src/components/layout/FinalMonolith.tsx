@@ -47,10 +47,11 @@ export default function FinalMonolith() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: isMobile ? "+=200%" : "+=150%", 
-          pin: true,
+          end: "bottom bottom", 
+          pin: isMobile ? false : true,
           pinType: "fixed",
           scrub: 0.5,
+          invalidateOnRefresh: true,
         }
       });
 
@@ -110,109 +111,109 @@ export default function FinalMonolith() {
     <section 
       ref={containerRef} 
       onMouseMove={handleMouseMove}
-      className="relative w-full h-screen bg-[#020202] flex flex-col justify-center items-center overflow-hidden border-t border-white/10 z-50"
+      className="relative w-full h-[150vh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
     >
-      
-      {/* 1. Ambient Spotlight (Absolute Positioning relative to section) */}
-      <motion.div 
-        className="absolute top-0 left-0 rounded-full pointer-events-none will-change-transform"
-        style={{
-          width: '60vw',
-          height: '60vw',
-          background: 'radial-gradient(circle, rgba(215,255,107,0.08) 0%, rgba(0,0,0,0) 70%)',
-          x: smoothX,
-          y: smoothY,
-          left: 0,
-          top: 0,
-          translateX: '-50%',
-          translateY: '-50%',
-          zIndex: 0
-        }}
-      />
-
-      {/* 2. Removed Local Noise - handled by global overlay */}
-
-      {/* 3. The Background Echo Marquee */}
-      <div className="absolute inset-0 z-0 flex flex-col justify-center overflow-hidden pointer-events-none opacity-[0.015]">
-        <motion.div 
-          animate={{ x: [0, -2000] }} 
-          transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-          className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white will-change-transform"
-        >
-          INNOVATION • DISRUPTION • CREATIVITY • INNOVATION • DISRUPTION • CREATIVITY •
-        </motion.div>
-      </div>
-
-      {/* 4. Grid Details */}
-      <VerticalParallax speed={1.3} className="absolute top-24 left-8 md:top-10 md:left-10 z-10">
-        <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
-          [ BUCUREȘTI, RO ]<br/>
-          44.4268° N, 26.1025° E
-        </div>
-      </VerticalParallax>
-      <VerticalParallax speed={1.3} className="absolute top-36 left-8 md:top-10 md:right-10 md:left-auto z-10">
-        <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left md:text-right flex items-center justify-start md:justify-end gap-3 pointer-events-none">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
-            [ DISPONIBIL PENTRU PROIECTE ]
-          </div>
-        </div>
-      </VerticalParallax>
-
-      {/* 5. Main Content Area */}
-      <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-32 md:mt-20">
+      {/* 0. Sticky Wrapper for Mobile Content */}
+      <div className="sticky top-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden">
         
-        {/* AERFLOW Monumental Text */}
-        <h2 
-          ref={textRef} 
-          className="text-[clamp(4rem,18vw,22rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex"
-        >
-          {aerflowText.map((letter, i) => (
-            <span key={i} className="inline-block will-change-transform">
-              {letter}
-            </span>
-          ))}
-        </h2>
+        {/* 1. Ambient Spotlight */}
+        <motion.div 
+          className="absolute top-0 left-0 rounded-full pointer-events-none will-change-transform"
+          style={{
+            width: '60vw',
+            height: '60vw',
+            background: 'radial-gradient(circle, rgba(215,255,107,0.08) 0%, rgba(0,0,0,0) 70%)',
+            x: smoothX,
+            y: smoothY,
+            left: 0,
+            top: 0,
+            translateX: '-50%',
+            translateY: '-50%',
+            zIndex: 0
+          }}
+        />
 
-        {/* The Manifesto Subtext */}
-        <div ref={manifestoRef} className="mt-8 text-center max-w-3xl">
-          <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
-            "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
-            <br/><span className="text-aerflow-light not-italic font-sans font-bold">scriem istoria digitală a brandului tău.</span>"
-          </p>
+        {/* 3. The Background Echo Marquee */}
+        <div className="absolute inset-0 z-0 flex flex-col justify-center overflow-hidden pointer-events-none opacity-[0.015]">
+          <motion.div 
+            animate={{ x: [0, -2000] }} 
+            transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+            className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white will-change-transform"
+          >
+            INNOVATION • DISRUPTION • CREATIVITY • INNOVATION • DISRUPTION • CREATIVITY •
+          </motion.div>
         </div>
 
-        {/* Dual Actions */}
-        <div 
-          ref={actionsRef}
-          className="mt-20 z-20 flex flex-col md:flex-row gap-8 items-center"
-        >
-          <MagneticButton>
-            <Link 
-              to="/contact" 
-              className="px-8 py-4 rounded-full bg-aerflow-accent text-aerflow-dark font-sans font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors duration-500 block"
-              onMouseEnter={() => setCursorVariant('project', 'CLICK')}
-              onMouseLeave={() => setCursorVariant('default')}
-            >
-              Să Începem
-            </Link>
-          </MagneticButton>
+        {/* 4. Grid Details */}
+        <VerticalParallax speed={1.3} className="absolute top-10 left-8 md:top-10 md:left-10 z-10">
+          <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
+            [ BUCUREȘTI, RO ]<br/>
+            44.4268° N, 26.1025° E
+          </div>
+        </VerticalParallax>
+        <VerticalParallax speed={1.3} className="absolute top-10 right-8 md:top-10 md:right-10 md:left-auto z-10">
+          <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-right flex items-center justify-end gap-3 pointer-events-none">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
+              [ DISPONIBIL PENTRU PROIECTE ]
+            </div>
+          </div>
+        </VerticalParallax>
 
-          <MagneticButton>
-            <button 
-              onClick={handleBackToTop}
-              className="group flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] text-aerflow-gray hover:text-aerflow-light transition-colors duration-500 uppercase bg-transparent border-none outline-none"
-              onMouseEnter={() => setCursorVariant('project', 'SUS')}
-              onMouseLeave={() => setCursorVariant('default')}
-            >
-              [ ↑ Începe din nou ]
-              <span className="w-8 h-[1px] bg-aerflow-gray group-hover:bg-aerflow-light transition-colors duration-500" />
-            </button>
-          </MagneticButton>
+        {/* 5. Main Content Area */}
+        <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-10 md:mt-20">
+          
+          {/* AERFLOW Monumental Text */}
+          <h2 
+            ref={textRef} 
+            className="text-[clamp(4rem,18vw,22rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex"
+          >
+            {aerflowText.map((letter, i) => (
+              <span key={i} className="inline-block will-change-transform">
+                {letter}
+              </span>
+            ))}
+          </h2>
+
+          {/* The Manifesto Subtext */}
+          <div ref={manifestoRef} className="mt-8 text-center max-w-3xl">
+            <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
+              "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
+              <br/><span className="text-aerflow-light not-italic font-sans font-bold">scriem istoria digitală a brandului tău.</span>"
+            </p>
+          </div>
+
+          {/* Dual Actions */}
+          <div 
+            ref={actionsRef}
+            className="mt-16 md:mt-20 z-20 flex flex-col md:flex-row gap-6 md:gap-8 items-center"
+          >
+            <MagneticButton>
+              <Link 
+                to="/contact" 
+                className="px-8 py-4 rounded-full bg-aerflow-accent text-aerflow-dark font-sans font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors duration-500 block"
+                onMouseEnter={() => setCursorVariant('project', 'CLICK')}
+                onMouseLeave={() => setCursorVariant('default')}
+              >
+                Să Începem
+              </Link>
+            </MagneticButton>
+
+            <MagneticButton>
+              <button 
+                onClick={handleBackToTop}
+                className="group flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] text-aerflow-gray hover:text-aerflow-light transition-colors duration-500 uppercase bg-transparent border-none outline-none"
+                onMouseEnter={() => setCursorVariant('project', 'SUS')}
+                onMouseLeave={() => setCursorVariant('default')}
+              >
+                [ ↑ Începe din nou ]
+                <span className="w-8 h-[1px] bg-aerflow-gray group-hover:bg-aerflow-light transition-colors duration-500" />
+              </button>
+            </MagneticButton>
+          </div>
+
         </div>
-
       </div>
-
     </section>
   );
 }
