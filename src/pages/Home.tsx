@@ -116,11 +116,12 @@ export default function Home() {
 
       const track = scrollTrackRef.current;
       const wrapper = scrollWrapperRef.current;
-      const viewport = scrollViewportRef.current;
       const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
       const syncWrapperHeight = () => {
-        wrapper.style.height = `${window.innerHeight + getScrollDistance()}px`;
+        wrapper.style.height = `${Math.max(window.innerHeight + getScrollDistance(), window.innerHeight)}px`;
       };
+
+      wrapper.style.height = '100vh';
 
       const createAnimation = () => {
         syncWrapperHeight();
@@ -178,7 +179,6 @@ export default function Home() {
       });
 
       resizeObserver.observe(track);
-      resizeObserver.observe(viewport);
     });
 
     const timer = window.setTimeout(() => ScrollTrigger.refresh(), 250);
@@ -300,7 +300,7 @@ export default function Home() {
         ) : (
           <section
             ref={scrollWrapperRef}
-            className="relative z-20 w-full overflow-hidden bg-aerflow-dark"
+            className="relative z-20 w-full bg-aerflow-dark"
           >
             <div
               ref={scrollViewportRef}
