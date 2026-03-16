@@ -33,12 +33,14 @@ const services = [
 export default function ServicesStack() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const innerCardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Pin each card and animate its contents
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
+        const innerCard = innerCardsRef.current[index];
 
         const isMobile = window.innerWidth < 768;
 
@@ -59,10 +61,10 @@ export default function ServicesStack() {
         });
 
         // If not the last card, animate it shrinking/fading as user scrolls further
-        if (index < services.length - 1) {
-          tl.to(card, {
-            scale: 0.9,
-            opacity: 0.2, // More aggressive fade for "stacking" look
+        if (index < services.length - 1 && innerCard) {
+          tl.to(innerCard, {
+            scale: isMobile ? 0.95 : 0.9,
+            opacity: isMobile ? 0.4 : 0.2, // More aggressive fade for "stacking" look
             transformOrigin: "top center",
             ease: "none"
           }, 0);
@@ -99,45 +101,50 @@ export default function ServicesStack() {
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`sticky top-0 md:relative h-[100dvh] w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-visible`}
+            className={`sticky top-0 md:relative h-[100dvh] w-full`}
           >
-            {/* Mobile Header - Repositioned to be visible below Navbar */}
-            <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
-              <VerticalParallax speed={2.2} trigger={cardsRef.current[index]}>
-                <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
-                  [{service.id}]
-                </span>
-              </VerticalParallax>
-              <motion.div 
-                initial={{ opacity: 0, rotate: -45 }}
-                whileInView={{ opacity: 1, rotate: 0 }}
-                viewport={{ once: false, margin: "-10%" }}
-                transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                className="w-10 h-10 md:w-20 md:h-20 flex items-center justify-center border border-current rounded-full"
-              >
-                ↓
-              </motion.div>
-            </div>
+            <div
+              ref={(el) => { innerCardsRef.current[index] = el; }}
+              className={`w-full h-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} origin-top will-change-transform overflow-hidden md:overflow-visible`}
+            >
+              {/* Mobile Header - Repositioned to be visible below Navbar */}
+              <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
+                <VerticalParallax speed={2.2} trigger={cardsRef.current[index]} disabledOnMobile>
+                  <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
+                    [{service.id}]
+                  </span>
+                </VerticalParallax>
+                <motion.div 
+                  initial={{ opacity: 0, rotate: -45 }}
+                  whileInView={{ opacity: 1, rotate: 0 }}
+                  viewport={{ once: false, margin: "-10%" }}
+                  transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+                  className="w-10 h-10 md:w-20 md:h-20 flex items-center justify-center border border-current rounded-full"
+                >
+                  ↓
+                </motion.div>
+              </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              {/* Vertical Parallax is already disabled on mobile from previous fix */}
-              <VerticalParallax speed={2.5} trigger={cardsRef.current[index]}>
-                <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0">
-                  {service.title.split('\n').map((line, i) => (
-                    <span 
-                      key={i} 
-                      className={`block ${i === 1 ? 'pl-8 md:pl-28' : ''}`}
-                    >
-                      {line}
-                    </span>
-                  ))}
-                </h3>
-              </VerticalParallax>
-              <VerticalParallax speed={3.2} trigger={cardsRef.current[index]}>
-                <p className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90">
-                  {service.desc}
-                </p>
-              </VerticalParallax>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
+                {/* Vertical Parallax is disabled on mobile inside sticky wrappers */}
+                <VerticalParallax speed={2.5} trigger={cardsRef.current[index]} disabledOnMobile>
+                  <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0">
+                    {service.title.split('\n').map((line, i) => (
+                      <span 
+                        key={i} 
+                        className={`block ${i === 1 ? 'pl-8 md:pl-28' : ''}`}
+                      >
+                        {line}
+                      </span>
+                    ))}
+                  </h3>
+                </VerticalParallax>
+                <VerticalParallax speed={3.2} trigger={cardsRef.current[index]} disabledOnMobile>
+                  <p className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90">
+                    {service.desc}
+                  </p>
+                </VerticalParallax>
+              </div>
             </div>
           </div>
         ))}

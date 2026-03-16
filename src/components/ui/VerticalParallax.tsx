@@ -12,6 +12,7 @@ interface VerticalParallaxProps {
   // Accept direct element or ref for better stability
   trigger?: HTMLElement | null;
   triggerRef?: React.RefObject<HTMLElement | null>;
+  disabledOnMobile?: boolean;
 }
 
 export default function VerticalParallax({ 
@@ -20,7 +21,8 @@ export default function VerticalParallax({
   className = "",
   containerAnimation,
   trigger,
-  triggerRef
+  triggerRef,
+  disabledOnMobile = false
 }: VerticalParallaxProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<HTMLDivElement>(null);
@@ -28,12 +30,16 @@ export default function VerticalParallax({
   useEffect(() => {
     if (!targetRef.current) return;
 
+    const isMobile = window.innerWidth < 768;
+    if (isMobile && disabledOnMobile) {
+      return;
+    }
+
       // Resolve trigger: prioritize direct element, then ref, then fallback to container
     const activeTrigger = trigger || triggerRef?.current || containerRef.current;
     if (!activeTrigger) return;
 
     const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
       
       const baseIntensity = isMobile ? 0.15 : 0.6; // Reverted to subtle 0.15 for mobile
       const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
