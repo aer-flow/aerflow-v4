@@ -86,6 +86,7 @@ export default function Home() {
     const isReducedMotion = shouldReduceMotion();
     let isActive = true;
     const imageCleanups: Array<() => void> = [];
+    let resizeObserver: ResizeObserver | null = null;
 
     const ctx = gsap.context(() => {
       if (textRef.current && manifestoRef.current) {
@@ -116,9 +117,13 @@ export default function Home() {
       const track = scrollTrackRef.current;
       const wrapper = scrollWrapperRef.current;
       const viewport = scrollViewportRef.current;
+      const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
+      const syncWrapperHeight = () => {
+        wrapper.style.height = `${window.innerHeight + getScrollDistance()}px`;
+      };
 
       const createAnimation = () => {
-        const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
+        syncWrapperHeight();
 
         return gsap.to(track, {
           x: () => -getScrollDistance(),
@@ -128,11 +133,9 @@ export default function Home() {
             trigger: wrapper,
             start: 'top top',
             end: () => `+=${getScrollDistance()}`,
-            pin: viewport,
-            pinSpacing: true,
-            anticipatePin: 1,
             scrub: 0.35,
             invalidateOnRefresh: true,
+            onRefresh: syncWrapperHeight,
           },
         });
       };
@@ -167,6 +170,15 @@ export default function Home() {
           });
         });
       }
+
+      resizeObserver = new ResizeObserver(() => {
+        if (!isActive) return;
+        syncWrapperHeight();
+        ScrollTrigger.refresh();
+      });
+
+      resizeObserver.observe(track);
+      resizeObserver.observe(viewport);
     });
 
     const timer = window.setTimeout(() => ScrollTrigger.refresh(), 250);
@@ -174,6 +186,7 @@ export default function Home() {
     return () => {
       isActive = false;
       window.clearTimeout(timer);
+      resizeObserver?.disconnect();
       imageCleanups.forEach((cleanup) => cleanup());
       setHorizontalAnim(null);
       ctx.revert();
@@ -291,7 +304,7 @@ export default function Home() {
           >
             <div
               ref={scrollViewportRef}
-              className="relative h-screen w-full overflow-hidden"
+              className="sticky top-0 h-screen w-full overflow-hidden"
             >
               <div
                 ref={scrollTrackRef}
