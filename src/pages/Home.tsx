@@ -27,6 +27,7 @@ export default function Home() {
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
+  const useLiteShowcase = shouldUseLiteEffects() || shouldReduceMotion();
 
   useEffect(() => {
     const isLiteMode = shouldUseLiteEffects();
@@ -64,14 +65,13 @@ export default function Home() {
       const wrapper = scrollWrapperRef.current;
 
       const createAnimation = () => {
-        const trackWidth = track.scrollWidth;
-        const viewportWidth = window.innerWidth;
-        const scrollDistance = Math.max(trackWidth - viewportWidth, 0);
+        const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
+        const scrollDistance = getScrollDistance();
 
         wrapper.style.height = `${scrollDistance + window.innerHeight}px`;
 
         return gsap.to(track, {
-          x: -scrollDistance,
+          x: () => -getScrollDistance(),
           ease: 'none',
           overwrite: true,
           scrollTrigger: {
@@ -206,32 +206,51 @@ export default function Home() {
           <ServicesStack />
         </div>
 
-        {/* HORIZONTAL WORK SHOWCASE — REFACTORED TO STICKY */}
-        <section 
-          ref={scrollWrapperRef} 
-          className="relative w-full bg-aerflow-dark z-20"
-          // We'll set the height dynamically in the useEffect for a perfect 1:1 ratio
-        >
-          <div className="sticky top-0 h-screen w-full overflow-hidden">
-            <div 
-              ref={scrollTrackRef} 
-              className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20"
-            >
+        {useLiteShowcase ? (
+          <section className="relative z-20 w-full overflow-hidden bg-aerflow-dark px-4 py-14">
+            <div className="mb-6 px-2 font-mono text-xs tracking-[0.25em] text-aerflow-gray uppercase">
+              [ Selected Work ]
+            </div>
+            <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-2 pb-4 [scrollbar-width:none] [-ms-overflow-style:none]">
               {projects.map((proj, i) => (
-                <div key={i} className="relative w-[80vw] md:w-[60vw] h-[55vh] md:h-[70vh] flex-shrink-0 overflow-hidden group rounded-lg md:rounded-none">
-                  <ParallaxImage 
-                    src={proj.img} 
-                    alt="Proiect Aerflow" 
-                    className="w-full h-full"
-                    speed={1.4}
-                    containerAnimation={horizontalAnim || undefined}
+                <div key={i} className="relative h-[52vh] w-[84vw] flex-shrink-0 snap-center overflow-hidden rounded-lg">
+                  <ParallaxImage
+                    src={proj.img}
+                    alt="Proiect Aerflow"
+                    className="h-full w-full"
+                    speed={1.1}
                   />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500 pointer-events-none" />
+                  <div className="absolute inset-0 bg-black/15 pointer-events-none" />
                 </div>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
+        ) : (
+          <section
+            ref={scrollWrapperRef}
+            className="relative z-20 w-full overflow-hidden bg-aerflow-dark"
+          >
+            <div className="sticky top-0 h-screen w-full overflow-hidden">
+              <div
+                ref={scrollTrackRef}
+                className="absolute top-0 left-0 flex h-full w-max items-center gap-8 px-[8vw] will-change-transform md:gap-20 md:px-[10vw]"
+              >
+                {projects.map((proj, i) => (
+                  <div key={i} className="group relative h-[55vh] w-[80vw] flex-shrink-0 overflow-hidden rounded-lg md:h-[70vh] md:w-[60vw] md:rounded-none">
+                    <ParallaxImage
+                      src={proj.img}
+                      alt="Proiect Aerflow"
+                      className="h-full w-full"
+                      speed={1.4}
+                      containerAnimation={horizontalAnim || undefined}
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-black/20 transition-colors duration-500 group-hover:bg-black/10" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* THE MONOLITH FINALE */}
         <FinalMonolith />

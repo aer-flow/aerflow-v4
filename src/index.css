@@ -25,13 +25,21 @@
     --text-body: clamp(1rem, 1.2vw, 1.25rem);
   }
 
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--color-aerflow-dark);
     color: var(--color-aerflow-light);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: clip;
     cursor: none;
   }
 
