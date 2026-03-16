@@ -8,10 +8,17 @@ interface ParallaxImageProps {
   src: string;
   alt: string;
   className?: string;
-  speed?: number; // 1 means normal speed, >1 means moves faster (parallax)
+  speed?: number; 
+  containerAnimation?: gsap.core.Animation;
 }
 
-export default function ParallaxImage({ src, alt, className = "", speed = 1.2 }: ParallaxImageProps) {
+export default function ParallaxImage({ 
+  src, 
+  alt, 
+  className = "", 
+  speed = 1.2,
+  containerAnimation
+}: ParallaxImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -31,8 +38,9 @@ export default function ParallaxImage({ src, alt, className = "", speed = 1.2 }:
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top bottom",
-            end: "bottom top",
+            containerAnimation: containerAnimation,
+            start: containerAnimation ? "left right" : "top bottom",
+            end: containerAnimation ? "right left" : "bottom top",
             scrub: true,
           },
         }
@@ -40,7 +48,7 @@ export default function ParallaxImage({ src, alt, className = "", speed = 1.2 }:
     }, containerRef);
 
     return () => ctx.revert();
-  }, [speed]);
+  }, [speed, containerAnimation]);
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>

@@ -25,6 +25,8 @@ export default function Home() {
   const textRef = useRef<HTMLHeadingElement>(null);
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
+  const [horizontalAnim, setHorizontalAnim] = (useRef<gsap.core.Animation | null>(null) as any);
+  const [, setUpdate] = (useRef(0) as any); // Dummy state to trigger re-render
 
   useEffect(() => {
     // Manifesto Scroll Animation
@@ -50,7 +52,7 @@ export default function Home() {
       const totalWidth = scrollTrackRef.current.scrollWidth;
       const viewportWidth = window.innerWidth;
 
-      gsap.to(scrollTrackRef.current, {
+      const anim = gsap.to(scrollTrackRef.current, {
         x: -(totalWidth - viewportWidth),
         ease: "none",
         scrollTrigger: {
@@ -62,6 +64,8 @@ export default function Home() {
           refreshPriority: 1,
         }
       });
+      horizontalAnim.current = anim;
+      setAnimReady((prev: boolean) => !prev);
     }
 
     // Refresh triggers to ensure correct layout after components mount
@@ -162,6 +166,7 @@ export default function Home() {
                   alt="Proiect Aerflow" 
                   className="w-full h-full"
                   speed={1.4}
+                  containerAnimation={horizontalAnim.current}
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
               </div>
