@@ -41,7 +41,7 @@ export default function VerticalParallax({
 
     const ctx = gsap.context(() => {
       
-      const baseIntensity = isMobile ? 0.15 : 0.6; // Reverted to subtle 0.15 for mobile
+      const baseIntensity = isMobile ? 0.08 : 0.6; // Very subtle on mobile to avoid jitter in sticky
       const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
 
       gsap.fromTo(targetRef.current, 
@@ -55,7 +55,7 @@ export default function VerticalParallax({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: isMobile ? 0.5 : 1, // Tighter scrub on mobile for stability
+            scrub: isMobile ? true : 1, // Instant on mobile (no lag/chase), smooth on desktop
             invalidateOnRefresh: true,
           }
         }

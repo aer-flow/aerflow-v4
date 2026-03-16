@@ -53,7 +53,7 @@ export default function ServicesStack() {
             end: "+=100%", 
             pin: isMobile ? false : true, // Skip GSAP pinning on mobile (CSS handles it)
             pinSpacing: isMobile ? false : false,
-            scrub: isMobile ? 0.5 : 1, // Smoother scrub on mobile
+            scrub: isMobile ? true : 1, // Instant on mobile, no chase delay
             invalidateOnRefresh: true,
             anticipatePin: 1, // Smooths out pinning onset
             pinType: "fixed",
