@@ -19,13 +19,13 @@ export default function Contact() {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <VerticalParallax speed={1.4}>
+            <VerticalParallax speed={1.2}>
               <div className="text-xs font-mono text-aerflow-gray tracking-widest mb-8 uppercase">
                 [ Ai un proiect curajos? ]
               </div>
             </VerticalParallax>
             
-            <VerticalParallax speed={1.6}>
+            <VerticalParallax speed={1.3}>
               <a href="mailto:hello@aerflow.ro" className="inline-block relative">
                 <h1 className="text-[clamp(3rem,8vw,10rem)] font-black uppercase tracking-tighter text-aerflow-light hover:text-aerflow-accent transition-colors duration-500">
                   {isHovered ? <GlitchText text="HELLO@AERFLOW.RO" /> : "SĂ ÎNCEPEM."}
