@@ -60,8 +60,10 @@ export default function Home() {
           pin: true,
           scrub: 0.8,
           start: "top top",
-          end: () => `+=${totalWidth}`,
+          end: () => `+=${totalWidth - viewportWidth}`, // Adjusted calculation
           refreshPriority: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         }
       });
       setHorizontalAnim(anim);
