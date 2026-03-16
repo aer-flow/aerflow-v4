@@ -13,8 +13,8 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     ScrollTrigger.config({ ignoreMobileResize: true });
 
     if (isTouchDevice) {
-      // On mobile, normalize scroll helps stabilize pinning
-      ScrollTrigger.normalizeScroll(true);
+      // Reverting normalizeScroll as it was reported to break the experience
+      ScrollTrigger.normalizeScroll(false);
       return;
     }
 

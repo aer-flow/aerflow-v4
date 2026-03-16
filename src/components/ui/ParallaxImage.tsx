@@ -44,7 +44,7 @@ export default function ParallaxImage({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: isMobile ? (containerAnimation ? false : 0.5) : 1, // Skip scrub on mobile horizontal for stability
+            scrub: isMobile ? 0.3 : 1, // Lower scrub on mobile for snappier feedback
           },
         }
       );

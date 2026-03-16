@@ -58,11 +58,10 @@ export default function Home() {
         scrollTrigger: {
           trigger: scrollWrapperRef.current,
           pin: true,
-          scrub: 0.8,
+          scrub: 0.5, // Faster scrub for more "locked" feel
           start: "top top",
-          end: () => `+=${totalWidth - viewportWidth}`, // Adjusted calculation
+          end: () => `+=${totalWidth}`, // Reverted to full width which is safer for GSAP pinning
           refreshPriority: 1,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
         }
       });
