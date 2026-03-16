@@ -49,29 +49,53 @@ export default function Home() {
 
     // Horizontal Scroll Animation
     if (scrollWrapperRef.current && scrollTrackRef.current) {
-      const totalWidth = scrollTrackRef.current.scrollWidth;
-      const viewportWidth = window.innerWidth;
+      const images = scrollTrackRef.current.querySelectorAll('img');
+      let loadedCount = 0;
 
-      const anim = gsap.to(scrollTrackRef.current, {
-        x: -(totalWidth - viewportWidth),
-        ease: "none",
-        scrollTrigger: {
-          trigger: scrollWrapperRef.current,
-          pin: true,
-          scrub: 1, // Smoother scrub for better sync
-          start: "top top",
-          end: () => `+=${totalWidth - viewportWidth}`, // Precise distance
-          refreshPriority: 1,
-          invalidateOnRefresh: true,
-          pinType: "fixed",
-          anticipatePin: 1,
-        }
-      });
-      setHorizontalAnim(anim);
+      const initScroll = () => {
+        if (!scrollTrackRef.current || !scrollWrapperRef.current) return;
+        const totalWidth = scrollTrackRef.current.scrollWidth;
+        const viewportWidth = window.innerWidth;
+
+        const anim = gsap.to(scrollTrackRef.current, {
+          x: -(totalWidth - viewportWidth),
+          ease: "none",
+          scrollTrigger: {
+            trigger: scrollWrapperRef.current,
+            pin: true,
+            scrub: 1,
+            start: "top top",
+            end: () => `+=${scrollTrackRef.current?.scrollWidth || 0}`,
+            invalidateOnRefresh: true,
+            fastScrollEnd: true,
+            refreshPriority: 10, // Higher priority for the main horizontal section
+          }
+        });
+        setHorizontalAnim(anim);
+      };
+
+      if (images.length === 0) {
+        initScroll();
+      } else {
+        images.forEach(img => {
+          if (img.complete) {
+            loadedCount++;
+            if (loadedCount === images.length) initScroll();
+          } else {
+            img.addEventListener('load', () => {
+              loadedCount++;
+              if (loadedCount === images.length) {
+                initScroll();
+                ScrollTrigger.refresh();
+              }
+            });
+          }
+        });
+      }
     }
 
-    // Single refresh after a short delay to ensure DOM is ready
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    // Refresh after a delay as a fallback
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
     
     return () => {
       clearTimeout(timer);
