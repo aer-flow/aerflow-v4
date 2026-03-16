@@ -42,7 +42,7 @@ export default function Home() {
             trigger: manifestoRef.current,
             start: "top 70%",
             end: "bottom 50%",
-            scrub: isMobile ? 0.5 : 0.5,
+            scrub: 0.5,
           }
         }
       );
