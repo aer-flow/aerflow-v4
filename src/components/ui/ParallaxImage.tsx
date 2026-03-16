@@ -28,6 +28,9 @@ export default function ParallaxImage({
     const isMobile = window.innerWidth < 768;
 
     const ctx = gsap.context(() => {
+      // On mobile horizontal sections, disable internal parallax entirely for FPS
+      if (isMobile && containerAnimation) return;
+
       // Create a coordinated parallax + zoom effect
       gsap.fromTo(imageRef.current, 
         { 
@@ -44,7 +47,7 @@ export default function ParallaxImage({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: isMobile ? 0.5 : 1, // Balanced scrub for smoother visuals
+            scrub: isMobile ? 0.5 : 1,
           },
         }
       );

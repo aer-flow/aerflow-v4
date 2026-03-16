@@ -47,7 +47,7 @@ export default function Home() {
       );
     }
 
-    // Horizontal Scroll Animation — STICKY Edition
+    // Horizontal Scroll Animation — STICKY Edition (Refined 1:1 Ratio)
     if (scrollWrapperRef.current && scrollTrackRef.current) {
       const initScroll = () => {
         if (!scrollTrackRef.current || !scrollWrapperRef.current) return;
@@ -55,6 +55,10 @@ export default function Home() {
         const trackWidth = scrollTrackRef.current.scrollWidth;
         const viewportWidth = window.innerWidth;
         const scrollDistance = trackWidth - viewportWidth;
+
+        // Set the wrapper height to achieve a perfect 1:1 scroll-to-travel ratio
+        // This is the key to stopping "jitter" — 1px down = 1px left
+        scrollWrapperRef.current.style.height = `${scrollDistance + window.innerHeight}px`;
 
         // Animate the track horizontally
         const anim = gsap.to(scrollTrackRef.current, {
@@ -64,7 +68,7 @@ export default function Home() {
             trigger: scrollWrapperRef.current,
             start: "top top",
             end: "bottom bottom",
-            scrub: 1,
+            scrub: 0, // Instant feedback for native feel
             invalidateOnRefresh: true,
           }
         });
@@ -184,13 +188,13 @@ export default function Home() {
         {/* HORIZONTAL WORK SHOWCASE — REFACTORED TO STICKY */}
         <section 
           ref={scrollWrapperRef} 
-          className="relative w-full bg-aerflow-dark"
-          style={{ height: 'calc(400vw + 100vh)' }} // Dynamic height based on number of projects (4 * 100vw roughly)
+          className="relative w-full bg-aerflow-dark z-20"
+          // We'll set the height dynamically in the useEffect for a perfect 1:1 ratio
         >
           <div className="sticky top-0 h-screen w-full overflow-hidden">
             <div 
               ref={scrollTrackRef} 
-              className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20 will-change-transform"
+              className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20"
             >
               {projects.map((proj, i) => (
                 <div key={i} className="relative w-[80vw] md:w-[60vw] h-[55vh] md:h-[70vh] flex-shrink-0 overflow-hidden group rounded-lg md:rounded-none">
