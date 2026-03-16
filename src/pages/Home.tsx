@@ -47,31 +47,32 @@ export default function Home() {
       );
     }
 
-    // Horizontal Scroll Animation
+    // Horizontal Scroll Animation — STICKY Edition
     if (scrollWrapperRef.current && scrollTrackRef.current) {
-      const images = scrollTrackRef.current.querySelectorAll('img');
-      let loadedCount = 0;
-
       const initScroll = () => {
         if (!scrollTrackRef.current || !scrollWrapperRef.current) return;
-        const totalWidth = scrollTrackRef.current.scrollWidth;
+        
+        const trackWidth = scrollTrackRef.current.scrollWidth;
         const viewportWidth = window.innerWidth;
+        const scrollDistance = trackWidth - viewportWidth;
 
+        // Animate the track horizontally
         const anim = gsap.to(scrollTrackRef.current, {
-          x: -(totalWidth - viewportWidth),
+          x: -scrollDistance,
           ease: "none",
           scrollTrigger: {
             trigger: scrollWrapperRef.current,
-            pin: true,
-            scrub: 1,
             start: "top top",
-            // The magic fix: scroll distance MUST match the translation distance
-            end: () => `+=${totalWidth - viewportWidth}`, 
-            refreshPriority: 10,
+            end: "bottom bottom",
+            scrub: 1,
+            invalidateOnRefresh: true,
           }
         });
         setHorizontalAnim(anim);
       };
+
+      const images = scrollTrackRef.current.querySelectorAll('img');
+      let loadedCount = 0;
 
       if (images.length === 0) {
         initScroll();
@@ -180,22 +181,30 @@ export default function Home() {
           <ServicesStack />
         </div>
 
-        {/* HORIZONTAL WORK SHOWCASE */}
-        <section ref={scrollWrapperRef} className="relative w-full h-screen bg-aerflow-dark overflow-hidden z-20">
-          
-          <div ref={scrollTrackRef} className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20">
-            {projects.map((proj, i) => (
-              <div key={i} className="relative w-[80vw] md:w-[60vw] h-[55vh] md:h-[70vh] flex-shrink-0 overflow-hidden group rounded-lg md:rounded-none">
-                <ParallaxImage 
-                  src={proj.img} 
-                  alt="Proiect Aerflow" 
-                  className="w-full h-full"
-                  speed={1.4}
-                  containerAnimation={(window.innerWidth < 768) ? undefined : (horizontalAnim || undefined)}
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
-              </div>
-            ))}
+        {/* HORIZONTAL WORK SHOWCASE — REFACTORED TO STICKY */}
+        <section 
+          ref={scrollWrapperRef} 
+          className="relative w-full bg-aerflow-dark"
+          style={{ height: 'calc(400vw + 100vh)' }} // Dynamic height based on number of projects (4 * 100vw roughly)
+        >
+          <div className="sticky top-0 h-screen w-full overflow-hidden">
+            <div 
+              ref={scrollTrackRef} 
+              className="absolute top-0 left-0 h-full flex items-center px-[8vw] md:px-[10vw] gap-8 md:gap-20 will-change-transform"
+            >
+              {projects.map((proj, i) => (
+                <div key={i} className="relative w-[80vw] md:w-[60vw] h-[55vh] md:h-[70vh] flex-shrink-0 overflow-hidden group rounded-lg md:rounded-none">
+                  <ParallaxImage 
+                    src={proj.img} 
+                    alt="Proiect Aerflow" 
+                    className="w-full h-full"
+                    speed={1.4}
+                    containerAnimation={horizontalAnim || undefined}
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
