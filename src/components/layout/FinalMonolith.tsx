@@ -26,7 +26,7 @@ export default function FinalMonolith() {
   const smoothY = useSpring(mouseY, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || window.innerWidth < 768) return;
     const rect = containerRef.current.getBoundingClientRect();
     
     // Calculate coordinates relative to the section container
@@ -41,6 +41,18 @@ export default function FinalMonolith() {
     const letters = textRef.current.children;
 
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        // Simple static reveal for mobile
+        gsap.set([letters, manifestoRef.current, actionsRef.current], { 
+          opacity: 1, 
+          scale: 1, 
+          y: 0 
+        });
+        return;
+      }
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,

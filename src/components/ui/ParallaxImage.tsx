@@ -26,6 +26,8 @@ export default function ParallaxImage({
     if (!imageRef.current || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
+      if (window.innerWidth < 768) return;
+
       // Create a coordinated parallax + zoom effect
       gsap.fromTo(imageRef.current, 
         { 

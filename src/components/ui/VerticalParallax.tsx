@@ -28,15 +28,15 @@ export default function VerticalParallax({
   useEffect(() => {
     if (!targetRef.current) return;
 
-    // Resolve trigger: prioritize direct element, then ref, then fallback to container
+      // Resolve trigger: prioritize direct element, then ref, then fallback to container
     const activeTrigger = trigger || triggerRef?.current || containerRef.current;
     if (!activeTrigger) return;
 
     const ctx = gsap.context(() => {
-      // Responsive Damping: Significantly reduce intensity on mobile
       const isMobile = window.innerWidth < 768;
-      const baseIntensity = isMobile ? 0.35 : 0.6; // Increased mobile intensity (was 0.15)
-      
+      if (isMobile) return; // Completely disable on mobile
+
+      const baseIntensity = 0.6;
       const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
 
       gsap.fromTo(targetRef.current, 
@@ -50,7 +50,7 @@ export default function VerticalParallax({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: isMobile ? 0.6 : 1, // Added interpolation on mobile (was 'true') to prevent "steps"
+            scrub: 1,
             invalidateOnRefresh: true,
           }
         }

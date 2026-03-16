@@ -31,19 +31,25 @@ export default function Home() {
     // Manifesto Scroll Animation
     if (textRef.current) {
       const words = textRef.current.children;
-      gsap.fromTo(words, 
-        { color: "#333333" },
-        {
-          color: "#F2F2F2",
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: manifestoRef.current,
-            start: "top 70%",
-            end: "bottom 50%",
-            scrub: 0.5,
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        gsap.set(words, { color: "#F2F2F2" });
+      } else {
+        gsap.fromTo(words, 
+          { color: "#333333" },
+          {
+            color: "#F2F2F2",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: manifestoRef.current,
+              start: "top 70%",
+              end: "bottom 50%",
+              scrub: 0.5,
+            }
           }
-        }
-      );
+        );
+      }
     }
 
     // Horizontal Scroll Animation
@@ -162,7 +168,7 @@ export default function Home() {
                   alt="Proiect Aerflow" 
                   className="w-full h-full"
                   speed={1.4}
-                  containerAnimation={horizontalAnim || undefined}
+                  containerAnimation={(window.innerWidth < 768) ? undefined : (horizontalAnim || undefined)}
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
               </div>
