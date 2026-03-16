@@ -40,7 +40,7 @@ export default function ServicesStack() {
     const ctx = gsap.context(() => {
       const isMobile = isMobileViewport();
       const reduceMotion = shouldReduceMotion();
-      if (isMobile || reduceMotion) return;
+      if (reduceMotion) return;
 
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
@@ -48,17 +48,20 @@ export default function ServicesStack() {
         const shouldPinCard = index < services.length - 1;
         if (!innerCard) return;
 
+        const travelAmount = isMobile ? 6 : 9;
+        const scrubAmount = isMobile ? 0.48 : 0.7;
+
         gsap.fromTo(innerCard, {
-          yPercent: isMobile ? 5 : 9,
+          yPercent: travelAmount,
         }, {
-          yPercent: isMobile ? -5 : -9,
+          yPercent: -travelAmount,
           ease: 'none',
           force3D: true,
           scrollTrigger: {
             trigger: card,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: isMobile ? 0.45 : 0.7,
+            scrub: scrubAmount,
             invalidateOnRefresh: true,
             fastScrollEnd: true,
           },
@@ -111,13 +114,13 @@ export default function ServicesStack() {
         </VerticalParallax>
       </div>
 
-      {/* Stacking Cards - Hybrid CSS Sticky + GSAP */}
+      {/* Responsive Cards - mobile flow, desktop stacking */}
       <div className="relative w-full">
         {services.map((service, index) => (
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`${index < services.length - 1 ? 'sticky top-0' : 'relative'} md:relative min-h-[100svh] md:h-screen w-full`}
+            className="relative min-h-[100svh] md:h-screen w-full"
           >
             <div
               ref={(el) => { innerCardsRef.current[index] = el; }}
