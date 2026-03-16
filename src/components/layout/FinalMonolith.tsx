@@ -47,8 +47,9 @@ export default function FinalMonolith() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: isMobile ? "+=100%" : "+=150%", 
-          pin: !isMobile,
+          end: isMobile ? "+=200%" : "+=150%", 
+          pin: true,
+          pinType: "fixed",
           scrub: 0.5,
         }
       });
@@ -82,6 +83,11 @@ export default function FinalMonolith() {
         "-=0.7"
       );
 
+      // Force a refresh after a small delay to ensure layout is stable on mobile
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
+
     }, containerRef);
 
     return () => ctx.revert();
@@ -104,7 +110,7 @@ export default function FinalMonolith() {
     <section 
       ref={containerRef} 
       onMouseMove={handleMouseMove}
-      className="relative w-full h-screen bg-[#020202] flex flex-col justify-center items-center overflow-hidden border-t border-white/10 z-50 transform-gpu"
+      className="relative w-full h-screen bg-[#020202] flex flex-col justify-center items-center overflow-hidden border-t border-white/10 z-50"
     >
       
       {/* 1. Ambient Spotlight (Absolute Positioning relative to section) */}
