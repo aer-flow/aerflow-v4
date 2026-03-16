@@ -65,10 +65,9 @@ export default function Home() {
             pin: true,
             scrub: 1,
             start: "top top",
-            end: () => `+=${scrollTrackRef.current?.scrollWidth || 0}`,
-            invalidateOnRefresh: true,
-            fastScrollEnd: true,
-            refreshPriority: 10, // Higher priority for the main horizontal section
+            // The magic fix: scroll distance MUST match the translation distance
+            end: () => `+=${totalWidth - viewportWidth}`, 
+            refreshPriority: 10,
           }
         });
         setHorizontalAnim(anim);
