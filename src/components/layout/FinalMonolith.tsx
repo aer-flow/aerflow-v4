@@ -151,8 +151,8 @@ export default function FinalMonolith() {
             44.4268° N, 26.1025° E
           </div>
         </VerticalParallax>
-        <VerticalParallax speed={1.3} className="absolute top-10 right-8 md:top-10 md:right-10 md:left-auto z-10">
-          <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-right flex items-center justify-end gap-3 pointer-events-none">
+        <VerticalParallax speed={1.3} className="absolute top-20 left-8 md:top-20 md:left-10 z-10">
+          <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left flex items-center justify-start gap-3 pointer-events-none">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
               [ DISPONIBIL PENTRU PROIECTE ]
