@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { FluidDistortionMaterial } from './FluidDistortionMaterial';
+import { shouldUseLiteEffects } from '@/utils/device';
 
 // Ensure side effect is loaded
 void FluidDistortionMaterial;
@@ -40,8 +41,7 @@ export default function HeroCanvas() {
   const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    setIsMobile(isTouchDevice || window.innerWidth < 768);
+    setIsMobile(shouldUseLiteEffects());
   }, []);
 
   // On mobile, skip WebGL entirely — use a CSS gradient fallback
@@ -59,6 +59,7 @@ export default function HeroCanvas() {
       <Canvas 
         camera={{ position: [0, 0, 1] }}
         dpr={[1, 1.5]}
+        frameloop="always"
         gl={{ 
           powerPreference: "high-performance",
           antialias: false,

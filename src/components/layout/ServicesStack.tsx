@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import VerticalParallax from '@/components/ui/VerticalParallax';
+import { isMobileViewport, shouldReduceMotion } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,41 +38,37 @@ export default function ServicesStack() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Pin each card and animate its contents
+      const isMobile = isMobileViewport();
+      const reduceMotion = shouldReduceMotion();
+
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
         const innerCard = innerCardsRef.current[index];
 
-        const isMobile = window.innerWidth < 768;
-
-        // Create a timeline for each card's pinning and internal animations
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: card,
             start: "top top",
-            // Use percentage string for stability on mobile
             end: "+=100%", 
-            pin: isMobile ? false : true, // Skip GSAP pinning on mobile (CSS handles it)
+            pin: isMobile || reduceMotion ? false : true,
             pinSpacing: isMobile ? false : false,
-            scrub: isMobile ? true : 1, // Instant on mobile, no chase delay
+            scrub: reduceMotion ? false : isMobile ? 0.2 : 0.45,
             invalidateOnRefresh: true,
-            anticipatePin: 1, // Smooths out pinning onset
+            anticipatePin: 1,
             pinType: "fixed",
           }
         });
 
-        // If not the last card, animate it shrinking/fading as user scrolls further
         if (index < services.length - 1 && innerCard) {
           tl.to(innerCard, {
-            scale: isMobile ? 0.95 : 0.9,
-            opacity: isMobile ? 0.4 : 0.2, // More aggressive fade for "stacking" look
+            scale: isMobile ? 0.98 : 0.94,
+            opacity: isMobile ? 0.7 : 0.45,
             transformOrigin: "top center",
             ease: "none"
           }, 0);
         }
       });
 
-      // Refresh ScrollTrigger to account for pinning layout changes
       ScrollTrigger.refresh();
     }, containerRef);
 
@@ -126,8 +123,7 @@ export default function ServicesStack() {
               </div>
 
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-                {/* Vertical Parallax is disabled on mobile inside sticky wrappers */}
-                <VerticalParallax speed={1.8} trigger={cardsRef.current[index]}>
+                <VerticalParallax speed={1.8} trigger={cardsRef.current[index]} disabledOnMobile>
                   <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0">
                     {service.title.split('\n').map((line, i) => (
                       <span 
@@ -139,7 +135,7 @@ export default function ServicesStack() {
                     ))}
                   </h3>
                 </VerticalParallax>
-                <VerticalParallax speed={2.0} trigger={cardsRef.current[index]}>
+                <VerticalParallax speed={2.0} trigger={cardsRef.current[index]} disabledOnMobile>
                   <p className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90">
                     {service.desc}
                   </p>

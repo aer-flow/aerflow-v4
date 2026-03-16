@@ -6,6 +6,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import MagneticButton from '../ui/MagneticButton';
 import VerticalParallax from '../ui/VerticalParallax';
 import { useCursorStore } from '@/store/useCursorStore';
+import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,24 +25,23 @@ export default function FinalMonolith() {
   const springConfig = { damping: 30, stiffness: 200, mass: 0.5 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
+  const boundsRef = useRef<DOMRect | null>(null);
+  const updateBounds = () => {
+    boundsRef.current = containerRef.current?.getBoundingClientRect() ?? null;
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current || window.innerWidth < 768) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    
-    // Calculate coordinates relative to the section container
-    // This handles the transform-gpu containing block issue
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
+    if (!boundsRef.current || shouldUseLiteEffects()) return;
+    mouseX.set(e.clientX - boundsRef.current.left);
+    mouseY.set(e.clientY - boundsRef.current.top);
   };
 
   useEffect(() => {
     if (!containerRef.current || !textRef.current || !manifestoRef.current || !actionsRef.current) return;
 
-    const letters = textRef.current.children;
-
     const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
+      const isMobile = isMobileViewport();
+      const reduceMotion = shouldReduceMotion();
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -50,48 +50,51 @@ export default function FinalMonolith() {
           end: "bottom bottom", 
           pin: isMobile ? false : true,
           pinType: "fixed",
-          scrub: 0.5,
+          scrub: reduceMotion ? false : 0.35,
           invalidateOnRefresh: true,
         }
       });
 
-      // Cinematic, slow reveal
-      tl.fromTo(letters,
+      tl.fromTo(textRef.current.children,
         { 
           opacity: 0, 
-          scale: 0.8,
-          y: 50
+          scale: 0.92,
+          y: 30
         },
         {
           opacity: 1,
           scale: 1,
           y: 0,
-          stagger: 0.1,
-          duration: 1.5,
-          ease: "expo.out",
+          stagger: reduceMotion ? 0.03 : 0.06,
+          duration: reduceMotion ? 0.8 : 1.1,
+          ease: "power3.out",
         }
       )
-      // Reveal Manifesto Subtext
       .fromTo(manifestoRef.current, 
         { opacity: 0, y: 30 }, 
-        { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, 
-        "-=0.8"
+        { opacity: 1, y: 0, duration: reduceMotion ? 0.7 : 0.9, ease: "power3.out" }, 
+        "-=0.5"
       )
-      // Reveal Actions
       .fromTo(actionsRef.current, 
         { opacity: 0, scale: 0.95 }, 
-        { opacity: 1, scale: 1, duration: 1.2, ease: "back.out(1.2)" }, 
-        "-=0.7"
+        { opacity: 1, scale: 1, duration: reduceMotion ? 0.7 : 0.9, ease: "power3.out" }, 
+        "-=0.45"
       );
-
-      // Force a refresh after a small delay to ensure layout is stable on mobile
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 500);
 
     }, containerRef);
 
     return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || shouldUseLiteEffects()) return;
+
+    updateBounds();
+    window.addEventListener('resize', updateBounds, { passive: true });
+
+    return () => {
+      window.removeEventListener('resize', updateBounds);
+    };
   }, []);
 
   const handleBackToTop = () => {
@@ -110,6 +113,7 @@ export default function FinalMonolith() {
   return (
     <section 
       ref={containerRef} 
+      onMouseEnter={updateBounds}
       onMouseMove={handleMouseMove}
       className="relative w-full h-[150vh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
     >
@@ -117,7 +121,7 @@ export default function FinalMonolith() {
       <div className="sticky top-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden">
         
         {/* 1. Ambient Spotlight — desktop only */}
-        {typeof window !== 'undefined' && window.innerWidth >= 768 && (
+        {!shouldUseLiteEffects() && (
           <motion.div 
             className="absolute top-0 left-0 rounded-full pointer-events-none"
             style={{
@@ -136,7 +140,7 @@ export default function FinalMonolith() {
         )}
 
         {/* 3. The Background Echo Marquee — desktop only */}
-        {typeof window !== 'undefined' && window.innerWidth >= 768 && (
+        {!shouldUseLiteEffects() && (
           <div className="absolute inset-0 z-0 flex flex-col justify-center overflow-hidden pointer-events-none opacity-[0.015]">
             <motion.div 
               animate={{ x: [0, -2000] }} 
@@ -221,4 +225,3 @@ export default function FinalMonolith() {
     </section>
   );
 }
-

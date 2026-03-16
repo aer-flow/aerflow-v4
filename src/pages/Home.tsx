@@ -10,6 +10,7 @@ import ParallaxImage from '@/components/ui/ParallaxImage';
 import FloatingElements from '@/components/ui/FloatingElements';
 import ParallaxText from '@/components/ui/ParallaxText';
 import VerticalParallax from '@/components/ui/VerticalParallax';
+import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,81 +29,101 @@ export default function Home() {
   const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
 
   useEffect(() => {
-    // Manifesto Scroll Animation
-    if (textRef.current) {
-      const words = textRef.current.children;
+    const isLiteMode = shouldUseLiteEffects();
+    const isReducedMotion = shouldReduceMotion();
+    let isActive = true;
+    const imageCleanups: Array<() => void> = [];
 
-      gsap.fromTo(words, 
-        { color: "#333333" },
-        {
-          color: "#F2F2F2",
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: manifestoRef.current,
-            start: "top 70%",
-            end: "bottom 50%",
-            scrub: 0.5,
+    const ctx = gsap.context(() => {
+      if (textRef.current && manifestoRef.current) {
+        gsap.fromTo(
+          textRef.current.children,
+          { color: '#333333' },
+          {
+            color: '#F2F2F2',
+            stagger: isLiteMode ? 0.04 : 0.08,
+            scrollTrigger: {
+              trigger: manifestoRef.current,
+              start: 'top 72%',
+              end: 'bottom 52%',
+              scrub: isLiteMode ? 0.2 : 0.45,
+            },
           }
-        }
-      );
-    }
+        );
+      }
 
-    // Horizontal Scroll Animation — STICKY Edition (Refined 1:1 Ratio)
-    if (scrollWrapperRef.current && scrollTrackRef.current) {
-      const initScroll = () => {
-        if (!scrollTrackRef.current || !scrollWrapperRef.current) return;
-        
-        const trackWidth = scrollTrackRef.current.scrollWidth;
+      if (!scrollWrapperRef.current || !scrollTrackRef.current) return;
+
+      if (isMobileViewport() || isReducedMotion) {
+        scrollWrapperRef.current.style.height = 'auto';
+        setHorizontalAnim(null);
+        return;
+      }
+
+      const track = scrollTrackRef.current;
+      const wrapper = scrollWrapperRef.current;
+
+      const createAnimation = () => {
+        const trackWidth = track.scrollWidth;
         const viewportWidth = window.innerWidth;
-        const scrollDistance = trackWidth - viewportWidth;
+        const scrollDistance = Math.max(trackWidth - viewportWidth, 0);
 
-        // Set the wrapper height to achieve a perfect 1:1 scroll-to-travel ratio
-        // This is the key to stopping "jitter" — 1px down = 1px left
-        scrollWrapperRef.current.style.height = `${scrollDistance + window.innerHeight}px`;
+        wrapper.style.height = `${scrollDistance + window.innerHeight}px`;
 
-        // Animate the track horizontally
-        const anim = gsap.to(scrollTrackRef.current, {
+        return gsap.to(track, {
           x: -scrollDistance,
-          ease: "none",
+          ease: 'none',
+          overwrite: true,
           scrollTrigger: {
-            trigger: scrollWrapperRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0, // Instant feedback for native feel
+            trigger: wrapper,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.35,
             invalidateOnRefresh: true,
-          }
+          },
         });
-        setHorizontalAnim(anim);
       };
 
-      const images = scrollTrackRef.current.querySelectorAll('img');
-      let loadedCount = 0;
+      const initAnimation = () => {
+        if (!isActive) return;
+        const animation = createAnimation();
+        setHorizontalAnim(animation);
+        ScrollTrigger.refresh();
+      };
 
-      if (images.length === 0) {
-        initScroll();
+      const images = Array.from(track.querySelectorAll('img'));
+      let pending = images.filter((img) => !img.complete);
+
+      if (pending.length === 0) {
+        initAnimation();
       } else {
-        images.forEach(img => {
-          if (img.complete) {
-            loadedCount++;
-            if (loadedCount === images.length) initScroll();
-          } else {
-            img.addEventListener('load', () => {
-              loadedCount++;
-              if (loadedCount === images.length) {
-                initScroll();
-                ScrollTrigger.refresh();
-              }
-            });
+        const handleImageReady = () => {
+          if (!isActive) return;
+          pending = pending.filter((img) => !img.complete);
+          if (pending.length === 0) {
+            initAnimation();
           }
+        };
+
+        images.forEach((img) => {
+          img.addEventListener('load', handleImageReady, { once: true });
+          img.addEventListener('error', handleImageReady, { once: true });
+          imageCleanups.push(() => {
+            img.removeEventListener('load', handleImageReady);
+            img.removeEventListener('error', handleImageReady);
+          });
         });
       }
-    }
+    });
 
-    // Refresh after a delay as a fallback
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
-    
+    const timer = window.setTimeout(() => ScrollTrigger.refresh(), 250);
+
     return () => {
-      clearTimeout(timer);
+      isActive = false;
+      window.clearTimeout(timer);
+      imageCleanups.forEach((cleanup) => cleanup());
+      setHorizontalAnim(null);
+      ctx.revert();
     };
   }, []);
 
@@ -205,7 +226,7 @@ export default function Home() {
                     speed={1.4}
                     containerAnimation={horizontalAnim || undefined}
                   />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500 pointer-events-none" />
                 </div>
               ))}
             </div>

@@ -2,18 +2,16 @@ import { useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Detect touch/mobile — disable Lenis smooth scroll entirely on touch devices
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
     ScrollTrigger.config({ ignoreMobileResize: true });
+    gsap.ticker.lagSmoothing(0);
 
-    if (isTouchDevice) {
-      // Reverting normalizeScroll as it was reported to break the experience
+    if (shouldUseLiteEffects()) {
       ScrollTrigger.normalizeScroll(false);
       return;
     }
@@ -26,11 +24,14 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       smoothWheel: true,
       wheelMultiplier: 1.0,
       touchMultiplier: 1.2,
-      lerp: 0.1, // Adjusted from 0.07 for better responsiveness while staying smooth
+      lerp: 0.12,
     });
 
     lenis.on('scroll', ScrollTrigger.update);
     (window as any).lenis = lenis;
+
+    const refresh = () => lenis.resize();
+    ScrollTrigger.addEventListener('refresh', refresh);
 
     const update = (time: number) => {
       lenis.raf(time * 1000);
@@ -40,6 +41,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
     return () => {
       (window as any).lenis = null;
+      ScrollTrigger.removeEventListener('refresh', refresh);
       lenis.destroy();
       gsap.ticker.remove(update);
       ScrollTrigger.clearScrollMemory();

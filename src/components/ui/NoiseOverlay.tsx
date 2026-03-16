@@ -1,12 +1,7 @@
-import { useState, useEffect } from 'react';
+import { shouldUseLiteEffects } from '@/utils/device';
 
 export default function NoiseOverlay() {
-  const [isMobile, setIsMobile] = useState(true);
-
-  useEffect(() => {
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    setIsMobile(isTouchDevice || window.innerWidth < 768);
-  }, []);
+  const isMobile = shouldUseLiteEffects();
 
   // Skip noise overlay entirely on mobile — it's barely visible and costs frames
   if (isMobile) return null;

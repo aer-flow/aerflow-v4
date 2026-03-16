@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,7 @@ export default function ParallaxText({
 
   useEffect(() => {
     if (!container.current || !text.current) return;
+    if (shouldUseLiteEffects()) return;
 
     const ctx = gsap.context(() => {
       gsap.to(text.current, {

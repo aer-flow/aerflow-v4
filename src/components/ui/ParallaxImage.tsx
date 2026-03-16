@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { isMobileViewport, shouldReduceMotion } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,21 +26,22 @@ export default function ParallaxImage({
   useEffect(() => {
     if (!imageRef.current || !containerRef.current) return;
 
-    const isMobile = window.innerWidth < 768;
+    const isMobile = isMobileViewport();
+    if (shouldReduceMotion()) return;
 
     const ctx = gsap.context(() => {
       // On mobile horizontal sections, disable internal parallax entirely for FPS
-      if (isMobile && containerAnimation) return;
+      if (containerAnimation || (isMobile && containerAnimation)) return;
 
       // Create a coordinated parallax + zoom effect
       gsap.fromTo(imageRef.current, 
         { 
-          yPercent: isMobile ? -5 : -10,
-          scale: isMobile ? 1.05 : 1.1 
+          yPercent: isMobile ? -3 : -6,
+          scale: isMobile ? 1.02 : 1.06
         },
         {
-          yPercent: isMobile ? 5 : 10,
-          scale: isMobile ? 1.15 : 1.25,
+          yPercent: isMobile ? 3 : 6,
+          scale: isMobile ? 1.08 : 1.14,
           ease: "none",
           force3D: true,
           scrollTrigger: {
@@ -47,7 +49,7 @@ export default function ParallaxImage({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: isMobile ? 0.5 : 1,
+            scrub: isMobile ? 0.35 : 0.6,
           },
         }
       );

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { useCursorStore } from '@/store/useCursorStore';
+import { shouldUseLiteEffects } from '@/utils/device';
 
 export default function CustomCursor() {
   const { variant, text } = useCursorStore();
   const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(true);
+  const isMobile = shouldUseLiteEffects();
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -15,13 +16,9 @@ export default function CustomCursor() {
   const smoothY = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    // Detect touch devices — skip entirely on mobile
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice || window.innerWidth < 768) {
-      setIsMobile(true);
+    if (isMobile) {
       return;
     }
-    setIsMobile(false);
 
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
@@ -42,7 +39,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isMobile]);
 
   // Don't render anything on mobile
   if (isMobile) return null;
