@@ -131,7 +131,7 @@ export default function Home() {
             </ParallaxText>
           </VerticalParallax>
           
-          <VerticalParallax speed={2.4}>
+          <VerticalParallax speed={2.2}>
             <h2 
               ref={textRef} 
               className="text-[clamp(2rem,6vw,6rem)] leading-tight font-sans font-bold max-w-6xl text-center text-aerflow-light"
