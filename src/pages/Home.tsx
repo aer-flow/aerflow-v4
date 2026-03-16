@@ -76,6 +76,7 @@ export default function Home() {
   const manifestoRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
+  const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
   const useLiteShowcase = shouldUseLiteEffects() || shouldReduceMotion();
@@ -104,7 +105,7 @@ export default function Home() {
         );
       }
 
-      if (!scrollWrapperRef.current || !scrollTrackRef.current) return;
+      if (!scrollWrapperRef.current || !scrollTrackRef.current || !scrollViewportRef.current) return;
 
       if (isMobileViewport() || isReducedMotion) {
         scrollWrapperRef.current.style.height = 'auto';
@@ -114,12 +115,10 @@ export default function Home() {
 
       const track = scrollTrackRef.current;
       const wrapper = scrollWrapperRef.current;
+      const viewport = scrollViewportRef.current;
 
       const createAnimation = () => {
         const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
-        const scrollDistance = getScrollDistance();
-
-        wrapper.style.height = `${scrollDistance + window.innerHeight}px`;
 
         return gsap.to(track, {
           x: () => -getScrollDistance(),
@@ -128,7 +127,10 @@ export default function Home() {
           scrollTrigger: {
             trigger: wrapper,
             start: 'top top',
-            end: 'bottom bottom',
+            end: () => `+=${getScrollDistance()}`,
+            pin: viewport,
+            pinSpacing: true,
+            anticipatePin: 1,
             scrub: 0.35,
             invalidateOnRefresh: true,
           },
@@ -287,7 +289,10 @@ export default function Home() {
             ref={scrollWrapperRef}
             className="relative z-20 w-full overflow-hidden bg-aerflow-dark"
           >
-            <div className="sticky top-0 h-screen w-full overflow-hidden">
+            <div
+              ref={scrollViewportRef}
+              className="relative h-screen w-full overflow-hidden"
+            >
               <div
                 ref={scrollTrackRef}
                 className="absolute top-0 left-0 flex h-full w-max items-center gap-8 px-[8vw] will-change-transform md:gap-20 md:px-[10vw]"
