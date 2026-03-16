@@ -33,9 +33,11 @@ export default function VerticalParallax({
     if (!activeTrigger) return;
 
     const ctx = gsap.context(() => {
-      // Significantly increased movement logic
-      // Total travel will be viewport dependent
-      const moveDistance = (speed - 1) * window.innerHeight * 0.6; 
+      // Responsive Damping: Significantly reduce intensity on mobile
+      const isMobile = window.innerWidth < 768;
+      const baseIntensity = isMobile ? 0.15 : 0.6; // Reduced mobile intensity significantly
+      
+      const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
 
       gsap.fromTo(targetRef.current, 
         { y: moveDistance },
