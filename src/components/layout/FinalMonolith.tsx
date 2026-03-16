@@ -127,7 +127,7 @@ export default function FinalMonolith() {
       className="relative w-full h-[220svh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
     >
       {/* 0. Sticky Wrapper for Mobile Content */}
-      <div className="sticky top-0 w-full h-[100svh] md:h-screen flex flex-col justify-center items-center overflow-hidden">
+      <div className="sticky top-0 w-full h-[100svh] md:h-screen overflow-hidden">
         
         {/* 1. Ambient Spotlight — desktop only */}
         {!shouldUseLiteEffects() && (
@@ -162,13 +162,13 @@ export default function FinalMonolith() {
         )}
 
         {/* 4. Grid Details */}
-        <VerticalParallax speed={1.3} disabledOnMobile className="absolute top-32 left-8 md:top-32 md:left-10 z-10">
+        <VerticalParallax speed={1.3} disabledOnMobile className="absolute top-32 left-8 z-10 hidden md:block">
           <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
             [ BUCUREȘTI, RO ]<br/>
             44.4268° N, 26.1025° E
           </div>
         </VerticalParallax>
-        <VerticalParallax speed={1.3} disabledOnMobile className="absolute top-[11rem] left-8 md:top-[11rem] md:left-10 z-10">
+        <VerticalParallax speed={1.3} disabledOnMobile className="absolute top-[11rem] left-8 z-10 hidden md:block">
           <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left flex items-center justify-start gap-3 pointer-events-none">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
@@ -178,63 +178,79 @@ export default function FinalMonolith() {
         </VerticalParallax>
 
         {/* 5. Main Content Area */}
-        <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-24 md:mt-40">
+        <div className="relative z-10 flex h-full w-full flex-col items-center justify-start px-6 pt-24 pb-10 md:justify-center md:px-8 md:pt-0 md:pb-0">
+          <div className="flex w-full max-w-screen-2xl flex-col items-center md:mt-40">
+            <div className="mb-10 flex w-full max-w-md flex-col gap-4 self-start md:hidden">
+              <div className="font-mono text-[10px] tracking-[0.22em] text-aerflow-gray/60 uppercase">
+                [ BUCUREȘTI, RO ]<br />
+                44.4268° N, 26.1025° E
+              </div>
+              <div className="font-mono text-[10px] tracking-[0.22em] text-aerflow-accent/80 uppercase">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-aerflow-accent animate-pulse" />
+                  [ DISPONIBIL PENTRU PROIECTE ]
+                </div>
+              </div>
+            </div>
           
-          {/* AERFLOW Monumental Text */}
-          <VerticalParallax speed={1.7} intensity={1.1} triggerRef={containerRef} disabledOnMobile>
-            <h2 
-              ref={textRef} 
-              className="text-[clamp(4rem,15vw,20rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex justify-center"
-            >
-              {aerflowText.map((letter, i) => (
-                <span key={i} className="inline-block will-change-transform opacity-0">
-                  {letter}
-                </span>
-              ))}
-            </h2>
-          </VerticalParallax>
+            {/* AERFLOW Monumental Text */}
+            <VerticalParallax speed={1.7} intensity={1.1} triggerRef={containerRef} disabledOnMobile>
+              <h2 
+                ref={textRef} 
+                className="flex w-full justify-center text-center text-[clamp(3.15rem,16vw,20rem)] font-black uppercase tracking-[-0.05em] leading-[0.9] text-aerflow-light md:text-[clamp(4rem,15vw,20rem)] md:tracking-tighter md:leading-none"
+              >
+                {aerflowText.map((letter, i) => (
+                  <span key={i} className="inline-block will-change-transform opacity-0">
+                    {letter}
+                  </span>
+                ))}
+              </h2>
+            </VerticalParallax>
 
-          {/* The Manifesto Subtext */}
-          <VerticalParallax speed={1.38} intensity={1.05} triggerRef={containerRef} disabledOnMobile>
-            <div ref={manifestoRef} className="mt-8 text-center max-w-3xl">
-              <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
-                "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
-                <br/><span className="text-aerflow-light not-italic font-sans font-bold">scriem istoria digitală a brandului tău.</span>"
-              </p>
-            </div>
-          </VerticalParallax>
+            {/* The Manifesto Subtext */}
+            <VerticalParallax speed={1.38} intensity={1.05} triggerRef={containerRef} disabledOnMobile>
+              <div ref={manifestoRef} className="mt-6 max-w-[34rem] text-center md:mt-8 md:max-w-3xl">
+                <p className="text-base leading-relaxed text-aerflow-gray md:text-2xl">
+                  <span className="font-serif italic">
+                    "Am ajuns la marginea ecranului.<br />Dar acesta este doar începutul. Nu scriem doar cod,
+                  </span>
+                  <br />
+                  <span className="font-sans font-bold text-aerflow-light">scriem istoria digitală a brandului tău."</span>
+                </p>
+              </div>
+            </VerticalParallax>
 
-          {/* Dual Actions */}
-          <VerticalParallax speed={1.52} intensity={1.08} triggerRef={containerRef} disabledOnMobile>
-            <div 
-              ref={actionsRef}
-              className="mt-16 md:mt-20 z-20 flex flex-col md:flex-row gap-6 md:gap-8 items-center"
-            >
-              <MagneticButton>
-                <Link 
-                  to="/contact" 
-                  className="px-8 py-4 rounded-full bg-aerflow-accent text-aerflow-dark font-sans font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors duration-500 block"
-                  onMouseEnter={() => setCursorVariant('project', 'CLICK')}
-                  onMouseLeave={() => setCursorVariant('default')}
-                >
-                  Să Începem
-                </Link>
-              </MagneticButton>
+            {/* Dual Actions */}
+            <VerticalParallax speed={1.52} intensity={1.08} triggerRef={containerRef} disabledOnMobile>
+              <div 
+                ref={actionsRef}
+                className="mt-10 z-20 flex flex-col items-center gap-5 md:mt-20 md:flex-row md:gap-8"
+              >
+                <MagneticButton>
+                  <Link 
+                    to="/contact" 
+                    className="block rounded-full bg-aerflow-accent px-8 py-4 text-sm font-sans font-bold uppercase tracking-widest text-aerflow-dark transition-colors duration-500 hover:bg-white"
+                    onMouseEnter={() => setCursorVariant('project', 'CLICK')}
+                    onMouseLeave={() => setCursorVariant('default')}
+                  >
+                    Să Începem
+                  </Link>
+                </MagneticButton>
 
-              <MagneticButton>
-                <button 
-                  onClick={handleBackToTop}
-                  className="group flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] text-aerflow-gray hover:text-aerflow-light transition-colors duration-500 uppercase bg-transparent border-none outline-none"
-                  onMouseEnter={() => setCursorVariant('project', 'SUS')}
-                  onMouseLeave={() => setCursorVariant('default')}
-                >
-                  [ ↑ Începe din nou ]
-                  <span className="w-8 h-[1px] bg-aerflow-gray group-hover:bg-aerflow-light transition-colors duration-500" />
-                </button>
-              </MagneticButton>
-            </div>
-          </VerticalParallax>
-
+                <MagneticButton>
+                  <button 
+                    onClick={handleBackToTop}
+                    className="group flex items-center gap-3 bg-transparent font-mono text-[10px] tracking-[0.2em] text-aerflow-gray uppercase outline-none transition-colors duration-500 hover:text-aerflow-light"
+                    onMouseEnter={() => setCursorVariant('project', 'SUS')}
+                    onMouseLeave={() => setCursorVariant('default')}
+                  >
+                    [ ↑ Începe din nou ]
+                    <span className="h-[1px] w-8 bg-aerflow-gray transition-colors duration-500 group-hover:bg-aerflow-light" />
+                  </button>
+                </MagneticButton>
+              </div>
+            </VerticalParallax>
+          </div>
         </div>
       </div>
     </section>
