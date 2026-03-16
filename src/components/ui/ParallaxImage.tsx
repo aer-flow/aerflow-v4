@@ -66,7 +66,7 @@ export default function ParallaxImage({
         ref={imageRef}
         src={src}
         alt={alt}
-        className="w-full h-full object-cover will-change-transform [backface-visibility:hidden] [transform:translateZ(0)]"
+        className="w-full h-full object-cover will-change-transform"
       />
     </div>
   );
