@@ -33,9 +33,9 @@ export default function VerticalParallax({
     if (!activeTrigger) return;
 
     const ctx = gsap.context(() => {
-      // Use speed to determine movement. 
-      // Higher speed = more movement against scroll.
-      const moveDistance = (speed - 1) * 200; 
+      // Significantly increased movement logic
+      // Total travel will be viewport dependent
+      const moveDistance = (speed - 1) * window.innerHeight * 0.6; 
 
       gsap.fromTo(targetRef.current, 
         { y: moveDistance },
@@ -48,7 +48,7 @@ export default function VerticalParallax({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: true,
+            scrub: 1, // numeric scrub for smoothness (fixes mobile stutter)
             invalidateOnRefresh: true,
           }
         }
