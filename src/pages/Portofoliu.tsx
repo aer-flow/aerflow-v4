@@ -40,7 +40,7 @@ export default function Portofoliu() {
         </AnimatePresence>
 
         <div className="relative z-10 max-w-screen-2xl mx-auto">
-          <VerticalParallax speed={1.1}>
+          <VerticalParallax speed={1.3}>
             <h1 className="text-sm font-mono tracking-widest mb-20 text-aerflow-gray">[ ARCHIVA NOASTRĂ ]</h1>
           </VerticalParallax>
 
@@ -58,13 +58,13 @@ export default function Portofoliu() {
                 }}
                 className={`w-full group py-12 border-b border-white/20 flex flex-col md:flex-row items-start md:items-center justify-between cursor-none transition-opacity duration-500 ${hoveredIndex !== null && hoveredIndex !== i ? 'opacity-20' : 'opacity-100'}`}
               >
-                <VerticalParallax speed={1.25}>
+                <VerticalParallax speed={1.5}>
                   <div className="text-[clamp(3rem,6vw,8rem)] font-sans font-black leading-none uppercase tracking-tighter group-hover:translate-x-4 transition-transform duration-500 ease-awwwards">
                     {work.title}
                   </div>
                 </VerticalParallax>
                 
-                <VerticalParallax speed={1.1} className="flex gap-12 mt-4 md:mt-0 font-mono text-sm tracking-widest text-aerflow-gray">
+                <VerticalParallax speed={1.2} className="flex gap-12 mt-4 md:mt-0 font-mono text-sm tracking-widest text-aerflow-gray">
                   <span>{work.client}</span>
                   <span>{work.year}</span>
                 </VerticalParallax>
