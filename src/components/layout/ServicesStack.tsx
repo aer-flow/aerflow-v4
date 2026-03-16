@@ -103,9 +103,11 @@ export default function ServicesStack() {
           >
             {/* Mobile Header - Repositioned to be visible below Navbar */}
             <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
-              <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
-                [{service.id}]
-              </span>
+              <VerticalParallax speed={1.2} trigger={cardsRef.current[index]}>
+                <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
+                  [{service.id}]
+                </span>
+              </VerticalParallax>
               <motion.div 
                 initial={{ opacity: 0, rotate: -45 }}
                 whileInView={{ opacity: 1, rotate: 0 }}
