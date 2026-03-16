@@ -7,19 +7,28 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // Detect touch/mobile — disable Lenis smooth scroll entirely on touch devices
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    if (isTouchDevice) {
+      // On mobile, just let native scroll drive ScrollTrigger directly
+      // No Lenis = no fighting with the browser's native touch scroll
+      ScrollTrigger.normalizeScroll(false);
+      return;
+    }
+
     const lenis = new Lenis({
-      duration: 1.0, // Slightly faster for responsiveness
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.2, // Reduced for more predictable touch scrolling
-      lerp: 0.1, // Increased from 0.08 for more responsiveness
+      touchMultiplier: 1.2,
+      lerp: 0.1,
     });
-    
-    // ignoreMobileResize helps prevent jumping during address bar changes without locking scroll
-    ScrollTrigger.config({ ignoreMobileResize: true });
 
     lenis.on('scroll', ScrollTrigger.update);
     (window as any).lenis = lenis;

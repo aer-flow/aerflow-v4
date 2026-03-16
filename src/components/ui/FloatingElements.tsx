@@ -1,8 +1,14 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 export default function FloatingElements() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
@@ -12,6 +18,16 @@ export default function FloatingElements() {
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -400]);
   const y3 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 45]);
+
+  // On mobile, render a static simplified version — no animations, no blur
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute top-[10%] left-[5%] w-64 h-64 rounded-full bg-gradient-to-br from-aerflow-accent/10 to-transparent blur-3xl" />
+        <div className="absolute top-[60%] right-[10%] w-96 h-96 rounded-full bg-gradient-to-tr from-aerflow-accent/5 to-transparent blur-3xl" />
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
@@ -33,10 +49,10 @@ export default function FloatingElements() {
         className="absolute bottom-[20%] left-[40%] w-48 h-48 rounded-full bg-gradient-to-bl from-white/5 to-transparent blur-2xl"
       />
 
-      {/* Glassy Card Fragment */}
+      {/* Glassy Card Fragment — NO backdrop-blur, use solid bg instead */}
       <motion.div
-        style={{ y: y1, rotate: 15, willChange: "transform" }}
-        className="absolute top-[30%] right-[20%] w-32 h-48 border border-white/10 bg-white/5 backdrop-blur-sm rounded-2xl"
+        style={{ y: y1, rotate: 15 }}
+        className="absolute top-[30%] right-[20%] w-32 h-48 border border-white/10 bg-white/5 rounded-2xl"
       />
     </div>
   );

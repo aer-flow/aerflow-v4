@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { FluidDistortionMaterial } from './FluidDistortionMaterial';
 
@@ -23,26 +23,48 @@ function FluidPlane() {
 
   return (
     <mesh scale={[viewport.width, viewport.height, 1]}>
-      <planeGeometry args={[1, 1, 32, 32]} />
+      <planeGeometry args={[1, 1, 16, 16]} />
       {/* @ts-ignore - extended in FluidDistortionMaterial.tsx */}
       <fluidDistortionMaterial ref={materialRef} uColorBase={new THREE.Color('#070707')} uColorHighlight={new THREE.Color('#1a1a1a')} />
     </mesh>
   );
 }
 
+function MobileHeroFallback() {
+  return (
+    <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#070707] via-[#0d0d0d] to-[#070707]" />
+  );
+}
+
 export default function HeroCanvas() {
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    setIsMobile(isTouchDevice || window.innerWidth < 768);
+  }, []);
+
+  // On mobile, skip WebGL entirely — use a CSS gradient fallback
+  if (isMobile) {
+    return (
+      <div className="absolute inset-0 z-0">
+        <MobileHeroFallback />
+        <div className="absolute inset-0 bg-aerflow-dark/20" />
+      </div>
+    );
+  }
+
   return (
     <div className="absolute inset-0 z-0">
       <Canvas 
         camera={{ position: [0, 0, 1] }}
-        dpr={window.devicePixelRatio > 1 ? [1, 1.5] : [1, 1]} // Optimatized dpr for performance
+        dpr={[1, 1.5]}
         gl={{ 
           powerPreference: "high-performance",
           antialias: false,
           stencil: false,
           depth: false,
-          alpha: false, // Background is solid enough
-          precision: "lowp" // Speed over quality for background distortion
+          alpha: false,
         }}
         performance={{ min: 0.5 }}
       >

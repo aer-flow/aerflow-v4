@@ -4,7 +4,8 @@ import { useCursorStore } from '@/store/useCursorStore';
 
 export default function CustomCursor() {
   const { variant, text } = useCursorStore();
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -14,6 +15,14 @@ export default function CustomCursor() {
   const smoothY = useSpring(cursorY, springConfig);
 
   useEffect(() => {
+    // Detect touch devices — skip entirely on mobile
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice || window.innerWidth < 768) {
+      setIsMobile(true);
+      return;
+    }
+    setIsMobile(false);
+
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -22,11 +31,10 @@ export default function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener('mousemove', moveCursor);
+    window.addEventListener('mousemove', moveCursor, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
-    // Initial check
     setIsVisible(true);
 
     return () => {
@@ -35,6 +43,9 @@ export default function CustomCursor() {
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
   }, [cursorX, cursorY]);
+
+  // Don't render anything on mobile
+  if (isMobile) return null;
 
   const variants = {
     default: {
@@ -63,8 +74,6 @@ export default function CustomCursor() {
     }
   };
 
-  if (typeof window === 'undefined') return null;
-
   return (
     <motion.div
       className="fixed top-0 left-0 z-[9999] rounded-full pointer-events-none flex items-center justify-center overflow-hidden"
@@ -73,7 +82,6 @@ export default function CustomCursor() {
         top: smoothY,
         translateX: "-50%",
         translateY: "-50%",
-        willChange: "transform",
       }}
       initial="hidden"
       animate={isVisible ? variant : "hidden"}

@@ -116,33 +116,37 @@ export default function FinalMonolith() {
       {/* 0. Sticky Wrapper for Mobile Content */}
       <div className="sticky top-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden">
         
-        {/* 1. Ambient Spotlight */}
-        <motion.div 
-          className="absolute top-0 left-0 rounded-full pointer-events-none"
-          style={{
-            width: '60vw',
-            height: '60vw',
-            background: 'radial-gradient(circle, rgba(215,255,107,0.08) 0%, rgba(0,0,0,0) 70%)',
-            x: smoothX,
-            y: smoothY,
-            left: 0,
-            top: 0,
-            translateX: '-50%',
-            translateY: '-50%',
-            zIndex: 0
-          }}
-        />
-
-        {/* 3. The Background Echo Marquee */}
-        <div className="absolute inset-0 z-0 flex flex-col justify-center overflow-hidden pointer-events-none opacity-[0.015]">
+        {/* 1. Ambient Spotlight — desktop only */}
+        {typeof window !== 'undefined' && window.innerWidth >= 768 && (
           <motion.div 
-            animate={{ x: [0, -2000] }} 
-            transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-            className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white"
-          >
-            INNOVATION • DISRUPTION • CREATIVITY • INNOVATION • DISRUPTION • CREATIVITY •
-          </motion.div>
-        </div>
+            className="absolute top-0 left-0 rounded-full pointer-events-none"
+            style={{
+              width: '60vw',
+              height: '60vw',
+              background: 'radial-gradient(circle, rgba(215,255,107,0.08) 0%, rgba(0,0,0,0) 70%)',
+              x: smoothX,
+              y: smoothY,
+              left: 0,
+              top: 0,
+              translateX: '-50%',
+              translateY: '-50%',
+              zIndex: 0
+            }}
+          />
+        )}
+
+        {/* 3. The Background Echo Marquee — desktop only */}
+        {typeof window !== 'undefined' && window.innerWidth >= 768 && (
+          <div className="absolute inset-0 z-0 flex flex-col justify-center overflow-hidden pointer-events-none opacity-[0.015]">
+            <motion.div 
+              animate={{ x: [0, -2000] }} 
+              transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+              className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white"
+            >
+              INNOVATION • DISRUPTION • CREATIVITY • INNOVATION • DISRUPTION • CREATIVITY •
+            </motion.div>
+          </div>
+        )}
 
         {/* 4. Grid Details */}
         <VerticalParallax speed={1.3} className="absolute top-32 left-8 md:top-32 md:left-10 z-10">
