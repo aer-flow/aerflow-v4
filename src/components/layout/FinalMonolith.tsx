@@ -154,7 +154,7 @@ export default function FinalMonolith() {
       </VerticalParallax>
 
       {/* 5. Main Content Area */}
-      <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-56 md:mt-20">
+      <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-32 md:mt-20">
         
         {/* AERFLOW Monumental Text */}
         <h2 
@@ -169,14 +169,12 @@ export default function FinalMonolith() {
         </h2>
 
         {/* The Manifesto Subtext */}
-        <VerticalParallax speed={1.5} className="mt-8 text-center max-w-3xl">
-          <div ref={manifestoRef}>
-            <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
-              "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
-              <br/><span className="text-aerflow-light not-italic font-sans font-bold">scriem istoria digitală a brandului tău.</span>"
-            </p>
-          </div>
-        </VerticalParallax>
+        <div ref={manifestoRef} className="mt-8 text-center max-w-3xl">
+          <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
+            "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
+            <br/><span className="text-aerflow-light not-italic font-sans font-bold">scriem istoria digitală a brandului tău.</span>"
+          </p>
+        </div>
 
         {/* Dual Actions */}
         <div 
