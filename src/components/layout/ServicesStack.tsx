@@ -36,24 +36,37 @@ export default function ServicesStack() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Pin each card and animate its contents
       cardsRef.current.forEach((card, index) => {
-        if (index === services.length - 1) return; // Ultimul card nu se micșorează
+        if (!card) return;
 
-        gsap.to(card, {
-          scale: 0.9,
-          opacity: 0.3,
-          transformOrigin: "top center",
-          ease: "none",
-          force3D: true,
+        // Create a timeline for each card's pinning and internal animations
+        const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: cardsRef.current[index + 1],
-            start: "top bottom",
-            end: "top top",
-            scrub: true,
-            refreshPriority: 2,
+            trigger: card,
+            start: "top top",
+            // Each card stays pinned for 100% of viewport height
+            end: () => `+=${window.innerHeight}`,
+            pin: true,
+            pinSpacing: false,
+            scrub: 1, // numeric scrub for smoothness
+            invalidateOnRefresh: true,
           }
         });
+
+        // If not the last card, animate it shrinking/fading as user scrolls further
+        if (index < services.length - 1) {
+          tl.to(card, {
+            scale: 0.9,
+            opacity: 0.2, // More aggressive fade for "stacking" look
+            transformOrigin: "top center",
+            ease: "none"
+          }, 0);
+        }
       });
+
+      // Refresh ScrollTrigger to account for pinning layout changes
+      ScrollTrigger.refresh();
     }, containerRef);
 
     return () => ctx.revert();
@@ -68,21 +81,21 @@ export default function ServicesStack() {
             [ Expertiza Noastră ]
           </p>
         </VerticalParallax>
-        <VerticalParallax speed={1.6}>
-          <h2 className="text-[clamp(2rem,5vw,5rem)] font-sans font-black leading-none text-aerflow-light uppercase tracking-tighter">
+        <VerticalParallax speed={1.8}>
+          <h2 className="text-[clamp(2.2rem,5vw,5.5rem)] font-sans font-black leading-none text-aerflow-light uppercase tracking-tighter">
             Nu livrăm opțiuni.<br />
-            <span className="text-aerflow-accent font-serif italic font-normal">Livrăm soluții.</span>
+            <span className="text-aerflow-accent font-serif italic font-normal text-[1.1em]">Livrăm soluții.</span>
           </h2>
         </VerticalParallax>
       </div>
 
-      {/* Stacking Cards */}
+      {/* Stacking Cards - No longer using CSS sticky here, GSAP handles it */}
       <div className="relative w-full">
         {services.map((service, index) => (
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`sticky top-0 h-screen w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-visible`}
+            className={`relative h-screen w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-visible`}
           >
             {/* Mobile Header - Repositioned to be visible below Navbar */}
             <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
@@ -101,12 +114,13 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              <VerticalParallax speed={2.8} trigger={cardsRef.current[index]}>
-                <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-4 md:mb-0">
+              {/* Ultra exaggerated speed (3.5) with trigger set to the card itself */}
+              <VerticalParallax speed={3.5} trigger={cardsRef.current[index]}>
+                <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0">
                   {service.title.split('\n').map((line, i) => (
                     <span 
                       key={i} 
-                      className={`block ${i === 1 ? 'pl-8 md:pl-24' : ''}`}
+                      className={`block ${i === 1 ? 'pl-8 md:pl-28' : ''}`}
                     >
                       {line}
                     </span>
@@ -114,7 +128,7 @@ export default function ServicesStack() {
                 </h3>
               </VerticalParallax>
               <VerticalParallax speed={1.8} trigger={cardsRef.current[index]}>
-                <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
+                <p className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90">
                   {service.desc}
                 </p>
               </VerticalParallax>
