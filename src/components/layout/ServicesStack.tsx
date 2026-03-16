@@ -35,6 +35,9 @@ export default function ServicesStack() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const innerCardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
+  const descRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -45,27 +48,84 @@ export default function ServicesStack() {
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
         const innerCard = innerCardsRef.current[index];
+        const label = labelRefs.current[index];
+        const title = titleRefs.current[index];
+        const desc = descRefs.current[index];
         const shouldPinCard = index < services.length - 1;
         if (!innerCard) return;
 
-        const travelAmount = isMobile ? 6 : 9;
-        const scrubAmount = isMobile ? 0.48 : 0.7;
+        const cardTravel = isMobile ? 3.5 : 7;
+        const cardScrub = isMobile ? 0.36 : 0.58;
 
         gsap.fromTo(innerCard, {
-          yPercent: travelAmount,
+          yPercent: cardTravel,
         }, {
-          yPercent: -travelAmount,
+          yPercent: -cardTravel,
           ease: 'none',
           force3D: true,
           scrollTrigger: {
             trigger: card,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: scrubAmount,
+            scrub: cardScrub,
             invalidateOnRefresh: true,
             fastScrollEnd: true,
           },
         });
+
+        if (label) {
+          gsap.fromTo(label, {
+            yPercent: isMobile ? 10 : 14,
+          }, {
+            yPercent: isMobile ? -10 : -14,
+            ease: 'none',
+            force3D: true,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: isMobile ? 0.34 : 0.5,
+              invalidateOnRefresh: true,
+              fastScrollEnd: true,
+            },
+          });
+        }
+
+        if (title) {
+          gsap.fromTo(title, {
+            yPercent: isMobile ? 22 : 28,
+          }, {
+            yPercent: isMobile ? -22 : -28,
+            ease: 'none',
+            force3D: true,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: isMobile ? 0.42 : 0.62,
+              invalidateOnRefresh: true,
+              fastScrollEnd: true,
+            },
+          });
+        }
+
+        if (desc) {
+          gsap.fromTo(desc, {
+            yPercent: isMobile ? 11 : 15,
+          }, {
+            yPercent: isMobile ? -11 : -15,
+            ease: 'none',
+            force3D: true,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: isMobile ? 0.38 : 0.55,
+              invalidateOnRefresh: true,
+              fastScrollEnd: true,
+            },
+          });
+        }
 
         if (!isMobile && shouldPinCard) {
           const tl = gsap.timeline({
@@ -114,13 +174,13 @@ export default function ServicesStack() {
         </VerticalParallax>
       </div>
 
-      {/* Responsive Cards - mobile flow, desktop stacking */}
+      {/* Stacking Cards - overlap preserved on mobile and desktop */}
       <div className="relative w-full">
         {services.map((service, index) => (
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className="relative min-h-[100svh] md:h-screen w-full"
+            className={`${index < services.length - 1 ? 'sticky top-0' : 'relative'} md:relative min-h-[100svh] md:h-screen w-full`}
           >
             <div
               ref={(el) => { innerCardsRef.current[index] = el; }}
@@ -128,11 +188,12 @@ export default function ServicesStack() {
             >
               {/* Mobile Header - Repositioned to be visible below Navbar */}
               <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
-                <VerticalParallax speed={1.5} disabledOnMobile>
-                  <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
-                    [{service.id}]
-                  </span>
-                </VerticalParallax>
+                <span
+                  ref={(el) => { labelRefs.current[index] = el; }}
+                  className="inline-block font-mono text-lg md:text-2xl font-bold tracking-tighter will-change-transform"
+                >
+                  [{service.id}]
+                </span>
                 <div className="w-10 h-10 flex md:hidden items-center justify-center border border-current rounded-full">
                   ↓
                 </div>
@@ -148,23 +209,25 @@ export default function ServicesStack() {
               </div>
 
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-                <VerticalParallax speed={1.8} disabledOnMobile>
-                  <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0">
-                    {service.title.split('\n').map((line, i) => (
-                      <span 
-                        key={i} 
-                        className={`block ${i === 1 ? 'pl-8 md:pl-28' : ''}`}
-                      >
-                        {line}
-                      </span>
-                    ))}
-                  </h3>
-                </VerticalParallax>
-                <VerticalParallax speed={2.0} disabledOnMobile>
-                  <p className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90">
-                    {service.desc}
-                  </p>
-                </VerticalParallax>
+                <h3
+                  ref={(el) => { titleRefs.current[index] = el; }}
+                  className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0 will-change-transform"
+                >
+                  {service.title.split('\n').map((line, i) => (
+                    <span 
+                      key={i} 
+                      className={`block ${i === 1 ? 'pl-8 md:pl-28' : ''}`}
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </h3>
+                <p
+                  ref={(el) => { descRefs.current[index] = el; }}
+                  className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90 will-change-transform"
+                >
+                  {service.desc}
+                </p>
               </div>
             </div>
           </div>
