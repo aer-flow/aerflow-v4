@@ -100,7 +100,7 @@ export default function ServicesStack() {
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className="relative min-h-[100svh] md:h-screen w-full"
+            className={`${index < services.length - 1 ? 'sticky top-0' : 'relative'} md:relative min-h-[100svh] md:h-screen w-full`}
           >
             <div
               ref={(el) => { innerCardsRef.current[index] = el; }}
