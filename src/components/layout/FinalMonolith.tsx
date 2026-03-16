@@ -145,13 +145,13 @@ export default function FinalMonolith() {
         </div>
 
         {/* 4. Grid Details */}
-        <VerticalParallax speed={1.3} className="absolute top-10 left-8 md:top-10 md:left-10 z-10">
+        <VerticalParallax speed={1.3} className="absolute top-32 left-8 md:top-32 md:left-10 z-10">
           <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
             [ BUCUREȘTI, RO ]<br/>
             44.4268° N, 26.1025° E
           </div>
         </VerticalParallax>
-        <VerticalParallax speed={1.3} className="absolute top-20 left-8 md:top-20 md:left-10 z-10">
+        <VerticalParallax speed={1.3} className="absolute top-[11rem] left-8 md:top-[11rem] md:left-10 z-10">
           <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left flex items-center justify-start gap-3 pointer-events-none">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
@@ -161,7 +161,7 @@ export default function FinalMonolith() {
         </VerticalParallax>
 
         {/* 5. Main Content Area */}
-        <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-10 md:mt-20">
+        <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-24 md:mt-40">
           
           {/* AERFLOW Monumental Text */}
           <h2 
