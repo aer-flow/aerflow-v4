@@ -4,10 +4,9 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
 import PageTransition from '@/components/core/PageTransition';
-import ParallaxImage from '@/components/ui/ParallaxImage';
 import ParallaxText from '@/components/ui/ParallaxText';
 import VerticalParallax from '@/components/ui/VerticalParallax';
-import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
+import { shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -73,18 +72,15 @@ function DeferredSection({
 }
 
 export default function Home() {
-  const manifestoRef = useRef<HTMLDivElement>(null);
+  const manifestoRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
-  const scrollWrapperRef = useRef<HTMLDivElement>(null);
+  const scrollWrapperRef = useRef<HTMLElement>(null);
+  const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
-  const useLiteShowcase = shouldReduceMotion();
+  const useLiteShowcase = shouldUseLiteEffects();
 
   useEffect(() => {
     const isLiteMode = shouldUseLiteEffects();
-    const isReducedMotion = shouldReduceMotion();
-    const isMobile = isMobileViewport();
-    let isActive = true;
-    const imageCleanups: Array<() => void> = [];
 
     const ctx = gsap.context(() => {
       if (textRef.current && manifestoRef.current) {
@@ -103,79 +99,89 @@ export default function Home() {
           }
         );
       }
-
-      if (!scrollWrapperRef.current || !scrollTrackRef.current) return;
-
-      if (isReducedMotion) {
-        scrollWrapperRef.current.style.height = 'auto';
-        return;
-      }
-
-      const track = scrollTrackRef.current;
-      const wrapper = scrollWrapperRef.current;
-
-      const createAnimation = () => {
-        const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
-        gsap.set(track, { x: 0, force3D: true });
-
-        return gsap.to(track, {
-          x: () => -getScrollDistance(),
-          ease: 'none',
-          overwrite: true,
-          scrollTrigger: {
-            trigger: wrapper,
-            start: 'top top',
-            end: () => `+=${getScrollDistance()}`,
-            pin: true,
-            pinSpacing: true,
-            anticipatePin: 1,
-            scrub: isMobile ? 1.05 : 0.6,
-            refreshPriority: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-      };
-
-      const initAnimation = () => {
-        if (!isActive) return;
-        createAnimation();
-        ScrollTrigger.refresh();
-      };
-
-      const images = Array.from(track.querySelectorAll('img'));
-      let pending = images.filter((img) => !img.complete);
-
-      if (pending.length === 0) {
-        initAnimation();
-      } else {
-        const handleImageReady = () => {
-          if (!isActive) return;
-          pending = pending.filter((img) => !img.complete);
-          if (pending.length === 0) {
-            initAnimation();
-          }
-        };
-
-        images.forEach((img) => {
-          img.addEventListener('load', handleImageReady, { once: true });
-          img.addEventListener('error', handleImageReady, { once: true });
-          imageCleanups.push(() => {
-            img.removeEventListener('load', handleImageReady);
-            img.removeEventListener('error', handleImageReady);
-          });
-        });
-      }
     });
 
     const timer = window.setTimeout(() => ScrollTrigger.refresh(), 250);
 
     return () => {
-      isActive = false;
       window.clearTimeout(timer);
-      imageCleanups.forEach((cleanup) => cleanup());
       ctx.revert();
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      useLiteShowcase ||
+      !scrollWrapperRef.current ||
+      !scrollViewportRef.current ||
+      !scrollTrackRef.current
+    ) {
+      return;
+    }
+
+    const section = scrollWrapperRef.current;
+    const viewport = scrollViewportRef.current;
+    const track = scrollTrackRef.current;
+    const imageCleanups: Array<() => void> = [];
+    let resizeObserver: ResizeObserver | null = null;
+    let scrollDistance = 0;
+
+    const updatePosition = () => {
+      const sectionTop = section.offsetTop;
+      const currentScroll = window.scrollY || window.pageYOffset;
+      const traveled = Math.min(Math.max(currentScroll - sectionTop, 0), scrollDistance);
+
+      gsap.set(track, {
+        x: -traveled,
+        force3D: true,
+      });
+    };
+
+    const measure = () => {
+      scrollDistance = Math.max(track.scrollWidth - window.innerWidth, 0);
+      section.style.height = `${window.innerHeight + scrollDistance}px`;
+      viewport.style.height = `${window.innerHeight}px`;
+      updatePosition();
+    };
+
+    const handleRefresh = () => measure();
+    const handleResize = () => measure();
+    const tick = () => updatePosition();
+    const handleImageReady = () => measure();
+
+    measure();
+
+    const images = Array.from(track.querySelectorAll('img'));
+    images.forEach((img) => {
+      if (img.complete) return;
+
+      img.addEventListener('load', handleImageReady);
+      img.addEventListener('error', handleImageReady);
+
+      imageCleanups.push(() => {
+        img.removeEventListener('load', handleImageReady);
+        img.removeEventListener('error', handleImageReady);
+      });
+    });
+
+    resizeObserver = new ResizeObserver(() => measure());
+    resizeObserver.observe(track);
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    ScrollTrigger.addEventListener('refresh', handleRefresh);
+    gsap.ticker.add(tick);
+
+    return () => {
+      gsap.ticker.remove(tick);
+      ScrollTrigger.removeEventListener('refresh', handleRefresh);
+      window.removeEventListener('resize', handleResize);
+      resizeObserver?.disconnect();
+      imageCleanups.forEach((cleanup) => cleanup());
+      section.style.height = '';
+      viewport.style.height = '';
+      gsap.set(track, { clearProps: 'transform' });
+    };
+  }, [useLiteShowcase]);
 
   return (
     <PageTransition>
@@ -231,13 +237,13 @@ export default function Home() {
 
         {/* MANIFESTO */}
         <section ref={manifestoRef} className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 py-32 bg-aerflow-dark z-10 shadow-[0_-50px_100px_rgba(0,0,0,0.5)]">
-          <VerticalParallax speed={0.4} className="w-full">
-            <ParallaxText baseVelocity={-250} className="mb-20 opacity-10">
+          <VerticalParallax speed={0.4} className="w-full" triggerRef={manifestoRef}>
+            <ParallaxText baseVelocity={-250} className="mb-20 opacity-10" enableOnMobile>
               <span className="text-[15vw] font-black uppercase leading-none tracking-tight">Aerflow • Creative • Technology • </span>
             </ParallaxText>
           </VerticalParallax>
           
-          <VerticalParallax speed={2.2}>
+          <VerticalParallax speed={2.2} triggerRef={manifestoRef}>
             <h2 
               ref={textRef} 
               className="text-[clamp(2rem,6vw,6rem)] leading-tight font-sans font-bold max-w-6xl text-center text-aerflow-light"
@@ -248,11 +254,11 @@ export default function Home() {
             </h2>
           </VerticalParallax>
 
-          <div data-speed="0.1" className="w-full">
-            <ParallaxText baseVelocity={250} className="mt-20 opacity-10">
+          <VerticalParallax speed={0.4} className="w-full" triggerRef={manifestoRef}>
+            <ParallaxText baseVelocity={250} className="mt-20 opacity-10" enableOnMobile>
               <span className="text-[15vw] font-black uppercase leading-none tracking-tight">Vision • Innovation • Digital • </span>
             </ParallaxText>
-          </div>
+          </VerticalParallax>
         </section>
 
         {/* SERVICES STACK */}
@@ -270,11 +276,10 @@ export default function Home() {
             <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-2 pb-4 [scrollbar-width:none] [-ms-overflow-style:none]">
               {projects.map((proj, i) => (
                 <div key={i} className="relative h-[52vh] w-[84vw] flex-shrink-0 snap-center overflow-hidden rounded-lg">
-                  <ParallaxImage
+                  <img
                     src={proj.img}
                     alt="Proiect Aerflow"
-                    className="h-full w-full"
-                    speed={1.1}
+                    className="h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-black/15 pointer-events-none" />
                 </div>
@@ -284,25 +289,26 @@ export default function Home() {
         ) : (
           <section
             ref={scrollWrapperRef}
-            className="relative z-20 h-[100svh] md:h-screen w-full overflow-hidden bg-aerflow-dark"
+            className="relative z-20 min-h-[100svh] w-full bg-aerflow-dark"
           >
             <div
-              className="relative h-full w-full overflow-hidden"
+              ref={scrollViewportRef}
+              className="sticky top-0 h-[100svh] w-full overflow-hidden"
             >
               <div
                 ref={scrollTrackRef}
-                className="absolute top-0 left-0 flex h-full w-max items-center gap-8 px-[8vw] will-change-transform md:gap-20 md:px-[10vw]"
+                className="absolute top-0 left-0 flex h-full w-max items-center gap-20 px-[10vw] will-change-transform"
               >
                 {projects.map((proj, i) => (
-                  <div key={i} className="group relative h-[55vh] w-[80vw] flex-shrink-0 overflow-hidden rounded-lg md:h-[70vh] md:w-[60vw] md:rounded-none">
-                    <ParallaxImage
+                  <div key={i} className="group relative h-[70vh] w-[60vw] flex-shrink-0 overflow-hidden">
+                    <img
                       src={proj.img}
                       alt="Proiect Aerflow"
-                      className="h-full w-full"
-                      speed={1.4}
-                      disableParallax
+                      decoding="async"
+                      fetchPriority={i === 0 ? 'high' : 'auto'}
+                      className="h-full w-full object-cover transition-transform duration-[1.5s] ease-awwwards group-hover:scale-110"
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-black/20 transition-colors duration-500 group-hover:bg-black/10" />
+                    <div className="pointer-events-none absolute inset-0 bg-black/20 transition-colors duration-700 group-hover:bg-transparent" />
                   </div>
                 ))}
               </div>

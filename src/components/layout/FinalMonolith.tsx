@@ -52,10 +52,10 @@ export default function FinalMonolith() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "bottom bottom", 
+          end: isMobile ? "bottom bottom" : "+=200%",
           pin: isMobile ? false : true,
           pinType: "fixed",
-          scrub: reduceMotion ? false : 0.35,
+          scrub: reduceMotion ? false : 0.7,
           invalidateOnRefresh: true,
         }
       });
