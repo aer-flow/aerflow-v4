@@ -7,7 +7,7 @@ import PageTransition from '@/components/core/PageTransition';
 import ParallaxImage from '@/components/ui/ParallaxImage';
 import ParallaxText from '@/components/ui/ParallaxText';
 import VerticalParallax from '@/components/ui/VerticalParallax';
-import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
+import { shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -79,7 +79,7 @@ export default function Home() {
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
-  const useLiteShowcase = shouldUseLiteEffects() || shouldReduceMotion();
+  const useLiteShowcase = shouldReduceMotion();
 
   useEffect(() => {
     const isLiteMode = shouldUseLiteEffects();
@@ -107,7 +107,7 @@ export default function Home() {
 
       if (!scrollWrapperRef.current || !scrollTrackRef.current || !scrollViewportRef.current) return;
 
-      if (isMobileViewport() || isReducedMotion) {
+      if (isReducedMotion) {
         scrollWrapperRef.current.style.height = 'auto';
         setHorizontalAnim(null);
         return;
