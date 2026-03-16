@@ -18,8 +18,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       lerp: 0.08
     });
     
-    // Normalize scroll for mobile address bar stability
-    ScrollTrigger.normalizeScroll(true);
+    // ignoreMobileResize helps prevent jumping during address bar changes without locking scroll
     ScrollTrigger.config({ ignoreMobileResize: true });
 
     lenis.on('scroll', ScrollTrigger.update);
