@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import CustomCursor from './components/core/CustomCursor';
@@ -6,10 +7,14 @@ import NoiseOverlay from './components/ui/NoiseOverlay';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
-import Home from './pages/Home';
-import Portofoliu from './pages/Portofoliu';
-import Despre from './pages/Despre';
-import Contact from './pages/Contact';
+const Home = lazy(() => import('./pages/Home'));
+const Portofoliu = lazy(() => import('./pages/Portofoliu'));
+const Despre = lazy(() => import('./pages/Despre'));
+const Contact = lazy(() => import('./pages/Contact'));
+
+function RouteFallback() {
+  return <div className="min-h-screen w-full bg-aerflow-dark" />;
+}
 
 function App() {
   const location = useLocation();
@@ -22,14 +27,16 @@ function App() {
       
       {/* Container pentru rute cu AnimatePresence */}
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home />} />
-          <Route path="/portofoliu" element={<Portofoliu />} />
-          <Route path="/despre" element={<Despre />} />
-          <Route path="/contact" element={<Contact />} />
-          {/* Servicii rutează spre Despre pentru exemplificare */}
-          <Route path="/servicii" element={<Despre />} /> 
-        </Routes>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} />
+            <Route path="/portofoliu" element={<Portofoliu />} />
+            <Route path="/despre" element={<Despre />} />
+            <Route path="/contact" element={<Contact />} />
+            {/* Servicii rutează spre Despre pentru exemplificare */}
+            <Route path="/servicii" element={<Despre />} /> 
+          </Routes>
+        </Suspense>
       </AnimatePresence>
 
       <Footer />

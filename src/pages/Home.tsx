@@ -1,18 +1,20 @@
-import { useRef, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
-import HeroCanvas from '@/components/webgl/HeroCanvas';
 import PageTransition from '@/components/core/PageTransition';
-import ServicesStack from '@/components/layout/ServicesStack';
-import FinalMonolith from '@/components/layout/FinalMonolith';
 import ParallaxImage from '@/components/ui/ParallaxImage';
-import FloatingElements from '@/components/ui/FloatingElements';
 import ParallaxText from '@/components/ui/ParallaxText';
 import VerticalParallax from '@/components/ui/VerticalParallax';
 import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const HeroCanvas = lazy(() => import('@/components/webgl/HeroCanvas'));
+const ServicesStack = lazy(() => import('@/components/layout/ServicesStack'));
+const FinalMonolith = lazy(() => import('@/components/layout/FinalMonolith'));
+const FloatingElements = lazy(() => import('@/components/ui/FloatingElements'));
 
 const projects = [
   { id: 1, img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" },
@@ -20,6 +22,55 @@ const projects = [
   { id: 3, img: "https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=2000&auto=format&fit=crop" },
   { id: 4, img: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop" }
 ];
+
+function HeroFallback() {
+  return (
+    <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070707] via-[#0d0d0d] to-[#070707]" />
+      <div className="absolute inset-0 bg-aerflow-dark/20" />
+    </div>
+  );
+}
+
+function DeferredSection({
+  children,
+  fallback,
+  minHeight,
+  rootMargin = '400px',
+}: {
+  children: ReactNode;
+  fallback: ReactNode;
+  minHeight: string;
+  rootMargin?: string;
+}) {
+  const [shouldRender, setShouldRender] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (shouldRender) return;
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldRender(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [rootMargin, shouldRender]);
+
+  return (
+    <div ref={sectionRef} style={{ minHeight }}>
+      {shouldRender ? <Suspense fallback={fallback}>{children}</Suspense> : fallback}
+    </div>
+  );
+}
 
 export default function Home() {
   const manifestoRef = useRef<HTMLDivElement>(null);
@@ -131,11 +182,15 @@ export default function Home() {
     <PageTransition>
       <div className="w-full bg-aerflow-dark">
         {/* FLOATING DECOR */}
-        <FloatingElements />
+        <Suspense fallback={null}>
+          <FloatingElements />
+        </Suspense>
 
         {/* HERO */}
         <section className="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
-          <HeroCanvas />
+          <Suspense fallback={<HeroFallback />}>
+            <HeroCanvas />
+          </Suspense>
           
           <div className="relative z-10 flex flex-col items-center pointer-events-none text-center text-aerflow-light">
             <VerticalParallax speed={1.8}>
@@ -203,7 +258,9 @@ export default function Home() {
 
         {/* SERVICES STACK */}
         <div className="relative z-10">
-          <ServicesStack />
+          <Suspense fallback={<div className="min-h-[320vh] w-full bg-aerflow-dark" />}>
+            <ServicesStack />
+          </Suspense>
         </div>
 
         {useLiteShowcase ? (
@@ -253,7 +310,12 @@ export default function Home() {
         )}
 
         {/* THE MONOLITH FINALE */}
-        <FinalMonolith />
+        <DeferredSection
+          minHeight="100vh"
+          fallback={<div className="h-screen w-full bg-[#020202]" />}
+        >
+          <FinalMonolith />
+        </DeferredSection>
       </div>
     </PageTransition>
   );
