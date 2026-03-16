@@ -109,7 +109,7 @@ export default function ServicesStack() {
             >
               {/* Mobile Header - Repositioned to be visible below Navbar */}
               <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
-                <VerticalParallax speed={2.2} trigger={cardsRef.current[index]} disabledOnMobile>
+                <VerticalParallax speed={2.2} trigger={cardsRef.current[index]}>
                   <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
                     [{service.id}]
                   </span>
@@ -127,7 +127,7 @@ export default function ServicesStack() {
 
               <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
                 {/* Vertical Parallax is disabled on mobile inside sticky wrappers */}
-                <VerticalParallax speed={2.5} trigger={cardsRef.current[index]} disabledOnMobile>
+                <VerticalParallax speed={2.5} trigger={cardsRef.current[index]}>
                   <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0">
                     {service.title.split('\n').map((line, i) => (
                       <span 
@@ -139,7 +139,7 @@ export default function ServicesStack() {
                     ))}
                   </h3>
                 </VerticalParallax>
-                <VerticalParallax speed={3.2} trigger={cardsRef.current[index]} disabledOnMobile>
+                <VerticalParallax speed={3.2} trigger={cardsRef.current[index]}>
                   <p className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90">
                     {service.desc}
                   </p>
