@@ -50,7 +50,7 @@ export default function VerticalParallax({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: 1, // numeric scrub for smoothness (fixes mobile stutter)
+            scrub: isMobile ? true : 1, // Instant scrub on mobile prevents shaking
             invalidateOnRefresh: true,
           }
         }

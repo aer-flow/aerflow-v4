@@ -52,6 +52,7 @@ export default function ServicesStack() {
             scrub: 1,
             invalidateOnRefresh: true,
             anticipatePin: 1, // Smooths out pinning onset
+            pinType: window.innerWidth < 768 ? "transform" : "fixed",
           }
         });
 
