@@ -17,6 +17,10 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       touchMultiplier: 1.5,
       lerp: 0.08
     });
+    
+    // Normalize scroll for mobile address bar stability
+    ScrollTrigger.normalizeScroll(true);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     lenis.on('scroll', ScrollTrigger.update);
     (window as any).lenis = lenis;

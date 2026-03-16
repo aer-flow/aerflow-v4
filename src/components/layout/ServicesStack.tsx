@@ -45,12 +45,13 @@ export default function ServicesStack() {
           scrollTrigger: {
             trigger: card,
             start: "top top",
-            // Each card stays pinned for 100% of viewport height
-            end: () => `+=${window.innerHeight}`,
+            // Use percentage string for stability on mobile
+            end: "+=100%", 
             pin: true,
             pinSpacing: false,
-            scrub: 1, // numeric scrub for smoothness
+            scrub: 1,
             invalidateOnRefresh: true,
+            anticipatePin: 1, // Smooths out pinning onset
           }
         });
 
@@ -95,7 +96,7 @@ export default function ServicesStack() {
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`relative h-screen w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-visible`}
+            className={`relative h-[100dvh] w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-visible`}
           >
             {/* Mobile Header - Repositioned to be visible below Navbar */}
             <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
