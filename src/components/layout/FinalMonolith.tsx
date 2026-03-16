@@ -118,7 +118,7 @@ export default function FinalMonolith() {
         
         {/* 1. Ambient Spotlight */}
         <motion.div 
-          className="absolute top-0 left-0 rounded-full pointer-events-none will-change-transform"
+          className="absolute top-0 left-0 rounded-full pointer-events-none transform-gpu will-change-transform"
           style={{
             width: '60vw',
             height: '60vw',
@@ -138,7 +138,7 @@ export default function FinalMonolith() {
           <motion.div 
             animate={{ x: [0, -2000] }} 
             transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-            className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white will-change-transform"
+            className="whitespace-nowrap text-[15vw] font-black uppercase tracking-tighter text-white transform-gpu will-change-transform"
           >
             INNOVATION • DISRUPTION • CREATIVITY • INNOVATION • DISRUPTION • CREATIVITY •
           </motion.div>

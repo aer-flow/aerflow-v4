@@ -35,12 +35,14 @@ export default function HeroCanvas() {
     <div className="absolute inset-0 z-0">
       <Canvas 
         camera={{ position: [0, 0, 1] }}
-        dpr={[1, 2]} // Limitează randarea pe ecrane Retina/4K
+        dpr={window.devicePixelRatio > 1 ? [1, 1.5] : [1, 1]} // Optimatized dpr for performance
         gl={{ 
           powerPreference: "high-performance",
           antialias: false,
           stencil: false,
-          depth: false
+          depth: false,
+          alpha: false, // Background is solid enough
+          precision: "lowp" // Speed over quality for background distortion
         }}
         performance={{ min: 0.5 }}
       >

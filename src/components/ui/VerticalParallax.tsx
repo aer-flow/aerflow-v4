@@ -67,7 +67,7 @@ export default function VerticalParallax({
 
   return (
     <div ref={containerRef} className={`${className} overflow-visible`}>
-      <div ref={targetRef} className="w-full h-full will-change-transform">
+      <div ref={targetRef} className="w-full h-full transform-gpu will-change-transform">
         {children}
       </div>
     </div>
