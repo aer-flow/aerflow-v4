@@ -36,12 +36,13 @@ export default function ParallaxImage({
           yPercent: 10,
           scale: 1.25,
           ease: "none",
+          force3D: true,
           scrollTrigger: {
             trigger: containerRef.current,
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: true,
+            scrub: 1,
           },
         }
       );

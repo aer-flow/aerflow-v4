@@ -28,12 +28,15 @@ export default function VerticalParallax({
         {
           y: -offset,
           ease: "none",
+          force3D: true, // Hardware acceleration
+          overwrite: 'auto',
           scrollTrigger: {
             trigger: ref.current,
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: true,
+            scrub: 1, // Smooth interpolation (1s lag)
+            anticipatePin: 1
           }
         }
       );
