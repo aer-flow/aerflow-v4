@@ -1,22 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+";
 
-export default function GlitchText({ text, as: Component = 'span', className = '' }: any) {
+export default function GlitchText({ text, className = '' }: { text: string; className?: string }) {
   const [displayText, setDisplayText] = useState(text);
   const [isHovered, setIsHovered] = useState(false);
+  const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!isHovered) {
-      setDisplayText(text);
-      return;
-    }
+    if (!isHovered) return;
 
     let iteration = 0;
-    let interval: any;
 
-    interval = setInterval(() => {
-      setDisplayText((_prev: string) => 
+    intervalRef.current = window.setInterval(() => {
+      setDisplayText(
         text
           .split("")
           .map((_letter: string, index: number) => {
@@ -26,20 +23,31 @@ export default function GlitchText({ text, as: Component = 'span', className = '
           .join("")
       );
 
-      if (iteration >= text.length) clearInterval(interval);
+      if (iteration >= text.length && intervalRef.current) {
+        window.clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
       iteration += 1 / 3;
     }, 30);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
   }, [isHovered, text]);
 
   return (
-    <Component 
+    <span
       className={className} 
       onMouseEnter={() => setIsHovered(true)} 
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setDisplayText(text);
+      }}
     >
       {displayText}
-    </Component>
+    </span>
   );
 }

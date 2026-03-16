@@ -9,6 +9,11 @@ import { useCursorStore } from '@/store/useCursorStore';
 import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
+type WindowWithLenis = Window & {
+  lenis?: {
+    scrollTo: (target: number, options?: { duration?: number; easing?: (t: number) => number }) => void;
+  } | null;
+};
 
 export default function FinalMonolith() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,7 +60,10 @@ export default function FinalMonolith() {
         }
       });
 
-      tl.fromTo(textRef.current.children,
+      const textNode = textRef.current;
+      if (!textNode) return;
+
+      tl.fromTo(textNode.children,
         { 
           opacity: 0, 
           scale: 0.92,
@@ -98,8 +106,8 @@ export default function FinalMonolith() {
   }, []);
 
   const handleBackToTop = () => {
-    if ((window as any).lenis) {
-      (window as any).lenis.scrollTo(0, {
+    if ((window as WindowWithLenis).lenis) {
+      (window as WindowWithLenis).lenis?.scrollTo(0, {
         duration: 2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
       });

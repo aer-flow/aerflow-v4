@@ -1,14 +1,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { shouldUseLiteEffects } from '@/utils/device';
 
 export default function FloatingElements() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(shouldUseLiteEffects());
-  }, []);
+  const isMobile = shouldUseLiteEffects();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

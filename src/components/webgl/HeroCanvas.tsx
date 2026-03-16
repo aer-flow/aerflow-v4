@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import * as THREE from 'three';
 import { FluidDistortionMaterial } from './FluidDistortionMaterial';
 import { shouldUseLiteEffects } from '@/utils/device';
@@ -8,7 +8,7 @@ import { shouldUseLiteEffects } from '@/utils/device';
 void FluidDistortionMaterial;
 
 function FluidPlane() {
-  const materialRef = useRef<any>(null);
+  const materialRef = useRef<(THREE.ShaderMaterial & { uTime: number; uPointer: THREE.Vector2 }) | null>(null);
   const { viewport, pointer } = useThree();
 
   useFrame((state) => {
@@ -25,7 +25,7 @@ function FluidPlane() {
   return (
     <mesh scale={[viewport.width, viewport.height, 1]}>
       <planeGeometry args={[1, 1, 16, 16]} />
-      {/* @ts-ignore - extended in FluidDistortionMaterial.tsx */}
+      {/* @ts-expect-error - extended in FluidDistortionMaterial.tsx */}
       <fluidDistortionMaterial ref={materialRef} uColorBase={new THREE.Color('#070707')} uColorHighlight={new THREE.Color('#1a1a1a')} />
     </mesh>
   );
@@ -38,11 +38,7 @@ function MobileHeroFallback() {
 }
 
 export default function HeroCanvas() {
-  const [isMobile, setIsMobile] = useState(true);
-
-  useEffect(() => {
-    setIsMobile(shouldUseLiteEffects());
-  }, []);
+  const isMobile = shouldUseLiteEffects();
 
   // On mobile, skip WebGL entirely — use a CSS gradient fallback
   if (isMobile) {

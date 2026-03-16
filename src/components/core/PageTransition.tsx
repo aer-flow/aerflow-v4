@@ -3,16 +3,17 @@ import type { ReactNode } from 'react';
 import { shouldReduceMotion } from '@/utils/device';
 
 const columns = 5;
+const pageEase: [number, number, number, number] = [0.76, 0, 0.24, 1];
 
 const expandVariants = {
   initial: { top: 0 },
   enter: (i: number) => ({
     top: "100%",
-    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any, delay: 0.05 * i },
+    transition: { duration: 0.8, ease: pageEase, delay: 0.05 * i },
   }),
   exit: (i: number) => ({
     top: 0,
-    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as any, delay: 0.05 * i },
+    transition: { duration: 0.8, ease: pageEase, delay: 0.05 * i },
   }),
 };
 
@@ -25,7 +26,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
         initial={reduceMotion ? false : { y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1, transitionEnd: { transform: "none" } }}
         exit={reduceMotion ? { opacity: 0 } : { y: -40, opacity: 0 }}
-        transition={reduceMotion ? { duration: 0.2 } : { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+        transition={reduceMotion ? { duration: 0.2 } : { duration: 0.8, ease: pageEase, delay: 0.2 }}
         className="w-full h-full"
       >
         {children}

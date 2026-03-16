@@ -5,8 +5,8 @@ import { shouldUseLiteEffects } from '@/utils/device';
 
 export default function CustomCursor() {
   const { variant, text } = useCursorStore();
-  const [isVisible, setIsVisible] = useState(false);
   const isMobile = shouldUseLiteEffects();
+  const [isVisible, setIsVisible] = useState(!isMobile);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -31,9 +31,6 @@ export default function CustomCursor() {
     window.addEventListener('mousemove', moveCursor, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
-
-    setIsVisible(true);
-
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mouseleave', handleMouseLeave);

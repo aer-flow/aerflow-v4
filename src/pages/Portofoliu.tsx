@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import PageTransition from '@/components/core/PageTransition';
 import VerticalParallax from '@/components/ui/VerticalParallax';
-import { useCursorStore } from '@/store/useCursorStore';
+import { useCursorStore, type CursorState } from '@/store/useCursorStore';
 
 const works = [
   { title: "NEXUS", client: "FINTECH", year: "2024", img: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2564" },
@@ -14,7 +14,7 @@ const works = [
 
 export default function Portofoliu() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const setCursorVariant = useCursorStore((state: any) => state.setCursorVariant);
+  const setCursorVariant = useCursorStore((state: CursorState) => state.setCursorVariant);
 
   return (
     <PageTransition>

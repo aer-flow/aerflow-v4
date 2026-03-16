@@ -5,6 +5,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import { shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
+type WindowWithLenis = Window & { lenis?: Lenis | null };
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     });
 
     lenis.on('scroll', ScrollTrigger.update);
-    (window as any).lenis = lenis;
+    (window as WindowWithLenis).lenis = lenis;
 
     const refresh = () => lenis.resize();
     ScrollTrigger.addEventListener('refresh', refresh);
@@ -40,7 +41,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     gsap.ticker.add(update);
 
     return () => {
-      (window as any).lenis = null;
+      (window as WindowWithLenis).lenis = null;
       ScrollTrigger.removeEventListener('refresh', refresh);
       lenis.destroy();
       gsap.ticker.remove(update);
