@@ -7,7 +7,7 @@ import PageTransition from '@/components/core/PageTransition';
 import ParallaxImage from '@/components/ui/ParallaxImage';
 import ParallaxText from '@/components/ui/ParallaxText';
 import VerticalParallax from '@/components/ui/VerticalParallax';
-import { shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
+import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -82,6 +82,7 @@ export default function Home() {
   useEffect(() => {
     const isLiteMode = shouldUseLiteEffects();
     const isReducedMotion = shouldReduceMotion();
+    const isMobile = isMobileViewport();
     let isActive = true;
     const imageCleanups: Array<() => void> = [];
 
@@ -128,7 +129,7 @@ export default function Home() {
             pin: true,
             pinSpacing: true,
             anticipatePin: 1,
-            scrub: 0.6,
+            scrub: isMobile ? 1.05 : 0.6,
             refreshPriority: 1,
             invalidateOnRefresh: true,
           },

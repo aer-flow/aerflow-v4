@@ -44,18 +44,19 @@ export default function ServicesStack() {
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
         const innerCard = innerCardsRef.current[index];
+        const shouldPinCard = !isMobile && !reduceMotion && index < services.length - 1;
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: card,
             start: "top top",
             end: "+=100%", 
-            pin: isMobile || reduceMotion ? false : true,
-            pinSpacing: isMobile ? false : false,
+            pin: shouldPinCard,
+            pinSpacing: false,
             scrub: reduceMotion ? false : isMobile ? 0.2 : 0.45,
             invalidateOnRefresh: true,
             anticipatePin: 1,
-            pinType: "fixed",
+            pinType: shouldPinCard ? "fixed" : undefined,
           }
         });
 
@@ -98,7 +99,7 @@ export default function ServicesStack() {
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`sticky top-0 md:relative h-[100dvh] w-full`}
+            className={`${index < services.length - 1 ? 'sticky top-0' : 'relative'} md:relative h-[100dvh] w-full`}
           >
             <div
               ref={(el) => { innerCardsRef.current[index] = el; }}
