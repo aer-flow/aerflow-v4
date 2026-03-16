@@ -7,47 +7,61 @@ gsap.registerPlugin(ScrollTrigger);
 interface VerticalParallaxProps {
   children: React.ReactNode;
   offset?: number; 
+  speed?: number; // Added speed prop for more intuitive parallax
   className?: string;
   containerAnimation?: gsap.core.Animation;
+  triggerRef?: React.RefObject<HTMLElement | null>;
 }
 
 export default function VerticalParallax({ 
   children, 
   offset = 80, 
+  speed = 1, // 1 is normal scroll, < 1 is slower, > 1 is faster
   className = "",
-  containerAnimation
+  containerAnimation,
+  triggerRef
 }: VerticalParallaxProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!targetRef.current) return;
+
+    // Use triggerRef if provided, otherwise fallback to containerRef
+    const trigger = triggerRef?.current || containerRef.current;
+    if (!trigger) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(ref.current, 
-        { y: offset },
+      // Calculate y movement based on speed or use offset as fallback/addition
+      // If speed is 1, no extra movement. If speed is 1.1, it moves 10% faster.
+      const moveDistance = speed !== 1 ? (speed - 1) * 100 : offset;
+
+      gsap.fromTo(targetRef.current, 
+        { yPercent: moveDistance },
         {
-          y: -offset,
+          yPercent: -moveDistance,
           ease: "none",
-          force3D: true, // Hardware acceleration
-          overwrite: 'auto',
+          force3D: true,
           scrollTrigger: {
-            trigger: ref.current,
+            trigger: trigger,
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: 1, // Smooth interpolation (1s lag)
-            anticipatePin: 1
+            scrub: true,
+            invalidateOnRefresh: true,
           }
         }
       );
-    }, ref);
+    }, containerRef);
 
     return () => ctx.revert();
-  }, [offset, containerAnimation]);
+  }, [offset, speed, containerAnimation, triggerRef]);
 
   return (
-    <div ref={ref} className={className} style={{ willChange: "transform" }}>
-      {children}
+    <div ref={containerRef} className={`${className} overflow-visible`}>
+      <div ref={targetRef} className="w-full h-full will-change-transform">
+        {children}
+      </div>
     </div>
   );
 }
