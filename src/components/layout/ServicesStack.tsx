@@ -40,11 +40,12 @@ export default function ServicesStack() {
     const ctx = gsap.context(() => {
       const isMobile = isMobileViewport();
       const reduceMotion = shouldReduceMotion();
+      if (isMobile || reduceMotion) return;
 
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
         const innerCard = innerCardsRef.current[index];
-        const shouldPinCard = !isMobile && !reduceMotion && index < services.length - 1;
+        const shouldPinCard = index < services.length - 1;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -53,7 +54,7 @@ export default function ServicesStack() {
             end: "+=100%", 
             pin: shouldPinCard,
             pinSpacing: false,
-            scrub: reduceMotion ? false : isMobile ? 0.2 : 0.45,
+            scrub: 0.45,
             invalidateOnRefresh: true,
             anticipatePin: 1,
             pinType: shouldPinCard ? "fixed" : undefined,
@@ -62,8 +63,8 @@ export default function ServicesStack() {
 
         if (index < services.length - 1 && innerCard) {
           tl.to(innerCard, {
-            scale: isMobile ? 0.98 : 0.94,
-            opacity: isMobile ? 0.7 : 0.45,
+            scale: 0.94,
+            opacity: 0.45,
             transformOrigin: "top center",
             ease: "none"
           }, 0);
@@ -80,12 +81,12 @@ export default function ServicesStack() {
     <section ref={containerRef} className="relative w-full pb-[10vh] bg-aerflow-dark" id="servicii">
       {/* Header Secțiune */}
       <div className="w-full px-8 py-20">
-        <VerticalParallax speed={1.3}>
+        <VerticalParallax speed={1.3} disabledOnMobile>
           <p className="font-mono text-sm tracking-widest text-aerflow-gray uppercase mb-4">
             [ Expertiza Noastră ]
           </p>
         </VerticalParallax>
-        <VerticalParallax speed={1.8}>
+        <VerticalParallax speed={1.8} disabledOnMobile>
           <h2 className="text-[clamp(2.2rem,5vw,5.5rem)] font-sans font-black leading-none text-aerflow-light uppercase tracking-tighter">
             Nu livrăm opțiuni.<br />
             <span className="text-aerflow-accent font-serif italic font-normal text-[1.1em]">Livrăm soluții.</span>
@@ -99,11 +100,11 @@ export default function ServicesStack() {
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`${index < services.length - 1 ? 'sticky top-0' : 'relative'} md:relative h-[100dvh] w-full`}
+            className="relative min-h-[100svh] md:h-screen w-full"
           >
             <div
               ref={(el) => { innerCardsRef.current[index] = el; }}
-              className={`w-full h-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} origin-top will-change-transform overflow-hidden md:overflow-visible`}
+              className={`w-full min-h-[100svh] md:h-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} origin-top will-change-transform overflow-hidden md:overflow-visible`}
             >
               {/* Mobile Header - Repositioned to be visible below Navbar */}
               <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
@@ -112,12 +113,15 @@ export default function ServicesStack() {
                     [{service.id}]
                   </span>
                 </VerticalParallax>
+                <div className="w-10 h-10 flex md:hidden items-center justify-center border border-current rounded-full">
+                  ↓
+                </div>
                 <motion.div 
                   initial={{ opacity: 0, rotate: -45 }}
                   whileInView={{ opacity: 1, rotate: 0 }}
-                  viewport={{ once: false, margin: "-10%" }}
+                  viewport={{ once: true, margin: "-10%" }}
                   transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-                  className="w-10 h-10 md:w-20 md:h-20 flex items-center justify-center border border-current rounded-full"
+                  className="hidden md:flex w-20 h-20 items-center justify-center border border-current rounded-full"
                 >
                   ↓
                 </motion.div>

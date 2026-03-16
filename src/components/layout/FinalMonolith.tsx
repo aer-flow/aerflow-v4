@@ -123,10 +123,10 @@ export default function FinalMonolith() {
       ref={containerRef} 
       onMouseEnter={updateBounds}
       onMouseMove={handleMouseMove}
-      className="relative w-full h-[150vh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
+      className="relative w-full h-[160svh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
     >
       {/* 0. Sticky Wrapper for Mobile Content */}
-      <div className="sticky top-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden">
+      <div className="sticky top-0 w-full h-[100svh] md:h-screen flex flex-col justify-center items-center overflow-hidden">
         
         {/* 1. Ambient Spotlight — desktop only */}
         {!shouldUseLiteEffects() && (

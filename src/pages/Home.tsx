@@ -186,7 +186,7 @@ export default function Home() {
         </Suspense>
 
         {/* HERO */}
-        <section className="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
+        <section className="relative w-full h-[100svh] md:h-screen flex flex-col justify-center items-center overflow-hidden">
           <Suspense fallback={<HeroFallback />}>
             <HeroCanvas />
           </Suspense>
@@ -284,7 +284,7 @@ export default function Home() {
         ) : (
           <section
             ref={scrollWrapperRef}
-            className="relative z-20 h-screen w-full overflow-hidden bg-aerflow-dark"
+            className="relative z-20 h-[100svh] md:h-screen w-full overflow-hidden bg-aerflow-dark"
           >
             <div
               className="relative h-full w-full overflow-hidden"
@@ -314,7 +314,7 @@ export default function Home() {
         <DeferredSection
           minHeight="100vh"
           rootMargin="0px"
-          fallback={<div className="h-screen w-full bg-[#020202]" />}
+          fallback={<div className="h-[100svh] md:h-screen w-full bg-[#020202]" />}
         >
           <FinalMonolith />
         </DeferredSection>
