@@ -41,11 +41,6 @@ export default function ServicesStack() {
         if (!card) return;
 
         const isMobile = window.innerWidth < 768;
-        if (isMobile) {
-          // Reset any GSAP-applied styles for mobile stability
-          gsap.set(card, { clearProps: "all" });
-          return;
-        }
 
         // Create a timeline for each card's pinning and internal animations
         const tl = gsap.timeline({
@@ -54,9 +49,9 @@ export default function ServicesStack() {
             start: "top top",
             // Use percentage string for stability on mobile
             end: "+=100%", 
-            pin: true,
-            pinSpacing: false,
-            scrub: 1,
+            pin: isMobile ? false : true, // Skip GSAP pinning on mobile (CSS handles it)
+            pinSpacing: isMobile ? false : false,
+            scrub: isMobile ? 0.5 : 1, // Smoother scrub on mobile
             invalidateOnRefresh: true,
             anticipatePin: 1, // Smooths out pinning onset
             pinType: "fixed",
@@ -98,13 +93,13 @@ export default function ServicesStack() {
         </VerticalParallax>
       </div>
 
-      {/* Stacking Cards - No longer using CSS sticky here, GSAP handles it */}
+      {/* Stacking Cards - Hybrid CSS Sticky + GSAP */}
       <div className="relative w-full">
         {services.map((service, index) => (
           <div
             key={index}
             ref={(el) => { cardsRef.current[index] = el; }}
-            className={`relative h-[100dvh] w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-visible`}
+            className={`sticky top-0 md:relative h-[100dvh] w-full flex flex-col justify-center p-8 md:p-16 ${service.color} ${service.textColor} overflow-visible`}
           >
             {/* Mobile Header - Repositioned to be visible below Navbar */}
             <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
@@ -123,7 +118,7 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              {/* Responsive speed (2.5 desktop height-relative) */}
+              {/* Vertical Parallax is already disabled on mobile from previous fix */}
               <VerticalParallax speed={2.5} trigger={cardsRef.current[index]}>
                 <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.5rem,12vw,14rem)] font-black uppercase leading-[0.85] tracking-tight mb-4 md:mb-0">
                   {service.title.split('\n').map((line, i) => (
