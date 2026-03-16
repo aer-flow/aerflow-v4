@@ -86,7 +86,7 @@ export default function Home() {
           <HeroCanvas />
           
           <div className="relative z-10 flex flex-col items-center pointer-events-none text-center text-aerflow-light">
-            <VerticalParallax speed={2.4}>
+            <VerticalParallax speed={2.2}>
               <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl">
                 <motion.span 
                   initial={{ y: 100, opacity: 0 }}
@@ -116,7 +116,7 @@ export default function Home() {
             </VerticalParallax>
           </div>
 
-          <VerticalParallax speed={1.6} className="absolute bottom-10 right-10 z-10">
+          <VerticalParallax speed={1.2} className="absolute bottom-10 right-10 z-10">
             <div className="font-mono text-sm tracking-widest text-aerflow-light opacity-60 uppercase">
               [ SCROLL ]
             </div>

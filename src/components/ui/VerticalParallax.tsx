@@ -41,7 +41,7 @@ export default function VerticalParallax({
 
     const ctx = gsap.context(() => {
       
-      const baseIntensity = isMobile ? 0.08 : 0.6; // Very subtle on mobile to avoid jitter in sticky
+      const baseIntensity = isMobile ? 0.25 : 0.05; // Refined: clarity on mobile, absolute subtlety on desktop
       const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
 
       gsap.fromTo(targetRef.current, 
