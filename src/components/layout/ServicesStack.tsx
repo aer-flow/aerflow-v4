@@ -40,7 +40,7 @@ export default function ServicesStack() {
     const ctx = gsap.context(() => {
       const isMobile = isMobileViewport();
       const reduceMotion = shouldReduceMotion();
-      if (reduceMotion) return;
+      if (isMobile || reduceMotion) return;
 
       cardsRef.current.forEach((card, index) => {
         if (!card) return;

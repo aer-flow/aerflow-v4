@@ -47,7 +47,7 @@ export default function FinalMonolith() {
     const ctx = gsap.context(() => {
       const isMobile = isMobileViewport();
       const reduceMotion = shouldReduceMotion();
-      const scrubAmount = reduceMotion ? false : isMobile ? 1.15 : 0.7;
+      const scrubAmount = reduceMotion ? false : isMobile ? 1 : 0.7;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -124,7 +124,7 @@ export default function FinalMonolith() {
       ref={containerRef} 
       onMouseEnter={updateBounds}
       onMouseMove={handleMouseMove}
-      className="relative w-full h-[240svh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
+      className="relative w-full h-[220svh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
     >
       {/* 0. Sticky Wrapper for Mobile Content */}
       <div className="sticky top-0 w-full h-[100svh] md:h-screen flex flex-col justify-center items-center overflow-hidden">
@@ -162,13 +162,13 @@ export default function FinalMonolith() {
         )}
 
         {/* 4. Grid Details */}
-        <VerticalParallax speed={1.3} className="absolute top-32 left-8 md:top-32 md:left-10 z-10">
+        <VerticalParallax speed={1.3} disabledOnMobile className="absolute top-32 left-8 md:top-32 md:left-10 z-10">
           <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
             [ BUCUREȘTI, RO ]<br/>
             44.4268° N, 26.1025° E
           </div>
         </VerticalParallax>
-        <VerticalParallax speed={1.3} className="absolute top-[11rem] left-8 md:top-[11rem] md:left-10 z-10">
+        <VerticalParallax speed={1.3} disabledOnMobile className="absolute top-[11rem] left-8 md:top-[11rem] md:left-10 z-10">
           <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left flex items-center justify-start gap-3 pointer-events-none">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
@@ -181,7 +181,7 @@ export default function FinalMonolith() {
         <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-24 md:mt-40">
           
           {/* AERFLOW Monumental Text */}
-          <VerticalParallax speed={1.7} intensity={1.1} triggerRef={containerRef}>
+          <VerticalParallax speed={1.7} intensity={1.1} triggerRef={containerRef} disabledOnMobile>
             <h2 
               ref={textRef} 
               className="text-[clamp(4rem,15vw,20rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex justify-center"
@@ -195,7 +195,7 @@ export default function FinalMonolith() {
           </VerticalParallax>
 
           {/* The Manifesto Subtext */}
-          <VerticalParallax speed={1.38} intensity={1.05} triggerRef={containerRef}>
+          <VerticalParallax speed={1.38} intensity={1.05} triggerRef={containerRef} disabledOnMobile>
             <div ref={manifestoRef} className="mt-8 text-center max-w-3xl">
               <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
                 "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
@@ -205,7 +205,7 @@ export default function FinalMonolith() {
           </VerticalParallax>
 
           {/* Dual Actions */}
-          <VerticalParallax speed={1.52} intensity={1.08} triggerRef={containerRef}>
+          <VerticalParallax speed={1.52} intensity={1.08} triggerRef={containerRef} disabledOnMobile>
             <div 
               ref={actionsRef}
               className="mt-16 md:mt-20 z-20 flex flex-col md:flex-row gap-6 md:gap-8 items-center"
