@@ -58,11 +58,13 @@ export default function Home() {
         scrollTrigger: {
           trigger: scrollWrapperRef.current,
           pin: true,
-          scrub: 0.5, // Faster scrub for more "locked" feel
+          scrub: 1, // Smoother scrub for better sync
           start: "top top",
-          end: () => `+=${totalWidth}`, // Reverted to full width which is safer for GSAP pinning
+          end: () => `+=${totalWidth - viewportWidth}`, // Precise distance
           refreshPriority: 1,
           invalidateOnRefresh: true,
+          pinType: "fixed",
+          anticipatePin: 1,
         }
       });
       setHorizontalAnim(anim);
