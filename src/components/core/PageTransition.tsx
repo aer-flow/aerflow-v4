@@ -20,10 +20,9 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     <div className="relative w-full h-full bg-aerflow-dark">
       <motion.div 
         initial={{ y: 40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        animate={{ y: 0, opacity: 1, transitionEnd: { transform: "none" } }}
         exit={{ y: -40, opacity: 0 }}
         transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
-        transitionEnd={{ transform: "none" }}
         className="w-full h-full"
       >
         {children}
