@@ -31,7 +31,6 @@ export default function Home() {
     // Manifesto Scroll Animation
     if (textRef.current) {
       const words = textRef.current.children;
-      const isMobile = window.innerWidth < 768;
 
       gsap.fromTo(words, 
         { color: "#333333" },
