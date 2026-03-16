@@ -101,7 +101,7 @@ export default function ServicesStack() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end w-full gap-8 md:gap-10">
-              <VerticalParallax offset={20} triggerRef={{ current: cardsRef.current[index] } as any}>
+              <VerticalParallax speed={1.7} triggerRef={{ current: cardsRef.current[index] } as any}>
                 <h3 className="flex flex-col gap-2 md:gap-4 text-[clamp(2.2rem,11vw,12rem)] font-black uppercase leading-none tracking-normal mb-4 md:mb-0">
                   {service.title.split('\n').map((line, i) => (
                     <span 
@@ -113,7 +113,7 @@ export default function ServicesStack() {
                   ))}
                 </h3>
               </VerticalParallax>
-              <VerticalParallax offset={10} triggerRef={{ current: cardsRef.current[index] } as any}>
+              <VerticalParallax speed={1.3} triggerRef={{ current: cardsRef.current[index] } as any}>
                 <p className="max-w-sm md:max-w-md font-sans text-sm md:text-lg leading-relaxed md:pb-4 font-medium opacity-80">
                   {service.desc}
                 </p>

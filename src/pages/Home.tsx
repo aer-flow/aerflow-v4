@@ -87,7 +87,7 @@ export default function Home() {
           <HeroCanvas />
           
           <div className="relative z-10 flex flex-col items-center pointer-events-none text-center text-aerflow-light">
-            <VerticalParallax speed={1.15}>
+            <VerticalParallax speed={1.6}>
               <h1 className="text-[clamp(3rem,10vw,12rem)] leading-[0.85] tracking-tighter uppercase font-black drop-shadow-2xl">
                 <motion.span 
                   initial={{ y: 100, opacity: 0 }}
@@ -124,13 +124,13 @@ export default function Home() {
 
         {/* MANIFESTO */}
         <section ref={manifestoRef} className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 py-32 bg-aerflow-dark z-10 shadow-[0_-50px_100px_rgba(0,0,0,0.5)]">
-          <VerticalParallax speed={0.9} className="w-full">
+          <VerticalParallax speed={0.4} className="w-full">
             <ParallaxText baseVelocity={-250} className="mb-20 opacity-10">
               <span className="text-[15vw] font-black uppercase leading-none tracking-tight">Aerflow • Creative • Technology • </span>
             </ParallaxText>
           </VerticalParallax>
           
-          <VerticalParallax speed={1.1}>
+          <VerticalParallax speed={1.4}>
             <h2 
               ref={textRef} 
               className="text-[clamp(2rem,6vw,6rem)] leading-tight font-sans font-bold max-w-6xl text-center text-aerflow-light"
