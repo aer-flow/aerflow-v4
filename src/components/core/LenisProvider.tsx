@@ -20,14 +20,14 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     }
 
     const lenis = new Lenis({
-      duration: 1.0,
+      duration: 1.5, // Increased from 1.0 for a more "cinematic", slower feel
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
       touchMultiplier: 1.2,
-      lerp: 0.1,
+      lerp: 0.07, // Decreased from 0.1 for more "momentum" and slower response
     });
 
     lenis.on('scroll', ScrollTrigger.update);
