@@ -6,19 +6,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface VerticalParallaxProps {
   children: React.ReactNode;
-  offset?: number; 
-  speed?: number; // Added speed prop for more intuitive parallax
+  speed?: number; 
   className?: string;
   containerAnimation?: gsap.core.Animation;
+  // Accept direct element or ref for better stability
+  trigger?: HTMLElement | null;
   triggerRef?: React.RefObject<HTMLElement | null>;
 }
 
 export default function VerticalParallax({ 
   children, 
-  offset = 80, 
-  speed = 1, // 1 is normal scroll, < 1 is slower, > 1 is faster
+  speed = 1.1,
   className = "",
   containerAnimation,
+  trigger,
   triggerRef
 }: VerticalParallaxProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,23 +28,23 @@ export default function VerticalParallax({
   useEffect(() => {
     if (!targetRef.current) return;
 
-    // Use triggerRef if provided, otherwise fallback to containerRef
-    const trigger = triggerRef?.current || containerRef.current;
-    if (!trigger) return;
+    // Resolve trigger: prioritize direct element, then ref, then fallback to container
+    const activeTrigger = trigger || triggerRef?.current || containerRef.current;
+    if (!activeTrigger) return;
 
     const ctx = gsap.context(() => {
-      // Calculate y movement based on speed or use offset as fallback/addition
-      // If speed is 1, no extra movement. If speed is 1.1, it moves 10% faster.
-      const moveDistance = speed !== 1 ? (speed - 1) * 100 : offset;
+      // Use speed to determine movement. 
+      // Higher speed = more movement against scroll.
+      const moveDistance = (speed - 1) * 200; 
 
       gsap.fromTo(targetRef.current, 
-        { yPercent: moveDistance },
+        { y: moveDistance },
         {
-          yPercent: -moveDistance,
+          y: -moveDistance,
           ease: "none",
           force3D: true,
           scrollTrigger: {
-            trigger: trigger,
+            trigger: activeTrigger,
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
@@ -55,7 +56,7 @@ export default function VerticalParallax({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [offset, speed, containerAnimation, triggerRef]);
+  }, [speed, containerAnimation, trigger, triggerRef]);
 
   return (
     <div ref={containerRef} className={`${className} overflow-visible`}>
