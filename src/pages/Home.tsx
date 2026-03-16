@@ -116,7 +116,7 @@ export default function Home() {
             </VerticalParallax>
           </div>
 
-          <VerticalParallax speed={1.1} className="absolute bottom-10 right-10 z-10">
+          <VerticalParallax speed={1.8} className="absolute bottom-10 right-10 z-10">
             <div className="font-mono text-sm tracking-widest text-aerflow-light opacity-60 uppercase">
               [ SCROLL ]
             </div>

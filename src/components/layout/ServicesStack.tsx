@@ -80,7 +80,7 @@ export default function ServicesStack() {
     <section ref={containerRef} className="relative w-full pb-[10vh] bg-aerflow-dark" id="servicii">
       {/* Header Secțiune */}
       <div className="w-full px-8 py-20">
-        <VerticalParallax speed={1.3}>
+        <VerticalParallax speed={1.8}>
           <p className="font-mono text-sm tracking-widest text-aerflow-gray uppercase mb-4">
             [ Expertiza Noastră ]
           </p>
@@ -103,7 +103,7 @@ export default function ServicesStack() {
           >
             {/* Mobile Header - Repositioned to be visible below Navbar */}
             <div className="absolute top-28 left-8 right-8 md:static flex justify-between items-start md:w-full mb-8 md:mb-12">
-              <VerticalParallax speed={1.2} trigger={cardsRef.current[index]}>
+              <VerticalParallax speed={2.2} trigger={cardsRef.current[index]}>
                 <span className="font-mono text-lg md:text-2xl font-bold tracking-tighter">
                   [{service.id}]
                 </span>
@@ -133,7 +133,7 @@ export default function ServicesStack() {
                   ))}
                 </h3>
               </VerticalParallax>
-              <VerticalParallax speed={1.6} trigger={cardsRef.current[index]}>
+              <VerticalParallax speed={3.2} trigger={cardsRef.current[index]}>
                 <p className="max-w-sm md:max-w-md font-sans text-sm md:text-xl leading-relaxed md:pb-8 font-medium opacity-90">
                   {service.desc}
                 </p>

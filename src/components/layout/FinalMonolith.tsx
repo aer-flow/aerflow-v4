@@ -138,13 +138,13 @@ export default function FinalMonolith() {
       </div>
 
       {/* 4. Grid Details */}
-      <VerticalParallax speed={1.3} className="absolute top-24 left-8 md:top-10 md:left-10 z-10">
+      <VerticalParallax speed={2.2} className="absolute top-24 left-8 md:top-10 md:left-10 z-10">
         <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-gray/60 uppercase pointer-events-none">
           [ BUCUREȘTI, RO ]<br/>
           44.4268° N, 26.1025° E
         </div>
       </VerticalParallax>
-      <VerticalParallax speed={1.3} className="absolute top-36 left-8 md:top-10 md:right-10 md:left-auto z-10">
+      <VerticalParallax speed={2.2} className="absolute top-36 left-8 md:top-10 md:right-10 md:left-auto z-10">
         <div className="font-mono text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] text-aerflow-accent/80 uppercase text-left md:text-right flex items-center justify-start md:justify-end gap-3 pointer-events-none">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-aerflow-accent animate-pulse" />
@@ -169,7 +169,7 @@ export default function FinalMonolith() {
         </h2>
 
         {/* The Manifesto Subtext */}
-        <VerticalParallax speed={0.85} className="mt-8 text-center max-w-3xl">
+        <VerticalParallax speed={1.8} className="mt-8 text-center max-w-3xl">
           <div ref={manifestoRef}>
             <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
               "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}

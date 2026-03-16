@@ -35,7 +35,7 @@ export default function VerticalParallax({
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
       
-      const baseIntensity = isMobile ? 0.3 : 0.6; // Increased mobile intensity to 0.3 (was 0.15)
+      const baseIntensity = isMobile ? 0.15 : 0.6; // Reverted to subtle 0.15 for mobile
       const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
 
       gsap.fromTo(targetRef.current, 
