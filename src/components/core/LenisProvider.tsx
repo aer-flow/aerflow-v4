@@ -26,7 +26,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       smoothWheel: true,
       wheelMultiplier: 1.0,
       touchMultiplier: 1.2,
-      lerp: 0.07, // Decreased from 0.1 for more "momentum" and slower response
+      lerp: 0.1, // Adjusted from 0.07 for better responsiveness while staying smooth
     });
 
     lenis.on('scroll', ScrollTrigger.update);

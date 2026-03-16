@@ -63,11 +63,11 @@ export default function VerticalParallax({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [speed, containerAnimation, trigger, triggerRef]);
+  }, [speed, containerAnimation, trigger, triggerRef, disabledOnMobile]);
 
   return (
     <div ref={containerRef} className={`${className} overflow-visible`}>
-      <div ref={targetRef} className="w-full h-full">
+      <div ref={targetRef} className="inline-block will-change-transform">
         {children}
       </div>
     </div>

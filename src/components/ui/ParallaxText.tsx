@@ -25,6 +25,7 @@ export default function ParallaxText({
       gsap.to(text.current, {
         x: -baseVelocity,
         ease: "none",
+        force3D: true,
         scrollTrigger: {
           trigger: container.current,
           start: "top bottom",
@@ -39,7 +40,7 @@ export default function ParallaxText({
 
   return (
     <div ref={container} className={`overflow-hidden whitespace-nowrap ${className}`}>
-      <div ref={text} className="inline-block">
+      <div ref={text} className="inline-block will-change-transform">
         {children}
       </div>
     </div>
