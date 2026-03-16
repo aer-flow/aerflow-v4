@@ -170,10 +170,10 @@ export default function FinalMonolith() {
           {/* AERFLOW Monumental Text */}
           <h2 
             ref={textRef} 
-            className="text-[clamp(4rem,18vw,22rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex"
+            className="text-[clamp(4rem,18vw,22rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex justify-center flex-wrap"
           >
             {aerflowText.map((letter, i) => (
-              <span key={i} className="inline-block will-change-transform">
+              <span key={i} className="inline-block will-change-transform opacity-0">
                 {letter}
               </span>
             ))}
