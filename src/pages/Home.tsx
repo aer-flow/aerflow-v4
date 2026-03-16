@@ -33,23 +33,19 @@ export default function Home() {
       const words = textRef.current.children;
       const isMobile = window.innerWidth < 768;
 
-      if (isMobile) {
-        gsap.set(words, { color: "#F2F2F2" });
-      } else {
-        gsap.fromTo(words, 
-          { color: "#333333" },
-          {
-            color: "#F2F2F2",
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: manifestoRef.current,
-              start: "top 70%",
-              end: "bottom 50%",
-              scrub: 0.5,
-            }
+      gsap.fromTo(words, 
+        { color: "#333333" },
+        {
+          color: "#F2F2F2",
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: manifestoRef.current,
+            start: "top 70%",
+            end: "bottom 50%",
+            scrub: isMobile ? 0.5 : 0.5,
           }
-        );
-      }
+        }
+      );
     }
 
     // Horizontal Scroll Animation

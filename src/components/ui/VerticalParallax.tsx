@@ -34,9 +34,8 @@ export default function VerticalParallax({
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      if (isMobile) return; // Completely disable on mobile
-
-      const baseIntensity = 0.6;
+      
+      const baseIntensity = isMobile ? 0.3 : 0.6; // Balanced mobile intensity (was 0.6 desktop)
       const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
 
       gsap.fromTo(targetRef.current, 
@@ -50,7 +49,7 @@ export default function VerticalParallax({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: 1,
+            scrub: isMobile ? 0.8 : 1, // Smoother scrub on mobile
             invalidateOnRefresh: true,
           }
         }

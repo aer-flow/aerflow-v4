@@ -43,22 +43,12 @@ export default function FinalMonolith() {
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
 
-      if (isMobile) {
-        // Simple static reveal for mobile
-        gsap.set([letters, manifestoRef.current, actionsRef.current], { 
-          opacity: 1, 
-          scale: 1, 
-          y: 0 
-        });
-        return;
-      }
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=150%", 
-          pin: true,
+          end: isMobile ? "+=100%" : "+=150%", 
+          pin: !isMobile,
           scrub: 0.5,
         }
       });

@@ -22,8 +22,6 @@ export default function ParallaxText({
     if (!container.current || !text.current) return;
 
     const ctx = gsap.context(() => {
-      if (window.innerWidth < 768) return;
-
       gsap.to(text.current, {
         x: -baseVelocity,
         ease: "none",
