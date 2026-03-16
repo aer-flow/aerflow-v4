@@ -116,9 +116,11 @@ export default function Home() {
             </VerticalParallax>
           </div>
 
-          <div className="absolute bottom-10 right-10 z-10 font-mono text-sm tracking-widest text-aerflow-light opacity-60">
-            [ SCROLL ]
-          </div>
+          <VerticalParallax speed={1.1} className="absolute bottom-10 right-10 z-10">
+            <div className="font-mono text-sm tracking-widest text-aerflow-light opacity-60 uppercase">
+              [ SCROLL ]
+            </div>
+          </VerticalParallax>
         </section>
 
         {/* MANIFESTO */}

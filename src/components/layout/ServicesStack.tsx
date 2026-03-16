@@ -80,7 +80,7 @@ export default function ServicesStack() {
     <section ref={containerRef} className="relative w-full pb-[10vh] bg-aerflow-dark" id="servicii">
       {/* Header Secțiune */}
       <div className="w-full px-8 py-20">
-        <VerticalParallax speed={1.15}>
+        <VerticalParallax speed={1.3}>
           <p className="font-mono text-sm tracking-widest text-aerflow-gray uppercase mb-4">
             [ Expertiza Noastră ]
           </p>
