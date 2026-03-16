@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { shouldUseLiteEffects } from '@/utils/device';
+import { isMobileViewport, isTouchDevice, shouldReduceMotion } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 type WindowWithLenis = Window & { lenis?: Lenis | null };
@@ -12,20 +12,25 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     ScrollTrigger.config({ ignoreMobileResize: true });
     gsap.ticker.lagSmoothing(0);
 
-    if (shouldUseLiteEffects()) {
+    if (shouldReduceMotion()) {
       ScrollTrigger.normalizeScroll(false);
       return;
     }
 
+    const touchDevice = isTouchDevice();
+    const mobileViewport = isMobileViewport();
+
     const lenis = new Lenis({
-      duration: 1.7,
+      duration: touchDevice || mobileViewport ? 1.35 : 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.85,
-      touchMultiplier: 1.05,
-      lerp: 0.09,
+      syncTouch: touchDevice,
+      syncTouchLerp: touchDevice ? 0.06 : undefined,
+      touchInertiaMultiplier: touchDevice ? 22 : undefined,
+      wheelMultiplier: mobileViewport ? 0.95 : 1,
+      touchMultiplier: touchDevice ? 0.82 : 1.1,
     });
 
     lenis.on('scroll', ScrollTrigger.update);

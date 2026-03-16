@@ -47,6 +47,7 @@ export default function FinalMonolith() {
     const ctx = gsap.context(() => {
       const isMobile = isMobileViewport();
       const reduceMotion = shouldReduceMotion();
+      const scrubAmount = reduceMotion ? false : isMobile ? 1.15 : 0.7;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -55,7 +56,7 @@ export default function FinalMonolith() {
           end: isMobile ? "bottom bottom" : "+=200%",
           pin: isMobile ? false : true,
           pinType: "fixed",
-          scrub: reduceMotion ? false : 0.7,
+          scrub: scrubAmount,
           invalidateOnRefresh: true,
         }
       });
@@ -123,7 +124,7 @@ export default function FinalMonolith() {
       ref={containerRef} 
       onMouseEnter={updateBounds}
       onMouseMove={handleMouseMove}
-      className="relative w-full h-[160svh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
+      className="relative w-full h-[240svh] md:h-screen bg-[#020202] border-t border-white/10 z-50 transition-colors duration-1000"
     >
       {/* 0. Sticky Wrapper for Mobile Content */}
       <div className="sticky top-0 w-full h-[100svh] md:h-screen flex flex-col justify-center items-center overflow-hidden">
@@ -180,53 +181,59 @@ export default function FinalMonolith() {
         <div className="flex flex-col items-center justify-center z-10 w-full max-w-screen-2xl px-8 mt-24 md:mt-40">
           
           {/* AERFLOW Monumental Text */}
-          <h2 
-            ref={textRef} 
-            className="text-[clamp(4rem,15vw,20rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex justify-center"
-          >
-            {aerflowText.map((letter, i) => (
-              <span key={i} className="inline-block will-change-transform opacity-0">
-                {letter}
-              </span>
-            ))}
-          </h2>
+          <VerticalParallax speed={1.7} intensity={1.1} triggerRef={containerRef}>
+            <h2 
+              ref={textRef} 
+              className="text-[clamp(4rem,15vw,20rem)] font-black uppercase tracking-tighter leading-none text-aerflow-light flex justify-center"
+            >
+              {aerflowText.map((letter, i) => (
+                <span key={i} className="inline-block will-change-transform opacity-0">
+                  {letter}
+                </span>
+              ))}
+            </h2>
+          </VerticalParallax>
 
           {/* The Manifesto Subtext */}
-          <div ref={manifestoRef} className="mt-8 text-center max-w-3xl">
-            <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
-              "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
-              <br/><span className="text-aerflow-light not-italic font-sans font-bold">scriem istoria digitală a brandului tău.</span>"
-            </p>
-          </div>
+          <VerticalParallax speed={1.38} intensity={1.05} triggerRef={containerRef}>
+            <div ref={manifestoRef} className="mt-8 text-center max-w-3xl">
+              <p className="text-lg md:text-2xl font-serif italic text-aerflow-gray leading-relaxed">
+                "Am ajuns la marginea ecranului.<br/>Dar acesta este doar începutul. Nu scriem doar cod,{'\n'}
+                <br/><span className="text-aerflow-light not-italic font-sans font-bold">scriem istoria digitală a brandului tău.</span>"
+              </p>
+            </div>
+          </VerticalParallax>
 
           {/* Dual Actions */}
-          <div 
-            ref={actionsRef}
-            className="mt-16 md:mt-20 z-20 flex flex-col md:flex-row gap-6 md:gap-8 items-center"
-          >
-            <MagneticButton>
-              <Link 
-                to="/contact" 
-                className="px-8 py-4 rounded-full bg-aerflow-accent text-aerflow-dark font-sans font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors duration-500 block"
-                onMouseEnter={() => setCursorVariant('project', 'CLICK')}
-                onMouseLeave={() => setCursorVariant('default')}
-              >
-                Să Începem
-              </Link>
-            </MagneticButton>
+          <VerticalParallax speed={1.52} intensity={1.08} triggerRef={containerRef}>
+            <div 
+              ref={actionsRef}
+              className="mt-16 md:mt-20 z-20 flex flex-col md:flex-row gap-6 md:gap-8 items-center"
+            >
+              <MagneticButton>
+                <Link 
+                  to="/contact" 
+                  className="px-8 py-4 rounded-full bg-aerflow-accent text-aerflow-dark font-sans font-bold uppercase tracking-widest text-sm hover:bg-white transition-colors duration-500 block"
+                  onMouseEnter={() => setCursorVariant('project', 'CLICK')}
+                  onMouseLeave={() => setCursorVariant('default')}
+                >
+                  Să Începem
+                </Link>
+              </MagneticButton>
 
-            <MagneticButton>
-              <button 
-                onClick={handleBackToTop}
-                className="group flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] text-aerflow-gray hover:text-aerflow-light transition-colors duration-500 uppercase bg-transparent border-none outline-none"
-                onMouseEnter={() => setCursorVariant('project', 'SUS')}
-                onMouseLeave={() => setCursorVariant('default')}
-              >
-                [ ↑ Începe din nou ]
-                <span className="w-8 h-[1px] bg-aerflow-gray group-hover:bg-aerflow-light transition-colors duration-500" />
-              </button>
-            </MagneticButton>
-          </div>
+              <MagneticButton>
+                <button 
+                  onClick={handleBackToTop}
+                  className="group flex items-center gap-3 font-mono text-[10px] tracking-[0.2em] text-aerflow-gray hover:text-aerflow-light transition-colors duration-500 uppercase bg-transparent border-none outline-none"
+                  onMouseEnter={() => setCursorVariant('project', 'SUS')}
+                  onMouseLeave={() => setCursorVariant('default')}
+                >
+                  [ ↑ Începe din nou ]
+                  <span className="w-8 h-[1px] bg-aerflow-gray group-hover:bg-aerflow-light transition-colors duration-500" />
+                </button>
+              </MagneticButton>
+            </div>
+          </VerticalParallax>
 
         </div>
       </div>

@@ -275,10 +275,15 @@ export default function Home() {
 
         {useLiteShowcase ? (
           <section className="relative z-20 w-full overflow-hidden bg-aerflow-dark px-4 py-14">
-            <div className="mb-6 px-2 font-mono text-xs tracking-[0.25em] text-aerflow-gray uppercase">
-              [ Selected Work ]
-            </div>
-            <div className="overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
+            <VerticalParallax speed={1.25} intensity={1.05}>
+              <div className="mb-6 px-2 font-mono text-xs tracking-[0.25em] text-aerflow-gray uppercase">
+                [ Selected Work ]
+              </div>
+            </VerticalParallax>
+            <div
+              data-lenis-prevent-touch
+              className="overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+            >
               <div className="flex w-max snap-x snap-mandatory gap-4 px-2 pb-4">
                 {projects.map((proj, i) => (
                   <div key={i} className="relative h-[52vh] w-[84vw] min-w-[84vw] flex-shrink-0 snap-center overflow-hidden rounded-lg">

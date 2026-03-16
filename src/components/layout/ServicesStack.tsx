@@ -40,28 +40,45 @@ export default function ServicesStack() {
     const ctx = gsap.context(() => {
       const isMobile = isMobileViewport();
       const reduceMotion = shouldReduceMotion();
-      if (isMobile || reduceMotion) return;
+      if (reduceMotion) return;
 
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
         const innerCard = innerCardsRef.current[index];
         const shouldPinCard = index < services.length - 1;
+        if (!innerCard) return;
 
-        const tl = gsap.timeline({
+        gsap.fromTo(innerCard, {
+          yPercent: isMobile ? 5 : 9,
+        }, {
+          yPercent: isMobile ? -5 : -9,
+          ease: 'none',
+          force3D: true,
           scrollTrigger: {
             trigger: card,
-            start: "top top",
-            end: "+=100%", 
-            pin: shouldPinCard,
-            pinSpacing: false,
-            scrub: 0.45,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: isMobile ? 0.45 : 0.7,
             invalidateOnRefresh: true,
-            anticipatePin: 1,
-            pinType: shouldPinCard ? "fixed" : undefined,
-          }
+            fastScrollEnd: true,
+          },
         });
 
-        if (index < services.length - 1 && innerCard) {
+        if (!isMobile && shouldPinCard) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top top",
+              end: "+=100%",
+              pin: true,
+              pinSpacing: false,
+              scrub: 0.45,
+              invalidateOnRefresh: true,
+              anticipatePin: 1,
+              pinType: "fixed",
+            }
+          });
+
           tl.to(innerCard, {
             scale: 0.94,
             opacity: 0.45,

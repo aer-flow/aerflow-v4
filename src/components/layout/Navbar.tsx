@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import MagneticButton from '../ui/MagneticButton';
 import GlitchText from '../ui/GlitchText';
+import VerticalParallax from '../ui/VerticalParallax';
 import { useCursorStore, type CursorState } from '@/store/useCursorStore';
 
 const links = [
@@ -19,22 +20,26 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-[900] bg-[rgba(7,7,7,0.82)] border-b border-white/5 text-aerflow-light">
-        <Link to="/" className="text-xl font-mono font-bold tracking-widest z-[1000]">
-          [ <GlitchText text="AERFLOW" /> ]
-        </Link>
+        <VerticalParallax speed={1.18} intensity={0.9} global className="z-[1000]">
+          <Link to="/" className="text-xl font-mono font-bold tracking-widest">
+            [ <GlitchText text="AERFLOW" /> ]
+          </Link>
+        </VerticalParallax>
 
-        <div 
-          className="z-[1000] cursor-none"
-          onMouseEnter={() => setCursorVariant('menu')}
-          onMouseLeave={() => setCursorVariant('default')}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <MagneticButton>
-            <div className="text-sm font-sans font-bold tracking-widest uppercase hover:text-aerflow-accent transition-colors">
-              [ {menuOpen ? 'ÎNCHIDE' : 'MENIU'} ]
-            </div>
-          </MagneticButton>
-        </div>
+        <VerticalParallax speed={1.3} intensity={0.95} global className="z-[1000]">
+          <div 
+            className="cursor-none"
+            onMouseEnter={() => setCursorVariant('menu')}
+            onMouseLeave={() => setCursorVariant('default')}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <MagneticButton>
+              <div className="text-sm font-sans font-bold tracking-widest uppercase hover:text-aerflow-accent transition-colors">
+                [ {menuOpen ? 'ÎNCHIDE' : 'MENIU'} ]
+              </div>
+            </MagneticButton>
+          </div>
+        </VerticalParallax>
       </nav>
 
       <AnimatePresence mode="wait">
@@ -48,7 +53,13 @@ export default function Navbar() {
           >
             <div className="flex flex-col space-y-4 text-center">
               {links.map((link, i) => (
-                <div key={i} className="overflow-hidden relative group">
+                <VerticalParallax
+                  key={i}
+                  speed={1.45 + i * 0.12}
+                  intensity={1.05}
+                  global
+                  className="overflow-hidden relative group"
+                >
                   <motion.div
                     initial={{ y: "100%" }}
                     animate={{ y: "0%" }}
@@ -63,13 +74,12 @@ export default function Navbar() {
                       <span className="relative z-10 group-hover:text-transparent transition-colors duration-500">
                         {link.title}
                       </span>
-                      {/* Inverse reveal italic pe hover */}
                       <span className="absolute inset-0 font-serif italic text-aerflow-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20">
                         {link.title}
                       </span>
                     </Link>
                   </motion.div>
-                </div>
+                </VerticalParallax>
               ))}
             </div>
           </motion.div>

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isMobileViewport, shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
@@ -15,7 +15,7 @@ interface ParallaxTextProps {
 
 export default function ParallaxText({ 
   children, 
-  baseVelocity = 150, // Increased for better visibility
+  baseVelocity = 150,
   className = "",
   enableOnMobile = false,
   mobileVelocityFactor = 0.45,
@@ -23,8 +23,10 @@ export default function ParallaxText({
   const container = useRef<HTMLDivElement>(null);
   const text = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!container.current || !text.current) return;
+  useLayoutEffect(() => {
+    const scope = container.current;
+    const target = text.current;
+    if (!scope || !target) return;
 
     const reduceMotion = shouldReduceMotion();
     const liteMode = shouldUseLiteEffects();
@@ -36,25 +38,27 @@ export default function ParallaxText({
       : -baseVelocity;
 
     const ctx = gsap.context(() => {
-      gsap.to(text.current, {
+      gsap.to(target, {
         x: travelDistance,
         ease: "none",
         force3D: true,
         scrollTrigger: {
-          trigger: container.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: liteMode || isMobile ? 0.35 : 0.5,
+          trigger: scope,
+          start: "top bottom+=8%",
+          end: "bottom top-=8%",
+          scrub: liteMode || isMobile ? 0.24 : 0.36,
+          invalidateOnRefresh: true,
+          fastScrollEnd: true,
         },
       });
-    }, container);
+    }, scope);
 
     return () => ctx.revert();
   }, [baseVelocity, enableOnMobile, mobileVelocityFactor]);
 
   return (
     <div ref={container} className={`overflow-hidden whitespace-nowrap ${className}`}>
-      <div ref={text} className="inline-block will-change-transform">
+      <div ref={text} className="inline-block will-change-transform [transform:translate3d(0,0,0)]">
         {children}
       </div>
     </div>
