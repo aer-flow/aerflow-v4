@@ -122,14 +122,19 @@ export default function Home() {
           x: () => -getScrollDistance(),
           ease: 'none',
           overwrite: true,
+          force3D: true,
           scrollTrigger: {
             trigger: wrapper,
             start: 'top top',
             end: () => `+=${getScrollDistance()}`,
             pin: viewport,
             pinSpacing: true,
+            pinType: 'fixed',
+            pinReparent: true,
             anticipatePin: 1,
             scrub: 0.35,
+            fastScrollEnd: true,
+            refreshPriority: 10,
             invalidateOnRefresh: true,
           },
         });
@@ -291,10 +296,10 @@ export default function Home() {
             >
               <div
                 ref={scrollTrackRef}
-                className="absolute top-0 left-0 flex h-full w-max items-center gap-8 px-[8vw] will-change-transform md:gap-20 md:px-[10vw]"
+                className="absolute top-0 left-0 flex h-full w-max items-center gap-8 px-[8vw] will-change-transform [backface-visibility:hidden] [transform:translateZ(0)] md:gap-20 md:px-[10vw]"
               >
                 {projects.map((proj, i) => (
-                  <div key={i} className="group relative h-[55vh] w-[80vw] flex-shrink-0 overflow-hidden rounded-lg md:h-[70vh] md:w-[60vw] md:rounded-none">
+                  <div key={i} className="group relative h-[55vh] w-[80vw] flex-shrink-0 overflow-hidden rounded-lg will-change-transform [backface-visibility:hidden] [transform:translateZ(0)] md:h-[70vh] md:w-[60vw] md:rounded-none">
                     <ParallaxImage
                       src={proj.img}
                       alt="Proiect Aerflow"
