@@ -273,17 +273,19 @@ export default function Home() {
             <div className="mb-6 px-2 font-mono text-xs tracking-[0.25em] text-aerflow-gray uppercase">
               [ Selected Work ]
             </div>
-            <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-2 pb-4 [scrollbar-width:none] [-ms-overflow-style:none]">
-              {projects.map((proj, i) => (
-                <div key={i} className="relative h-[52vh] w-[84vw] flex-shrink-0 snap-center overflow-hidden rounded-lg">
-                  <img
-                    src={proj.img}
-                    alt="Proiect Aerflow"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/15 pointer-events-none" />
-                </div>
-              ))}
+            <div className="overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
+              <div className="flex w-max snap-x snap-mandatory gap-4 px-2 pb-4">
+                {projects.map((proj, i) => (
+                  <div key={i} className="relative h-[52vh] w-[84vw] min-w-[84vw] flex-shrink-0 snap-center overflow-hidden rounded-lg">
+                    <img
+                      src={proj.img}
+                      alt="Proiect Aerflow"
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
         ) : (
