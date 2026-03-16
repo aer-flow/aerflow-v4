@@ -40,6 +40,13 @@ export default function ServicesStack() {
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
 
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          // Reset any GSAP-applied styles for mobile stability
+          gsap.set(card, { clearProps: "all" });
+          return;
+        }
+
         // Create a timeline for each card's pinning and internal animations
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -52,7 +59,7 @@ export default function ServicesStack() {
             scrub: 1,
             invalidateOnRefresh: true,
             anticipatePin: 1, // Smooths out pinning onset
-            pinType: window.innerWidth < 768 ? "transform" : "fixed",
+            pinType: "fixed",
           }
         });
 
