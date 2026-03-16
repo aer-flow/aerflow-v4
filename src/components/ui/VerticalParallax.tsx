@@ -1,46 +1,50 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface VerticalParallaxProps {
   children: React.ReactNode;
   offset?: number; 
   className?: string;
+  containerAnimation?: gsap.core.Animation;
 }
 
 export default function VerticalParallax({ 
   children, 
   offset = 80, 
-  className = "" 
+  className = "",
+  containerAnimation
 }: VerticalParallaxProps) {
-  const ref = useRef(null);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const ref = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
+  useEffect(() => {
+    if (!ref.current) return;
 
-  const yValue = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
-  
-  // Use a very light spring or direct transform on mobile
-  const y = useSpring(yValue, isMobile ? {
-    stiffness: 300,
-    damping: 50,
-    mass: 0.1,
-    restDelta: 0.01
-  } : {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+    const ctx = gsap.context(() => {
+      gsap.fromTo(ref.current, 
+        { y: offset },
+        {
+          y: -offset,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ref.current,
+            containerAnimation: containerAnimation,
+            start: containerAnimation ? "left right" : "top bottom",
+            end: containerAnimation ? "right left" : "bottom top",
+            scrub: true,
+          }
+        }
+      );
+    }, ref);
+
+    return () => ctx.revert();
+  }, [offset, containerAnimation]);
 
   return (
-    <motion.div 
-      ref={ref} 
-      style={{ y, willChange: "transform" }} 
-      className={className}
-    >
+    <div ref={ref} className={className} style={{ willChange: "transform" }}>
       {children}
-    </motion.div>
+    </div>
   );
 }
