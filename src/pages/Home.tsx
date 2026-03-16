@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import PageTransition from '@/components/core/PageTransition';
 import ParallaxText from '@/components/ui/ParallaxText';
 import VerticalParallax from '@/components/ui/VerticalParallax';
-import { shouldUseLiteEffects } from '@/utils/device';
+import { shouldReduceMotion, shouldUseLiteEffects } from '@/utils/device';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -77,7 +77,7 @@ export default function Home() {
   const scrollWrapperRef = useRef<HTMLElement>(null);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
-  const useLiteShowcase = shouldUseLiteEffects();
+  const useLiteShowcase = shouldReduceMotion();
 
   useEffect(() => {
     const isLiteMode = shouldUseLiteEffects();
@@ -125,6 +125,8 @@ export default function Home() {
     const imageCleanups: Array<() => void> = [];
     let resizeObserver: ResizeObserver | null = null;
     let scrollDistance = 0;
+    let viewportWidth = 0;
+    let viewportHeight = 0;
 
     const updatePosition = () => {
       const sectionTop = section.offsetTop;
@@ -138,9 +140,11 @@ export default function Home() {
     };
 
     const measure = () => {
-      scrollDistance = Math.max(track.scrollWidth - window.innerWidth, 0);
-      section.style.height = `${window.innerHeight + scrollDistance}px`;
-      viewport.style.height = `${window.innerHeight}px`;
+      viewportWidth = viewport.clientWidth || window.innerWidth;
+      viewportHeight = viewport.clientHeight || window.innerHeight;
+      scrollDistance = Math.max(track.scrollWidth - viewportWidth, 0);
+      section.style.height = `${viewportHeight + scrollDistance}px`;
+      viewport.style.height = `${viewportHeight}px`;
       updatePosition();
     };
 
@@ -166,6 +170,7 @@ export default function Home() {
 
     resizeObserver = new ResizeObserver(() => measure());
     resizeObserver.observe(track);
+    resizeObserver.observe(viewport);
 
     window.addEventListener('resize', handleResize, { passive: true });
     ScrollTrigger.addEventListener('refresh', handleRefresh);
@@ -299,10 +304,10 @@ export default function Home() {
             >
               <div
                 ref={scrollTrackRef}
-                className="absolute top-0 left-0 flex h-full w-max items-center gap-20 px-[10vw] will-change-transform"
+                className="absolute top-0 left-0 flex h-full w-max items-center gap-8 px-[8vw] will-change-transform md:gap-20 md:px-[10vw]"
               >
                 {projects.map((proj, i) => (
-                  <div key={i} className="group relative h-[70vh] w-[60vw] flex-shrink-0 overflow-hidden">
+                  <div key={i} className="group relative h-[55vh] w-[80vw] flex-shrink-0 overflow-hidden rounded-lg md:h-[70vh] md:w-[60vw] md:rounded-none">
                     <img
                       src={proj.img}
                       alt="Proiect Aerflow"
