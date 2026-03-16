@@ -78,7 +78,7 @@ export default function Home() {
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
-  const useLiteShowcase = shouldUseLiteEffects() || shouldReduceMotion();
+  const useLiteShowcase = isMobileViewport() || shouldReduceMotion();
 
   useEffect(() => {
     const isLiteMode = shouldUseLiteEffects();
