@@ -25,18 +25,18 @@ export default function ParallaxImage({
   useEffect(() => {
     if (!imageRef.current || !containerRef.current) return;
 
-    const ctx = gsap.context(() => {
-      if (window.innerWidth < 768) return;
+    const isMobile = window.innerWidth < 768;
 
+    const ctx = gsap.context(() => {
       // Create a coordinated parallax + zoom effect
       gsap.fromTo(imageRef.current, 
         { 
-          yPercent: -10,
-          scale: 1.1 
+          yPercent: isMobile ? -5 : -10,
+          scale: isMobile ? 1.05 : 1.1 
         },
         {
-          yPercent: 10,
-          scale: 1.25,
+          yPercent: isMobile ? 5 : 10,
+          scale: isMobile ? 1.15 : 1.25,
           ease: "none",
           force3D: true,
           scrollTrigger: {
@@ -44,7 +44,7 @@ export default function ParallaxImage({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: 0.5,
+            scrub: isMobile ? 0.5 : 1, // Smoothed on mobile for buttery feel
           },
         }
       );
