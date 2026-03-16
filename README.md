@@ -1,74 +1,51 @@
-# React + TypeScript + Vite
+# Aerflow Studio Template
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Versiunea curenta a site-ului este salvata ca baseline reutilizabil pentru alte proiecte.
 
-Currently, two official plugins are available:
+Baseline-ul "Studio template" este commit-ul cu mesajul exact:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+chore: save studio template baseline
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Scriptul `./scripts/studio-template.sh` te ajuta sa il gasesti rapid si sa il refolosesti fara sa cauti manual prin istoric.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Comenzi utile
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Afla ce commit este baseline-ul salvat:
+
+```bash
+./scripts/studio-template.sh show
 ```
 
+Creeaza o ramura noua pornind exact din sablonul Studio:
+
+```bash
+./scripts/studio-template.sh branch site-nou
+```
+
+Copiaza sablonul intr-un folder nou, fara istoricul Git:
+
+```bash
+./scripts/studio-template.sh copy ../site-nou
+```
+
+## Workflow recomandat
+
+1. Pastrezi `main` ca istoric complet al proiectului.
+2. Cand vrei un site nou, rulezi `branch` sau `copy` din script.
+3. Pentru revenire rapida la sablon, verifici commit-ul cu `show` si deschizi o ramura noua din acel punct.
+
+## Dezvoltare
+
+```bash
+npm install
+npm run dev
+```
+
+Verificari locale:
+
+```bash
+npm run lint
+npm run build
+```
