@@ -76,16 +76,16 @@ export default function Home() {
   const manifestoRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
+  const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
-  const useLiteShowcase = isMobileViewport() || shouldReduceMotion();
+  const useLiteShowcase = shouldUseLiteEffects() || shouldReduceMotion();
 
   useEffect(() => {
     const isLiteMode = shouldUseLiteEffects();
     const isReducedMotion = shouldReduceMotion();
     let isActive = true;
     const imageCleanups: Array<() => void> = [];
-    let resizeObserver: ResizeObserver | null = null;
 
     const ctx = gsap.context(() => {
       if (textRef.current && manifestoRef.current) {
@@ -105,19 +105,20 @@ export default function Home() {
         );
       }
 
-      if (!scrollWrapperRef.current || !scrollTrackRef.current) return;
+      if (!scrollWrapperRef.current || !scrollTrackRef.current || !scrollViewportRef.current) return;
 
       if (isMobileViewport() || isReducedMotion) {
+        scrollWrapperRef.current.style.height = 'auto';
         setHorizontalAnim(null);
         return;
       }
 
       const track = scrollTrackRef.current;
       const wrapper = scrollWrapperRef.current;
-      const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
+      const viewport = scrollViewportRef.current;
 
       const createAnimation = () => {
-        gsap.set(track, { x: 0 });
+        const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
 
         return gsap.to(track, {
           x: () => -getScrollDistance(),
@@ -127,9 +128,8 @@ export default function Home() {
             trigger: wrapper,
             start: 'top top',
             end: () => `+=${getScrollDistance()}`,
-            pin: true,
+            pin: viewport,
             pinSpacing: true,
-            pinType: 'transform',
             anticipatePin: 1,
             scrub: 0.35,
             invalidateOnRefresh: true,
@@ -167,14 +167,6 @@ export default function Home() {
           });
         });
       }
-
-      resizeObserver = new ResizeObserver(() => {
-        if (!isActive) return;
-        ScrollTrigger.refresh();
-      });
-
-      resizeObserver.observe(track);
-      resizeObserver.observe(wrapper);
     });
 
     const timer = window.setTimeout(() => ScrollTrigger.refresh(), 250);
@@ -182,7 +174,6 @@ export default function Home() {
     return () => {
       isActive = false;
       window.clearTimeout(timer);
-      resizeObserver?.disconnect();
       imageCleanups.forEach((cleanup) => cleanup());
       setHorizontalAnim(null);
       ctx.revert();
@@ -296,10 +287,11 @@ export default function Home() {
         ) : (
           <section
             ref={scrollWrapperRef}
-            className="relative z-20 h-screen w-full overflow-hidden bg-aerflow-dark"
+            className="relative z-20 w-full overflow-hidden bg-aerflow-dark"
           >
             <div
-              className="relative h-full w-full overflow-hidden"
+              ref={scrollViewportRef}
+              className="relative h-screen w-full overflow-hidden"
             >
               <div
                 ref={scrollTrackRef}
