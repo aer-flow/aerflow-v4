@@ -76,7 +76,6 @@ export default function Home() {
   const manifestoRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
-  const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
   const useLiteShowcase = shouldUseLiteEffects() || shouldReduceMotion();
@@ -106,10 +105,9 @@ export default function Home() {
         );
       }
 
-      if (!scrollWrapperRef.current || !scrollTrackRef.current || !scrollViewportRef.current) return;
+      if (!scrollWrapperRef.current || !scrollTrackRef.current) return;
 
       if (isMobileViewport() || isReducedMotion) {
-        scrollWrapperRef.current.style.height = 'auto';
         setHorizontalAnim(null);
         return;
       }
@@ -117,14 +115,9 @@ export default function Home() {
       const track = scrollTrackRef.current;
       const wrapper = scrollWrapperRef.current;
       const getScrollDistance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
-      const syncWrapperHeight = () => {
-        wrapper.style.height = `${Math.max(window.innerHeight + getScrollDistance(), window.innerHeight)}px`;
-      };
-
-      wrapper.style.height = '100vh';
 
       const createAnimation = () => {
-        syncWrapperHeight();
+        gsap.set(track, { x: 0 });
 
         return gsap.to(track, {
           x: () => -getScrollDistance(),
@@ -134,9 +127,12 @@ export default function Home() {
             trigger: wrapper,
             start: 'top top',
             end: () => `+=${getScrollDistance()}`,
+            pin: true,
+            pinSpacing: true,
+            pinType: 'transform',
+            anticipatePin: 1,
             scrub: 0.35,
             invalidateOnRefresh: true,
-            onRefresh: syncWrapperHeight,
           },
         });
       };
@@ -174,11 +170,11 @@ export default function Home() {
 
       resizeObserver = new ResizeObserver(() => {
         if (!isActive) return;
-        syncWrapperHeight();
         ScrollTrigger.refresh();
       });
 
       resizeObserver.observe(track);
+      resizeObserver.observe(wrapper);
     });
 
     const timer = window.setTimeout(() => ScrollTrigger.refresh(), 250);
@@ -300,11 +296,10 @@ export default function Home() {
         ) : (
           <section
             ref={scrollWrapperRef}
-            className="relative z-20 w-full bg-aerflow-dark"
+            className="relative z-20 h-screen w-full overflow-hidden bg-aerflow-dark"
           >
             <div
-              ref={scrollViewportRef}
-              className="sticky top-0 h-screen w-full overflow-hidden"
+              className="relative h-full w-full overflow-hidden"
             >
               <div
                 ref={scrollTrackRef}
