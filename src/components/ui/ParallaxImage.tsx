@@ -11,6 +11,7 @@ interface ParallaxImageProps {
   className?: string;
   speed?: number; 
   containerAnimation?: gsap.core.Animation;
+  disableParallax?: boolean;
 }
 
 export default function ParallaxImage({ 
@@ -18,7 +19,8 @@ export default function ParallaxImage({
   alt, 
   className = "", 
   speed = 1.2,
-  containerAnimation
+  containerAnimation,
+  disableParallax = false,
 }: ParallaxImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -27,7 +29,7 @@ export default function ParallaxImage({
     if (!imageRef.current || !containerRef.current) return;
 
     const isMobile = isMobileViewport();
-    if (shouldReduceMotion()) return;
+    if (shouldReduceMotion() || disableParallax) return;
 
     const ctx = gsap.context(() => {
       // On mobile horizontal sections, disable internal parallax entirely for FPS
@@ -56,7 +58,7 @@ export default function ParallaxImage({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [speed, containerAnimation]);
+  }, [speed, containerAnimation, disableParallax]);
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>

@@ -78,7 +78,6 @@ export default function Home() {
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
-  const [horizontalAnim, setHorizontalAnim] = useState<gsap.core.Animation | null>(null);
   const useLiteShowcase = shouldReduceMotion();
 
   useEffect(() => {
@@ -109,7 +108,6 @@ export default function Home() {
 
       if (isReducedMotion) {
         scrollWrapperRef.current.style.height = 'auto';
-        setHorizontalAnim(null);
         return;
       }
 
@@ -139,8 +137,7 @@ export default function Home() {
 
       const initAnimation = () => {
         if (!isActive) return;
-        const animation = createAnimation();
-        setHorizontalAnim(animation);
+        createAnimation();
         ScrollTrigger.refresh();
       };
 
@@ -175,7 +172,6 @@ export default function Home() {
       isActive = false;
       window.clearTimeout(timer);
       imageCleanups.forEach((cleanup) => cleanup());
-      setHorizontalAnim(null);
       ctx.revert();
     };
   }, []);
@@ -304,7 +300,7 @@ export default function Home() {
                       alt="Proiect Aerflow"
                       className="h-full w-full"
                       speed={1.4}
-                      containerAnimation={horizontalAnim || undefined}
+                      disableParallax
                     />
                     <div className="pointer-events-none absolute inset-0 bg-black/20 transition-colors duration-500 group-hover:bg-black/10" />
                   </div>
