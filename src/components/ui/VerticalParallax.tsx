@@ -55,7 +55,7 @@ export default function VerticalParallax({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: isMobile ? true : 1, // Instant on mobile (no lag/chase), smooth on desktop
+            scrub: isMobile ? 0.5 : 1, // Smoothed on mobile (0.5) and desktop (1)
             invalidateOnRefresh: true,
           }
         }
