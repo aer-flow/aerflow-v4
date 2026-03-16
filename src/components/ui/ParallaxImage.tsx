@@ -42,7 +42,7 @@ export default function ParallaxImage({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: 1,
+            scrub: 0.5,
           },
         }
       );

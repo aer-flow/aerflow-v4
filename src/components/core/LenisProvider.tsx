@@ -8,14 +8,14 @@ gsap.registerPlugin(ScrollTrigger);
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.0, // Slightly faster for responsiveness
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
-      lerp: 0.08
+      touchMultiplier: 1.2, // Reduced for more predictable touch scrolling
+      lerp: 0.1, // Increased from 0.08 for more responsiveness
     });
     
     // ignoreMobileResize helps prevent jumping during address bar changes without locking scroll
@@ -29,7 +29,6 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     };
 
     gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
 
     return () => {
       (window as any).lenis = null;

@@ -40,7 +40,7 @@ export default function Home() {
             trigger: manifestoRef.current,
             start: "top 70%",
             end: "bottom 50%",
-            scrub: true,
+            scrub: 0.5,
           }
         }
       );
@@ -57,7 +57,7 @@ export default function Home() {
         scrollTrigger: {
           trigger: scrollWrapperRef.current,
           pin: true,
-          scrub: 1,
+          scrub: 0.8,
           start: "top top",
           end: () => `+=${totalWidth}`,
           refreshPriority: 1,

@@ -35,7 +35,7 @@ export default function VerticalParallax({
     const ctx = gsap.context(() => {
       // Responsive Damping: Significantly reduce intensity on mobile
       const isMobile = window.innerWidth < 768;
-      const baseIntensity = isMobile ? 0.15 : 0.6; // Reduced mobile intensity significantly
+      const baseIntensity = isMobile ? 0.35 : 0.6; // Increased mobile intensity (was 0.15)
       
       const moveDistance = (speed - 1) * window.innerHeight * baseIntensity; 
 
@@ -50,7 +50,7 @@ export default function VerticalParallax({
             containerAnimation: containerAnimation,
             start: containerAnimation ? "left right" : "top bottom",
             end: containerAnimation ? "right left" : "bottom top",
-            scrub: isMobile ? true : 1, // Instant scrub on mobile prevents shaking
+            scrub: isMobile ? 0.6 : 1, // Added interpolation on mobile (was 'true') to prevent "steps"
             invalidateOnRefresh: true,
           }
         }
