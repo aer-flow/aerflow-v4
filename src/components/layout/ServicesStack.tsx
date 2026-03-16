@@ -54,8 +54,8 @@ export default function ServicesStack() {
         const shouldPinCard = index < services.length - 1;
         if (!innerCard) return;
 
-        const cardTravel = isMobile ? 3.5 : 7;
-        const cardScrub = isMobile ? 0.36 : 0.58;
+        const cardTravel = isMobile ? 7 : 7;
+        const cardScrub = isMobile ? 0.24 : 0.58;
 
         gsap.fromTo(innerCard, {
           yPercent: cardTravel,
@@ -75,16 +75,16 @@ export default function ServicesStack() {
 
         if (label) {
           gsap.fromTo(label, {
-            yPercent: isMobile ? 10 : 14,
+            yPercent: isMobile ? 18 : 14,
           }, {
-            yPercent: isMobile ? -10 : -14,
+            yPercent: isMobile ? -18 : -14,
             ease: 'none',
             force3D: true,
             scrollTrigger: {
               trigger: card,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: isMobile ? 0.34 : 0.5,
+              scrub: isMobile ? 0.22 : 0.5,
               invalidateOnRefresh: true,
               fastScrollEnd: true,
             },
@@ -93,16 +93,16 @@ export default function ServicesStack() {
 
         if (title) {
           gsap.fromTo(title, {
-            yPercent: isMobile ? 22 : 28,
+            yPercent: isMobile ? 42 : 28,
           }, {
-            yPercent: isMobile ? -22 : -28,
+            yPercent: isMobile ? -42 : -28,
             ease: 'none',
             force3D: true,
             scrollTrigger: {
               trigger: card,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: isMobile ? 0.42 : 0.62,
+              scrub: isMobile ? 0.26 : 0.62,
               invalidateOnRefresh: true,
               fastScrollEnd: true,
             },
@@ -111,16 +111,16 @@ export default function ServicesStack() {
 
         if (desc) {
           gsap.fromTo(desc, {
-            yPercent: isMobile ? 11 : 15,
+            yPercent: isMobile ? 20 : 15,
           }, {
-            yPercent: isMobile ? -11 : -15,
+            yPercent: isMobile ? -20 : -15,
             ease: 'none',
             force3D: true,
             scrollTrigger: {
               trigger: card,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: isMobile ? 0.38 : 0.55,
+              scrub: isMobile ? 0.3 : 0.55,
               invalidateOnRefresh: true,
               fastScrollEnd: true,
             },
