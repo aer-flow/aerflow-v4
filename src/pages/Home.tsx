@@ -66,13 +66,11 @@ export default function Home() {
       setHorizontalAnim(anim);
     }
 
-    // Refresh triggers multiple times to handle dynamic layout shifts
-    const refreshTimers = [100, 500, 1500].map(delay => 
-      setTimeout(() => ScrollTrigger.refresh(), delay)
-    );
-
+    // Single refresh after a short delay to ensure DOM is ready
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    
     return () => {
-      refreshTimers.forEach(clearTimeout);
+      clearTimeout(timer);
     };
   }, []);
 

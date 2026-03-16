@@ -33,7 +33,17 @@ function FluidPlane() {
 export default function HeroCanvas() {
   return (
     <div className="absolute inset-0 z-0">
-      <Canvas camera={{ position: [0, 0, 1] }}>
+      <Canvas 
+        camera={{ position: [0, 0, 1] }}
+        dpr={[1, 2]} // Limitează randarea pe ecrane Retina/4K
+        gl={{ 
+          powerPreference: "high-performance",
+          antialias: false,
+          stencil: false,
+          depth: false
+        }}
+        performance={{ min: 0.5 }}
+      >
         <FluidPlane />
       </Canvas>
       <div className="absolute inset-0 bg-aerflow-dark/20" />

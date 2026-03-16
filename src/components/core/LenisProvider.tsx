@@ -21,16 +21,18 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     lenis.on('scroll', ScrollTrigger.update);
     (window as any).lenis = lenis;
 
-    gsap.ticker.add((time) => {
+    const update = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
 
+    gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
     return () => {
       (window as any).lenis = null;
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
+      gsap.ticker.remove(update);
+      ScrollTrigger.clearScrollMemory();
     };
   }, []);
 

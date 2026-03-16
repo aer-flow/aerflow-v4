@@ -35,8 +35,8 @@ export default function FloatingElements() {
 
       {/* Glassy Card Fragment */}
       <motion.div
-        style={{ y: y1, rotate: 15 }}
-        className="absolute top-[30%] right-[20%] w-32 h-48 border border-white/10 bg-white/5 backdrop-blur-md rounded-2xl"
+        style={{ y: y1, rotate: 15, willChange: "transform" }}
+        className="absolute top-[30%] right-[20%] w-32 h-48 border border-white/10 bg-white/5 backdrop-blur-sm rounded-2xl"
       />
     </div>
   );
